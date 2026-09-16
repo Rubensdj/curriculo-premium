@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rubens — Pra você que chegou até aqui</title>
+    <meta name="description" content="Rubens, 26 anos, Recife. Busco alguém pra caminhar comigo, pra servir a Deus e pra viver algo real.">
+    <meta name="theme-color" content="#000000">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Rubens — Pra você que chegou até aqui">
+    <meta property="og:description" content="26 anos, Recife. Busco alguém pra caminhar comigo.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #000000;
+            --bg-2: #0a0a0a;
+            --bg-3: #111111;
+            --border: #1a1a1a;
+            --text: #ffffff;
+            --text-2: #a1a1a6;
+            --text-3: #6e6e73;
+            --accent: #ff2d55;
+            --accent-2: #ff6b8a;
+            --gold: #d4af37;
+            --gradient: linear-gradient(135deg, #ff2d55, #d4af37);
+        }
+        
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* NAV */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            padding: 1rem 2rem;
+            transition: background 0.4s, backdrop-filter 0.4s;
+        }
+        .nav.scrolled {
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--text); }
+        .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 5px; }
+        .hamburger-line { display: block; width: 20px; height: 1.5px; background: var(--text); margin: 4px 0; }
+        .mobile-menu { display: none; position: fixed; top: 60px; left: 0; right: 0; background: var(--bg-2); padding: 1rem; border-bottom: 1px solid var(--border); }
+        .mobile-menu.active { display: block; }
+        .mobile-menu a { display: block; padding: 0.75rem 1rem; color: var(--text); text-decoration: none; font-size: 0.9rem; }
+        
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem;
+        }
+        .hero-video {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        .hero-video video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+        }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+        }
+        .hero-avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.2);
+            padding: 4px;
+            margin: 0 auto 2.5rem;
+            position: relative;
+        }
+        .hero-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: contain;
+            background: var(--bg-3);
+        }
+        .hero-avatar::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: pulse-ring 3s ease-in-out infinite;
+        }
+        @keyframes pulse-ring {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.5; }
+        }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 10vw, 7rem);
+            font-weight: 600;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+        }
+        .hero-title .line { display: block; }
+        .hero-title .line:nth-child(2) {
+            font-style: italic;
+            font-weight: 400;
+        }
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.35rem);
+            color: var(--text-2);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero-meta {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+        .hero-meta span {
+            color: var(--text-2);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 0.9rem 2.5rem;
+            border-radius: 100px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            border: none;
+            letter-spacing: 0.01em;
+        }
+        .btn-primary {
+            background: var(--text);
+            color: var(--bg);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(255,255,255,0.2);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.5);
+        }
+        
+        /* SCROLL INDICATOR */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            animation: scroll-bounce 2s ease-in-out infinite;
+        }
+        .scroll-indicator span {
+            font-size: 0.75rem;
+            color: var(--text-3);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .scroll-indicator .line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+        }
+        @keyframes scroll-bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+        
+        /* SECTIONS */
+        .section {
+            padding: 10rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-3);
+            margin-bottom: 1.5rem;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 600;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+        .section-desc {
+            font-size: 1.1rem;
+            color: var(--text-2);
+            max-width: 600px;
+            font-weight: 300;
+        }
+        
+        /* STATS */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            background: var(--border);
+            padding: 2px;
+            margin: 4rem 0;
+        }
+        .stat {
+            background: var(--bg);
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: background 0.3s;
+        }
+        .stat:hover { background: var(--bg-2); }
+        .stat-num {
+            font-size: 2.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-3);
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* CARDS */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px;
+        }
+        .card {
+            background: var(--bg-2);
+            padding: 3rem;
+            transition: background 0.4s;
+            position: relative;
+        }
+        .card:hover { background: var(--bg-3); }
+        .card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.01em;
+        }
+        .card p {
+            color: var(--text-2);
+            font-size: 0.95rem;
+            font-weight: 300;
+            line-height: 1.7;
+        }
+        
+        /* SKILLS */
+        .skills { display: flex; flex-direction: column; gap: 1.5rem; }
+        .skill {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .skill-name { font-weight: 500; font-size: 1rem; }
+        .skill-pct { color: var(--text-3); font-size: 0.85rem; }
+        .skill-bar {
+            grid-column: 1 / -1;
+            height: 2px;
+            background: var(--border);
+            position: relative;
+        }
+        .skill-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: var(--gradient);
+            width: 0;
+            transition: width 2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        /* VALUES */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+        }
+        .value-card {
+            background: var(--bg-2);
+            padding: 2.5rem;
+            transition: background 0.3s;
+        }
+        .value-card:hover { background: var(--bg-3); }
+        .value-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .value-card p {
+            color: var(--text-2);
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+        
+        /* INTERESTS */
+        .interests { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+        .interest-chip {
+            padding: 0.6rem 1.25rem;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--text-2);
+            transition: all 0.3s;
+            cursor: default;
+        }
+        .interest-chip:hover {
+            border-color: var(--text);
+            color: var(--text);
+        }
+        
+        /* IMAGE GRID */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 300px);
+            gap: 2px;
+        }
+        .image-grid-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .image-grid-item:first-child { grid-column: span 2; }
+        .image-grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .image-grid-item:hover img { transform: scale(1.05); }
+        .image-grid-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .image-grid-item:hover::after { opacity: 1; }
+        
+        /* CONTACT */
+        .contact {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .contact-item .label {
+            font-size: 0.75rem;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.25rem;
+        }
+        .contact-item p { font-weight: 500; margin: 0; font-size: 1rem; }
+        
+        .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 1rem 0;
+            border: none;
+            border-bottom: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .contact-form input:focus, .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--text);
+        }
+        .contact-form textarea { resize: none; min-height: 100px; }
+        
+        /* FOOTER */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .footer-copy {
+            color: var(--text-3);
+            font-size: 0.8rem;
+        }
+        
+        /* REVEAL */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        
+        /* 4K */
+        @media (min-width: 2560px) {
+            .section { padding: 14rem 2rem; max-width: 1800px; }
+            .hero-content { max-width: 1200px; }
+            .cards { grid-template-columns: repeat(4, 1fr); }
+            .values-grid { grid-template-columns: repeat(6, 1fr); }
+        }
+        
+        /* MOBILE */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: block; }
+            .contact { grid-template-columns: 1fr; gap: 2rem; }
+            .hero-meta { flex-direction: column; gap: 0.75rem; }
+            .hero-cta { flex-direction: column; }
+            .hero-cta .btn { width: 100%; text-align: center; }
+            .cards { grid-template-columns: 1fr; }
+            .values-grid { grid-template-columns: 1fr; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .image-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+            .image-grid-item { height: 250px; }
+            .image-grid-item:first-child { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader" id="loader"></div>
+    
+    <!-- Nav -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="#hero" class="nav-logo">Rubens</a>
+            <ul class="nav-links">
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#quem-sou">Quem sou</a></li>
+                <li><a href="#busco">Busco</a></li>
+                <li><a href="#galeria">Galeria</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#sobre">Sobre</a>
+            <a href="#quem-sou">Quem sou</a>
+            <a href="#busco">Busco</a>
+            <a href="#galeria">Galeria</a>
+            <a href="#contato">Contato</a>
+        </div>
+    </nav>
+    
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-video">
+            <video autoplay muted loop playsinline poster="img/hero.jpg">
+                <source src="video-bg.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-avatar">
+                <img src="img/eu.webp" alt="Rubens">
+            </div>
+            <h1 class="hero-title">
+                <span class="line">Eu sou o Rubens.</span>
+                <span class="line">Prazer em conquistar você.</span>
+            </h1>
+            <p class="hero-subtitle">26 anos, Recife, PE. Nunca namorei — esperei a pessoa certa. Agora tô aqui, disponível pra viver algo real e servir a Deus junto.</p>
+            <div class="hero-meta">
+                <span>171cm</span>
+                <span>69kg</span>
+                <span>♉ Touro</span>
+            </div>
+            <div class="hero-cta">
+                <a href="#contato" class="btn btn-primary">Vamos conversar</a>
+                <a href="#sobre" class="btn btn-outline">Conhecer</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="line"></div>
+        </div>
+    </section>
+    
+    <!-- Stats -->
+    <div class="stats">
+        <div class="stat reveal">
+            <div class="stat-num">26</div>
+            <div class="stat-label">anos de vida</div>
+        </div>
+        <div class="stat reveal">
+            <div class="stat-num">100%</div>
+            <div class="stat-label">disponível</div>
+        </div>
+        <div class="stat reveal">
+            <div class="stat-num">1</div>
+            <div class="stat-label">coração pra dar</div>
+        </div>
+        <div class="stat reveal">
+            <div class="stat-num">0</div>
+            <div class="stat-label">filhos — disponível pra começar</div>
+        </div>
+    </div>
+    
+    <!-- Sobre -->
+    <section class="section" id="sobre">
+        <div class="reveal">
+            <p class="section-label">Sobre</p>
+            <h2 class="section-title">Não sou perfeito.<br>Sou real.</h2>
+        </div>
+        <p class="section-desc reveal">Alguém que acorda todo dia com propósito. Trabalhador, determinado, e acima de tudo, alguém que quer fazer da vida uma história que vale a pena contar — ao lado de alguém especial.</p>
+        <div class="cards" style="margin-top: 4rem;">
+            <div class="card reveal">
+                <h3>Trabalhador</h3>
+                <p>Levanto cedo, faço acontecer. Não é só sobre ganhar dinheiro — é sobre construir algo com as próprias mãos.</p>
+            </div>
+            <div class="card reveal">
+                <h3>Gamer</h3>
+                <p>Free Fire, Valorant, qualquer jogo com você do meu lado. A competição é divertida, mas te vencer é melhor.</p>
+            </div>
+            <div class="card reveal">
+                <h3>Amante de música</h3>
+                <p>Todo tipo de música — do sertanejo ao gospel, do funk ao rock. O ritmo muda, o sentimento é o mesmo.</p>
+            </div>
+            <div class="card reveal">
+                <h3>Caseiro</h3>
+                <p>Amo ficar em casa, mas também amo praia. O equilíbrio é o que faz a vida boa.</p>
+            </div>
+            <div class="card reveal">
+                <h3>Mão na massa</h3>
+                <p>Cozinho de tudo, arrumo casa, resolvo problema. Não tem coisa que eu não faça — pra nós dois.</p>
+            </div>
+            <div class="card reveal">
+                <h3>Sóbrio por escolha</h3>
+                <p>Não bebo, não fumo. Prefiro a vida real, acordado, presente. Clareza não combina com fuga.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Quem sou -->
+    <section class="section" id="quem-sou">
+        <div class="reveal">
+            <p class="section-label">Habilidades românticas</p>
+            <h2 class="section-title">O que eu ofereço</h2>
+        </div>
+        <div class="skills reveal" style="margin-top: 3rem;">
+            <div class="skill">
+                <div>
+                    <div class="skill-name">Fazer rir</div>
+                    <div class="skill-bar"><div class="skill-fill" data-width="95"></div></div>
+                </div>
+                <div class="skill-pct">95%</div>
+            </div>
+            <div class="skill">
+                <div>
+                    <div class="skill-name">Ouvir e entender</div>
+                    <div class="skill-bar"><div class="skill-fill" data-width="98"></div></div>
+                </div>
+                <div class="skill-pct">98%</div>
+            </div>
+            <div class="skill">
+                <div>
+                    <div class="skill-name">Ser presente</div>
+                    <div class="skill-bar"><div class="skill-fill" data-width="100"></div></div>
+                </div>
+                <div class="skill-pct">100%</div>
+            </div>
+            <div class="skill">
+                <div>
+                    <div class="skill-name">Ser fiel e leal</div>
+                    <div class="skill-bar"><div class="skill-fill" data-width="100"></div></div>
+                </div>
+                <div class="skill-pct">100%</div>
+            </div>
+            <div class="skill">
+                <div>
+                    <div class="skill-name">Cozinhar pra nós</div>
+                    <div class="skill-bar"><div class="skill-fill" data-width="75"></div></div>
+                </div>
+                <div class="skill-pct">75%</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Busco -->
+    <section class="section" id="busco">
+        <div class="reveal">
+            <p class="section-label">O que busco</p>
+            <h2 class="section-title">Alguém pra caminhar comigo.<br>Até o final.</h2>
+        </div>
+        <p class="section-desc reveal">Mais que uma namorada — uma parceira de vida. Alguém pra servir a Deus junto, pra construir algo real, pra rir e chorar junto.</p>
+        <div class="values-grid" style="margin-top: 4rem;">
+            <div class="value-card reveal">
+                <h3>Fé</h3>
+                <p>Alguém que ame a Deus acima de tudo. Que queira crescer espiritualmente junto.</p>
+            </div>
+            <div class="value-card reveal">
+                <h3>Parceria</h3>
+                <p>Pra dividir o lanche, o sofá, a vida. Nos bons e nos maus momentos.</p>
+            </div>
+            <div class="value-card reveal">
+                <h3>Diálogo</h3>
+                <p>Pra falar de tudo — do trabalho, do futuro, do nada. E silêncio junto também vale.</p>
+            </div>
+            <div class="value-card reveal">
+                <h3>Bom humor</h3>
+                <p>Rir até do errado. Fazer piada séria. Rir junto até de você rir errado.</p>
+            </div>
+            <div class="value-card reveal">
+                <h3>Decisão</h3>
+                <p>Eu tomo a diREção — mas não no seu lugar. Caminhar junto é sobre acordo, não sobre mandar.</p>
+            </div>
+            <div class="value-card reveal">
+                <h3>Objetivo</h3>
+                <p>Construir uma família. Crescer juntos. Fazer da vida uma história bonita.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Interesses -->
+    <section class="section">
+        <div class="reveal">
+            <p class="section-label">Interesses</p>
+            <h2 class="section-title">Se você curte qualquer um desses, já temos assunto.</h2>
+        </div>
+        <div class="interests reveal" style="margin-top: 3rem;">
+            <div class="interest-chip">Praia</div>
+            <div class="interest-chip">Ficar em casa</div>
+            <div class="interest-chip">Cozinhar</div>
+            <div class="interest-chip">Sertanejo</div>
+            <div class="interest-chip">Gospel</div>
+            <div class="interest-chip">Funk</div>
+            <div class="interest-chip">Rock</div>
+            <div class="interest-chip">Café</div>
+            <div class="interest-chip">Pôr do sol</div>
+            <div class="interest-chip">Viagens</div>
+            <div class="interest-chip">Cinema</div>
+            <div class="interest-chip">Weplay</div>
+            <div class="interest-chip">Free Fire</div>
+        </div>
+    </section>
+    
+    <!-- Galeria -->
+    <section class="section" id="galeria">
+        <div class="reveal">
+            <p class="section-label">Galeria</p>
+            <h2 class="section-title">Um pouco do que sou.</h2>
+        </div>
+        <div class="image-grid reveal" style="margin-top: 3rem;">
+            <div class="image-grid-item"><img src="img/scene-sunset.jpg" alt=""></div>
+            <div class="image-grid-item"><img src="img/scene-city.jpg" alt=""></div>
+            <div class="image-grid-item"><img src="img/scene-coffee.jpg" alt=""></div>
+            <div class="image-grid-item"><img src="img/scene-music.jpg" alt=""></div>
+            <div class="image-grid-item"><img src="img/scene-night.jpg" alt=""></div>
+        </div>
+    </section>
+    
+    <!-- Contato -->
+    <section class="section" id="contato">
+        <div class="reveal">
+            <p class="section-label">Vamos conversar?</p>
+            <h2 class="section-title">Se você chegou até aqui, já gosta de mim um pouco.</h2>
+        </div>
+        <div class="contact reveal" style="margin-top: 3rem;">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div>
+                        <div class="label">WhatsApp</div>
+                        <p>(81) 98950-1999</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div>
+                        <div class="label">E-mail</div>
+                        <p>rubensfernandes2112@gmail.com</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div>
+                        <div class="label">Onde</div>
+                        <p>Recife, PE</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div>
+                        <div class="label">Instagram</div>
+                        <p>@Rubens.nandes.021</p>
+                    </div>
+                </div>
+            </div>
+            <form class="contact-form" action="https://formsubmit.co/rubensfernandes2112@gmail.com" method="POST">
+                <input type="hidden" name="_next" value="https://rubenspereirafernandes.github.io/curriculo-premium/">
+                <input type="hidden" name="_subject" value="Alguém especial te conheceu!">
+                <input type="text" name="name" placeholder="Seu nome" required>
+                <input type="tel" name="phone" placeholder="Seu WhatsApp" required>
+                <textarea name="message" rows="4" placeholder="Manda um 'oi', 'gostei', ou qualquer coisa..." required></textarea>
+                <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Enviar mensagem</button>
+            </form>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-logo">Rubens</div>
+        <p class="footer-copy">Feito com propósito. © 2026.</p>
+    </footer>
+    
+    <script>
+        // Loader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
+            }, 1200);
+        });
+        
+        // Nav scroll
+        window.addEventListener('scroll', () => {
+            document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+        });
+        
+        // Mobile menu
+        document.getElementById('hamburger').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('active');
+        });
+        
+        // Reveal + skill bars
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    const fills = e.target.querySelectorAll('.skill-fill');
+                    fills.forEach(f => f.style.width = f.getAttribute('data-width') + '%');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
+    </script>
+</body>
+</html>
