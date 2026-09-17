@@ -100,6 +100,12 @@
             .form-row { grid-template-columns: 1fr; }
             .section { padding: 4rem 1rem; }
         }
+
+        /* BUSCO */
+        .busco-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2rem; }
+        .busco-item { padding: 1.5rem; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; }
+        .busco-item h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .busco-item p { color: var(--text-2); font-size: 0.9rem; line-height: 1.5; }
     </style>
 </head>
 <body>
@@ -120,6 +126,7 @@
             <a href="#hero" style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:600;">Rubens</a>
             <ul class="nav-links">
                 <li><a href="#hero">Sobre</a></li>
+                <li><a href="#busco">O que busco</a></li>
                 <li><a href="#galeria">Fotos</a></li>
                 <li><a href="#biblia">Bíblia</a></li>
                 <li><a href="#candidatura">Candidatura</a></li>
@@ -146,7 +153,31 @@
         </div>
     </section>
 
-    <!-- GALLERY -->
+    <!-- O QUE BUSCO -->
+    <section class="section" id="busco">
+        <p class="section-label">O que busco</p>
+        <h2 class="section-title">A pessoa certa.</h2>
+        <div class="busco-container">
+            <div class="busco-item">
+                <h3>Fiel</h3>
+                <p>Quero alguém que quando escolhe, escolhe de verdade. Sem joguinhos.</p>
+            </div>
+            <div class="busco-item">
+                <h3>Pra casa</h3>
+                <p>Amo ficar em casa. Café, filme, conversa boa. Não curto festa nem agito.</p>
+            </div>
+            <div class="busco-item">
+                <h3>De Deus</h3>
+                <p>Quem queira servir junto. Fé é a base de tudo pra mim.</p>
+            </div>
+            <div class="busco-item">
+                <h3>De verdade</h3>
+                <p>Sem máscaras, sem fingimento. Quem eu sou já tá aqui, pra quem gostar.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOTOS -->
     <section class="section" id="galeria">
         <p class="section-label">Fotos</p>
         <h2 class="section-title">Um pouco de mim</h2>
