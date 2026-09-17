@@ -64,6 +64,42 @@
         .busco-item { padding: 1.5rem; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; }
         .busco-item h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
         .busco-item p { color: var(--text-2); font-size: 0.9rem; line-height: 1.5; }
+
+        /* BIBLE */
+        .bible { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: #1a1612; border-radius: 12px; overflow: hidden; min-height: 350px; }
+        .bible-page { background: #f5f0e0; color: #1a1612; padding: 1.75rem; font-family: Georgia, serif; }
+        .bible-page h3 { color: #8b5a2b; margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid rgba(139,90,43,0.2); font-size: 1.1rem; }
+        .bible-verse { margin-bottom: 1rem; }
+        .bible-verse .ref { font-size: 0.65rem; font-weight: 700; color: #8b5a2b; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.25rem; }
+        .bible-verse .text { font-size: 0.85rem; line-height: 1.6; font-style: italic; color: #333; }
+        .bible-nav { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: var(--bg-3); }
+        .bible-nav button { padding: 0.4rem 0.8rem; background: var(--bg-2); border: 1px solid var(--border); color: var(--text); border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+        .bible-nav button:disabled { opacity: 0.3; cursor: not-allowed; }
+        .bible-topics { display: flex; overflow-x: auto; gap: 0.3rem; padding: 0.6rem; background: var(--bg-2); scrollbar-width: none; }
+        .bible-topics button { padding: 0.3rem 0.7rem; background: transparent; border: 1px solid var(--border); color: var(--text-2); border-radius: 100px; cursor: pointer; white-space: nowrap; font-size: 0.75rem; }
+        .bible-topics button.active { background: var(--gold); color: #000; border-color: transparent; }
+
+        /* FORM */
+        .form { background: var(--bg-2); border: 1px solid var(--border); border-radius: 16px; padding: 1.75rem; max-width: 550px; margin: 0 auto; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: 0.7rem; color: var(--text-2); margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.04em; }
+        .form-group input, .form-group textarea { width: 100%; padding: 0.65rem 0.85rem; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: inherit; font-size: 0.85rem; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--gold); }
+        .form-group textarea { resize: vertical; min-height: 60px; }
+        .form .btn { width: 100%; margin-top: 0.5rem; text-align: center; }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero-inner { grid-template-columns: 1fr; text-align: center; }
+            .hero p { margin: 0 auto 1.5rem; }
+            .hero-meta { justify-content: center; }
+            .bible { grid-template-columns: 1fr; min-height: auto; }
+            .form-row { grid-template-columns: 1fr; }
+            .busco-container { grid-template-columns: 1fr; }
+            .section { padding: 4rem 1rem; }
+        }
     </style>
 </head>
 <body>
