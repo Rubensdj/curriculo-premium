@@ -43,8 +43,13 @@
         .nav-links a:hover { color: var(--text); }
 
         /* HERO */
+        .hero { position: relative; overflow: hidden; }
+        .hero-video { position: absolute; inset: 0; z-index: 0; }
+        .hero-video video { width: 100%; height: 100%; object-fit: cover; opacity: 0.3; }
+        .hero-overlay { position: absolute; inset: 0; background: rgba(5,5,5,0.6); z-index: 1; }
+        .hero-inner { position: relative; z-index: 2; }
         .hero { min-height: 100vh; display: flex; align-items: center; padding: 6rem 2rem 2rem; }
-        .hero-inner { display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: center; max-width: 1000px; margin: 0 auto; }
+        .hero-inner { display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: center; max-width: 1000px; margin: 0 auto; position: relative; z-index: 2; }
         .hero img { width: 250px; height: 320px; object-fit: cover; border-radius: 16px; border: 1px solid var(--border); }
         .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 4rem); font-weight: 600; margin-bottom: 1rem; }
         .hero p { color: var(--text-2); font-size: 1.1rem; max-width: 480px; margin-bottom: 1.5rem; }
@@ -132,8 +137,8 @@
             <a href="#hero" style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:600;">Rubens</a>
             <ul class="nav-links">
                 <li><a href="#hero">Sobre</a></li>
-                <li><a href="#busco">O que busco</a></li>
-                <li><a href="#habilidades">Skills</a></li>
+                <li><a href="#busco">O que eu procuro</a></li>
+                <li><a href="#habilidades">Habilidades</a></li>
                 <li><a href="#biblia">Bíblia</a></li>
                 <li><a href="#candidatura">Candidatura</a></li>
             </ul>
@@ -142,17 +147,17 @@
 
     <!-- HERO -->
     <section class="hero" id="hero">
+    <div class="hero-video"><video autoplay muted loop playsinline><source src="video-bg.mp4" type="video/mp4"></video></div>
+    <div class="hero-overlay"></div>
         <div class="hero-inner">
             <img src="img/eu-novo.jpg" alt="Rubens">
             <div>
                 <h1>Rubens Pereira Fernandes</h1>
-                <p>26 anos, Recife, PE. Tô aqui pra quem procura algo real.</p>
+                <p>26 anos, Recife. Procurando alguém pra vida.</p>
                 <div class="hero-meta">
                     <span>26 anos</span>
                     <span>171cm</span>
                     <span>69kg</span>
-                    <span>Não bebo</span>
-                    <span>Não fumo</span>
                 </div>
                 <a href="#candidatura" class="btn">Me escolhe</a>
             </div>
@@ -161,37 +166,60 @@
 
     <!-- O QUE BUSCO -->
     <section class="section" id="busco">
-        <p class="section-label">O que busco</p>
+        <p class="section-label">O que eu procuro</p>
         <h2 class="section-title">A pessoa certa.</h2>
         <div class="busco-container">
             <div class="busco-item">
                 <h3>Fiel</h3>
-                <p>Quero alguém que quando escolhe, escolhe de verdade. Sem joguinhos.</p>
+                <p>Quem escolhe de verdade. Sem joguinho.</p>
             </div>
             <div class="busco-item">
                 <h3>Pra casa</h3>
-                <p>Amo ficar em casa. Café, filme, conversa boa. Não curto festa nem agito.</p>
+                <p>Ficar em casa é meu negócio. Café, filme, conversa. Não curto festa.</p>
             </div>
             <div class="busco-item">
                 <h3>De Deus</h3>
-                <p>Quem queira servir junto. Fé é a base de tudo pra mim.</p>
+                <p>Servir a Deus junto. Fé é base de tudo.</p>
             </div>
             <div class="busco-item">
                 <h3>De verdade</h3>
-                <p>Sem máscaras, sem fingimento. Quem eu sou já tá aqui, pra quem gostar.</p>
+                <p>Sem máscara. Quem eu sou tá aqui pra quem gostar.</p>
             </div>
         </div>
     </section>
 
+    <!-- O QUE NÃO GOSTO -->
+    <section class="section" id="nao-gosto" style="padding: 3rem 2rem;">
+        <p class="section-label">O que eu não curto</p>
+        <div class="busco-container">
+            <div class="busco-item">
+                <h3>🚫 Não bebo</h3>
+                <p>Nunca gostei. Não é pra mim.</p>
+            </div>
+            <div class="busco-item">
+                <h3>🚫 Não fumo</h3>
+                <p>Nem nunca fumei. Não combina comigo.</p>
+            </div>
+            <div class="busco-item">
+                <h3>🎉 Não curto festas</h3>
+                <p>Praia? Sim. Casa? Sempre. Festas, não.</p>
+            </div>
+            <div class="busco-item">
+                <h3>🤝 Sem joguinhos</h3>
+                <p>Se não for de verdade, não perde seu tempo.</p>
+            </div>
+        </div>
+    </section>
+    
     <!-- MINHAS HABILIDADES -->
     <section class="section" id="habilidades">
         <p class="section-label">Minhas Habilidades</p>
         <h2 class="section-title">Tudo o que eu sei fazer.</h2>
-        <p class="section-desc">E o que eu não sei, eu aprendo.</p>
+        <p class="section-desc">O que eu não sei, aprendo.</p>
         <div class="hab-container">
             <div class="hab-bloco">
                 <h3>🍳 Cozinha</h3>
-                <p>Bolos, sorvetes, cuscuz, macarrão, carnes, feijão, lasanha, pão, cachorro-quente, soja texturizada, ovo, arroz. Cuido do básico e muito mais.</p>
+                <p>Bolos, sorvetes, doces, cuscuz, macarrão, carnes, feijão, lasanha, pão, cachorro-quente, soja texturizada, ovo, arroz. Cuido do básico e muito mais.</p>
             </div>
             <div class="hab-bloco">
                 <h3>🏠 Casa</h3>
