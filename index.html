@@ -719,6 +719,207 @@
 .opened-card .sign { margin-top: 1.5rem; font-weight: 600; }
 .opened-card .btn { margin-top: 1.5rem; }
 
+
+/* DELIVERY DOG */
+.delivery-scene {
+    position: relative;
+    height: 400px;
+    max-width: 650px;
+    margin: 2rem auto 0;
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #1a1510 100%);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+.delivery-ground {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 70px;
+    background: linear-gradient(180deg, transparent 0%, rgba(101, 67, 33, 0.3) 100%);
+    border-top: 2px solid rgba(101, 67, 33, 0.4);
+}
+
+.delivery-dog {
+    position: absolute;
+    bottom: 70px;
+    left: -100px;
+    z-index: 5;
+    transition: left 0.5s ease;
+}
+.delivery-dog.arrived { left: calc(50% - 50px); }
+.delivery-dog.leaving { left: calc(100% + 100px); }
+
+.delivery-dog-body {
+    width: 100px; height: 60px;
+    background: linear-gradient(180deg, #d4a574 0%, #b8956a 50%, #a07850 100%);
+    border-radius: 40px 50px 35px 35px;
+    position: relative;
+    box-shadow: inset 0 -8px 15px rgba(0,0,0,0.1);
+}
+
+.delivery-head {
+    position: absolute;
+    top: -30px; left: 50px;
+    width: 60px; height: 50px;
+    background: linear-gradient(135deg, #d4a574 0%, #c49a6c 100%);
+    border-radius: 50% 50% 45% 45%;
+}
+
+.delivery-ear {
+    position: absolute; top: -3px;
+    width: 20px; height: 28px;
+    background: linear-gradient(135deg, #a07850 0%, #8b6540 100%);
+    border-radius: 50% 50% 30% 30%;
+}
+.delivery-ear.left { left: -3px; transform: rotate(-20deg); animation: ear-flop 2s ease-in-out infinite; }
+.delivery-ear.right { right: -3px; transform: rotate(20deg); animation: ear-flop-r 2s ease-in-out infinite 0.5s; }
+@keyframes ear-flop {
+    0%, 100% { transform: rotate(-20deg); }
+    50% { transform: rotate(-28deg); }
+}
+@keyframes ear-flop-r {
+    0%, 100% { transform: rotate(20deg); }
+    50% { transform: rotate(28deg); }
+}
+
+.delivery-eye {
+    position: absolute; top: 12px;
+    width: 14px; height: 16px;
+    background: white; border-radius: 50%; overflow: hidden;
+    box-shadow: inset 0 2px 3px rgba(0,0,0,0.2);
+}
+.delivery-eye.left { left: 10px; }
+.delivery-eye.right { right: 10px; }
+.delivery-pupil {
+    width: 8px; height: 10px;
+    background: #2c1810; border-radius: 50%;
+    margin: 3px auto; position: relative;
+}
+.delivery-pupil::after {
+    content: ''; position: absolute;
+    top: 2px; right: 2px; width: 3px; height: 3px;
+    background: white; border-radius: 50%;
+}
+
+.delivery-snout {
+    position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%);
+    width: 35px; height: 25px;
+    background: linear-gradient(180deg, #e8c9a0 0%, #d4a574 100%);
+    border-radius: 50% 50% 40% 40%;
+}
+
+.delivery-nose {
+    position: absolute; top: 2px; left: 50%; transform: translateX(-50%);
+    width: 10px; height: 8px;
+    background: #2c1810; border-radius: 50% 50% 40% 40%;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.3);
+}
+
+.delivery-mouth {
+    position: absolute; bottom: -3px; left: 50%; transform: translateX(-50%);
+    width: 25px; height: 12px;
+}
+.delivery-letter {
+    position: absolute; bottom: -3px; left: 50%;
+    transform: translateX(-50%); font-size: 1.3rem;
+    animation: letter-wiggle 0.4s ease-in-out infinite;
+}
+@keyframes letter-wiggle {
+    0%, 100% { transform: translateX(-50%) rotate(-8deg); }
+    50% { transform: translateX(-50%) rotate(8deg); }
+}
+
+.delivery-tongue {
+    position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+    width: 10px; height: 8px;
+    background: #ff6b8a; border-radius: 0 0 50% 50%;
+    animation: tongue-pant 0.8s ease-in-out infinite;
+}
+@keyframes tongue-pant {
+    0%, 100% { transform: translateX(-50%) scaleY(1); opacity: 0.7; }
+    50% { transform: translateX(-50%) scaleY(1.3); opacity: 1; }
+}
+
+.delivery-tail {
+    position: absolute; top: 8px; left: -18px;
+    width: 30px; height: 10px;
+    background: linear-gradient(90deg, #a07850 0%, #d4a574 100%);
+    border-radius: 8px; transform-origin: right;
+    animation: tail-wag 0.25s ease-in-out infinite;
+}
+@keyframes tail-wag {
+    0%, 100% { transform: rotate(-30deg); }
+    50% { transform: rotate(30deg); }
+}
+
+.delivery-leg {
+    position: absolute; bottom: -12px;
+    width: 12px; height: 18px;
+    background: linear-gradient(180deg, #b8956a 0%, #8b6540 100%);
+    border-radius: 6px 6px 4px 4px;
+    box-shadow: inset 0 -3px 5px rgba(0,0,0,0.2);
+}
+.delivery-leg.fl { left: 15px; animation: leg-walk 0.5s ease-in-out infinite; }
+.delivery-leg.fr { left: 30px; animation: leg-walk 0.5s ease-in-out infinite 0.25s; }
+.delivery-leg.bl { right: 28px; animation: leg-walk 0.5s ease-in-out infinite 0.25s; }
+.delivery-leg.br { right: 13px; animation: leg-walk 0.5s ease-in-out infinite; }
+@keyframes leg-walk {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+.delivery-bark {
+    position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
+    background: white; color: #333;
+    padding: 0.3rem 0.8rem; border-radius: 15px;
+    font-size: 0.75rem; font-weight: 600;
+    opacity: 0; transition: opacity 0.3s;
+    white-space: nowrap;
+}
+.delivery-bark.show { opacity: 1; }
+
+.delivery-envelope {
+    position: absolute; bottom: 180px; left: 50%;
+    transform: translateX(-50%); opacity: 0;
+    cursor: pointer; z-index: 10;
+    transition: opacity 0.3s;
+}
+.delivery-envelope.show { opacity: 1; }
+
+.delivery-env {
+    width: 50px; height: 38px;
+    background: linear-gradient(135deg, #f5f0e0 0%, #e8e0d0 100%);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    position: relative;
+    transition: transform 0.3s;
+}
+.delivery-env:hover { transform: scale(1.1); }
+.delivery-env span { font-size: 1.3rem; }
+.delivery-env-flap {
+    position: absolute; top: 0; left: 0; right: 0; height: 50%;
+    background: linear-gradient(180deg, #e0d8c8 0%, #d4ccbc 100%);
+    clip-path: polygon(0 0, 50% 100%, 100% 0);
+    border-radius: 8px 8px 0 0;
+}
+
+.delivery-opened {
+    position: absolute; inset: 0;
+    background: rgba(5,5,5,0.95);
+    display: none; align-items: center; justify-content: center;
+    padding: 2rem; z-index: 20;
+}
+.delivery-opened.show { display: flex; }
+
+.delivery-card {
+    max-width: 420px; background: #faf8f0; border-radius: 12px;
+    padding: 2rem; color: #1a1a1a; font-family: 'Georgia', serif;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.delivery-card h3 { font-size: 1.2rem; margin-bottom: 1rem; }
+.delivery-card p { margin-bottom: 0.9rem; line-height: 1.7; font-size: 0.9rem; }
+.delivery-card .sign { margin-top: 1.2rem; font-weight: 600; }
+.delivery-card .btn { margin-top: 1.2rem; }
+
 /* MAP */
         .map-container { max-width: 800px; margin: 0 auto; }
         #map { height: 350px; border-radius: 16px; border: 1px solid var(--border); }
@@ -851,51 +1052,45 @@
     <!-- CARTA -->
     <section class="section" id="carta">
         <p class="section-label">Entrega especial</p>
-        <h2 class="section-title">Seu cartão chegou!</h2>
-        <div class="pet-scene">
-            <div class="scene-ground"></div>
-            <div class="pet-dog" id="petDog">
-                <div class="dog-body">
-                    <div class="dog-tail"></div>
-                    <div class="dog-head">
-                        <div class="dog-ear left"></div>
-                        <div class="dog-ear right"></div>
-                        <div class="dog-snout">
-                            <div class="dog-nose"></div>
-                            <div class="dog-mouth">
-                                <div class="dog-letter">💌</div>
+        <h2 class="section-title">Seu cartório está a caminho!</h2>
+        <div class="delivery-scene">
+            <div class="delivery-ground"></div>
+            <div class="delivery-dog" id="deliveryDog">
+                <div class="delivery-dog-body">
+                    <div class="delivery-tail"></div>
+                    <div class="delivery-head">
+                        <div class="delivery-ear left"></div>
+                        <div class="delivery-ear right"></div>
+                        <div class="delivery-eye left"><div class="delivery-pupil"></div></div>
+                        <div class="delivery-eye right"><div class="delivery-pupil"></div></div>
+                        <div class="delivery-snout">
+                            <div class="delivery-nose"></div>
+                            <div class="delivery-mouth">
+                                <span class="delivery-letter">💌</span>
                             </div>
                         </div>
-                        <div class="dog-eye left">
-                            <div class="dog-pupil"></div>
-                        </div>
-                        <div class="dog-eye right">
-                            <div class="dog-pupil"></div>
-                        </div>
-                        <div class="dog-tongue"></div>
+                        <div class="delivery-tongue"></div>
                     </div>
-                    <div class="dog-leg fl"></div>
-                    <div class="dog-leg fr"></div>
-                    <div class="dog-leg bl"></div>
-                    <div class="dog-leg br"></div>
+                    <div class="delivery-leg fl"></div>
+                    <div class="delivery-leg fr"></div>
+                    <div class="delivery-leg bl"></div>
+                    <div class="delivery-leg br"></div>
                 </div>
+                <div class="delivery-bark" id="deliveryBark">Au au!</div>
             </div>
-            <div class="speech-bubble" id="speechBubble">Au au! Essa é pra você! 🐾</div>
-            <div class="flying-letter" id="flyingLetter">
-                <div class="fly-env">
-                    <div class="fly-flap"></div>
-                    <span>❤️</span>
-                </div>
+            <div class="delivery-envelope" id="deliveryEnvelope">
+                <div class="delivery-env-flap"></div>
+                <span>❤️</span>
             </div>
-            <div class="letter-opened" id="letterOpened">
-                <div class="opened-card">
+            <div class="delivery-opened" id="deliveryOpened">
+                <div class="delivery-card">
                     <h3>Pra você,</h3>
                     <p>Se chegou até aqui, é porque algo em mim te chamou atenção.</p>
                     <p>Sou o Rubens. 26 anos, Recife. Programador, trabalhador, caseiro quando quer.</p>
                     <p>Não bebo, não fumo, nunca namorei. Esperei a pessoa certa.</p>
-                    <p>Esperei alguém pra caminhar junto, servir a Deus, construir família, rir do nada.</p>
+                    <p>Esperei alguém pra caminhar junto, servir a Deus, construir família.</p>
                     <p class="sign">Com esperança,<br><strong>Rubens Pereira Fernandes</strong></p>
-                    <button class="btn btn-primary" onclick="document.getElementById('letterOpened').classList.remove('show')">Fechar</button>
+                    <button class="btn btn-primary" onclick="fecharCarta()">Fechar carta</button>
                 </div>
             </div>
         </div>
@@ -963,10 +1158,66 @@
             document.getElementById('mobileMenu').classList.toggle('active');
         };
         
-        // DOG LETTER
-        document.getElementById('flyingLetter').onclick = function() {
-            document.getElementById('letterOpened').classList.add('show');
-        };
+        // DELIVERY DOG
+        (function() {
+            var dog = document.getElementById('deliveryDog');
+            var bark = document.getElementById('deliveryBark');
+            var envelope = document.getElementById('deliveryEnvelope');
+            var opened = document.getElementById('deliveryOpened');
+            var delivered = false;
+            
+            // Dog walks in after 1s
+            setTimeout(function() {
+                dog.classList.add('arrived');
+            }, 1000);
+            
+            // Show bark after 2s
+            setTimeout(function() {
+                bark.classList.add('show');
+            }, 2000);
+            
+            // Hide bark after 4s
+            setTimeout(function() {
+                bark.classList.remove('show');
+            }, 4000);
+            
+            // Show envelope after 3s
+            setTimeout(function() {
+                envelope.classList.add('show');
+            }, 3000);
+            
+            // Click envelope to open
+            envelope.onclick = function() {
+                if (delivered) return;
+                delivered = true;
+                opened.classList.add('show');
+                bark.textContent = 'Au au au! 🐾';
+                bark.classList.add('show');
+                // Dog leaves after 1s
+                setTimeout(function() {
+                    dog.classList.add('leaving');
+                    bark.classList.remove('show');
+                }, 1500);
+            };
+        })();
+        
+        function fecharCarta() {
+            var dog = document.getElementById('deliveryDog');
+            var bark = document.getElementById('deliveryBark');
+            var envelope = document.getElementById('deliveryEnvelope');
+            var opened = document.getElementById('deliveryOpened');
+            
+            opened.classList.remove('show');
+            dog.classList.remove('leaving');
+            dog.classList.add('arrived');
+            bark.textContent = 'Au au! De novo!';
+            bark.classList.add('show');
+            envelope.classList.add('show');
+            
+            setTimeout(function() {
+                bark.classList.remove('show');
+            }, 3000);
+        }
         
         // MAP
         if (typeof L !== 'undefined') {
