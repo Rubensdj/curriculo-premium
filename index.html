@@ -1095,26 +1095,6 @@
 .galeria-dot.active { background: var(--gold); transform: scale(1.2); }
 
 
-/* MÚSICA */
-.musica-container { max-width: 500px; margin: 2rem auto 0; }
-.musica-player {
-    display: flex; align-items: center; gap: 1rem;
-    padding: 1rem; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1rem;
-}
-.musica-capa {
-    width: 50px; height: 50px; background: var(--gradient);
-    border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
-}
-.musica-info h3 { font-size: 1rem; font-weight: 600; }
-.musica-info p { font-size: 0.8rem; color: var(--text-3); }
-.musica-botoes { margin-left: auto; }
-.musica-btn { font-size: 1.5rem; cursor: pointer; }
-.musica-lista { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.musica-item {
-    padding: 0.5rem 1rem; background: var(--bg-2); border: 1px solid var(--border);
-    border-radius: 100px; font-size: 0.85rem;
-}
-
 /* FAQ */
 .faq-container { max-width: 600px; margin: 2rem auto 0; }
 .faq-item {
@@ -1216,7 +1196,6 @@
                 <li><a href="#sobre">Sobre</a></li>
                 <li><a href="#carta">Carta</a></li>
                 <li><a href="#candidatura">Candidatura</a></li>
-                <li><a href="#musica">Música</a></li>
                 <li><a href="#galeria">Fotos</a></li>
                 <li><a href="#localizacao">Mapa</a></li>
             </ul>
@@ -1295,31 +1274,6 @@
             </div>
             <div class="form-submit">
                 <button type="button" class="btn btn-primary" id="sendWhatsApp">📱 Enviar pelo WhatsApp</button>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Player de Música -->
-    <section class="section" id="musica">
-        <p class="section-label">Música</p>
-        <h2 class="section-title">O que eu ando ouvindo.</h2>
-        <div class="musica-container">
-            <div class="musica-player">
-                <div class="musica-capa">🎵</div>
-                <div class="musica-info">
-                    <h3>Sertanejo & Pagode</h3>
-                    <p>Minha playlist atual</p>
-                </div>
-                <div class="musica-botoes">
-                    <span class="musica-btn">▶️</span>
-                </div>
-            </div>
-            <div class="musica-lista">
-                <div class="musica-item">🎵 Sertanejo Universitário</div>
-                <div class="musica-item">🎵 Pagode</div>
-                <div class="musica-item">🎵 Gospel</div>
-                <div class="musica-item">🎵 Funk</div>
-                <div class="musica-item">🎵 Rock</div>
             </div>
         </div>
     </section>
