@@ -2,662 +2,331 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Algo especial pra você</title>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Memória</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Caveat', cursive; }
-        canvas { display: block; }
-        
-        .hud {
-            position: fixed;
-            top: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
+        body {
+            font-family: 'Caveat', cursive;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a0a20 100%);
+            min-height: 100vh;
             display: flex;
-            gap: 1rem;
-            color: white;
-            font-size: 1.2rem;
-            background: rgba(0,0,0,0.4);
-            padding: 0.5rem 1.5rem;
-            border-radius: 100px;
-            backdrop-filter: blur(10px);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            color: #fff;
         }
         
-        .msg {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 200;
-            background: rgba(5,5,5,0.97);
-            padding: 3rem;
-            border-radius: 24px;
+        .header {
             text-align: center;
-            color: white;
-            max-width: 480px;
-            display: none;
-            border: 1px solid rgba(212,175,55,0.3);
-            box-shadow: 0 20px 80px rgba(0,0,0,0.5);
+            margin-bottom: 1.5rem;
         }
         
-        .msg.show { display: block; }
-        .msg h2 { font-size: 3rem; margin-bottom: 1rem; background: linear-gradient(135deg, #ff2d55, #d4af37); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-        .msg p { color: #a1a1a6; margin-bottom: 2rem; line-height: 1.6; font-size: 1.1rem; }
-        .msg button { padding: 1rem 2.5rem; background: linear-gradient(135deg, #ff2d55, #d4af37); color: white; border: none; border-radius: 100px; font-size: 1.2rem; font-weight: 600; cursor: pointer; margin: 0.5rem; transition: all 0.3s; }
-        .msg button:hover { transform: scale(1.05); }
-        .msg button.ghost { background: transparent; border: 1px solid #333; color: #888; }
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #ff2d55, #d4af37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
         
-        #startBtn {
+        .stats {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .stat {
+            background: rgba(255,255,255,0.08);
+            padding: 0.4rem 1.2rem;
+            border-radius: 100px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+            max-width: 400px;
+            width: 100%;
+            perspective: 1000px;
+        }
+        
+        .card {
+            aspect-ratio: 1;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .card.matched {
+            animation: matchPulse 0.5s ease;
+        }
+        
+        @keyframes matchPulse {
+            0%, 100% { transform: rotateY(180deg) scale(1); }
+            50% { transform: rotateY(180deg) scale(1.1); }
+        }
+        
+        .card-face {
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            backface-visibility: hidden;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+        
+        .card-front {
+            background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+            transform: rotateY(0deg);
+        }
+        
+        .card-front::after {
+            content: '?';
+            font-size: 2rem;
+            color: rgba(255,255,255,0.3);
+            font-weight: 700;
+        }
+        
+        .card-back {
+            background: linear-gradient(145deg, #2a2a3e 0%, #1a1a2e 100%);
+            transform: rotateY(180deg);
+        }
+        
+        .card.matched .card-back {
+            background: linear-gradient(145deg, #1a3a1a 0%, #0a2a0a 100%);
+            border-color: #34c759;
+            box-shadow: 0 0 15px rgba(52,199,89,0.3);
+        }
+        
+        .win-screen {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 300;
-            padding: 1.5rem 4rem;
+            inset: 0;
+            background: rgba(5,5,5,0.97);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 100;
+            padding: 2rem;
+        }
+        
+        .win-screen.show { display: flex; }
+        
+        .win-screen h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ff2d55, #d4af37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .win-screen p {
+            font-size: 1.3rem;
+            color: #a1a1a6;
+            text-align: center;
+            margin-bottom: 2rem;
+            max-width: 400px;
+            line-height: 1.5;
+        }
+        
+        .win-screen button {
+            padding: 1rem 2.5rem;
             background: linear-gradient(135deg, #ff2d55, #d4af37);
             color: white;
             border: none;
             border-radius: 100px;
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.2rem;
+            font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 15px 50px rgba(255,45,85,0.4);
-            animation: pulse 2s ease-in-out infinite;
+            margin: 0.5rem;
         }
         
-        @keyframes pulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.05); }
+        .win-screen button:hover { transform: scale(1.05); }
+        
+        .win-screen button.ghost {
+            background: transparent;
+            border: 1px solid #333;
+            color: #888;
         }
         
-        #controls {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-            display: flex;
-            gap: 1rem;
-        }
+        .moves { color: #d4af37; }
         
-        .dpad {
-            display: grid;
-            grid-template-columns: repeat(3, 60px);
-            grid-template-rows: repeat(3, 60px);
-            gap: 5px;
-        }
-        
-        .dpad button {
-            background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 12px;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            backdrop-filter: blur(5px);
-        }
-        
-        .dpad button:active { background: rgba(255,255,255,0.3); }
-        
-        .dpad .empty { background: none; border: none; }
-        
-        #joyArea {
-            width: 150px;
-            height: 150px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 50%;
-            position: relative;
-        }
-        
-        #joyKnob {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #ff2d55, #d4af37);
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255,45,85,0.4);
-        }
-        
-        #hint {
-            position: fixed;
-            bottom: 10rem;
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255,255,255,0.6);
-            font-size: 1rem;
-            z-index: 90;
-        }
-        
-        .stage-msg {
-            position: fixed;
-            top: 4rem;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            font-size: 1.3rem;
-            z-index: 90;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-        
-        .stage-msg.show { opacity: 1; }
-        
-        @media (min-width: 769px) {
-            #controls { display: none; }
+        @media (max-width: 400px) {
+            .grid { gap: 0.5rem; }
+            .card-face { font-size: 2rem; }
+            .header h1 { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
-    <div class="hud">
-        <span>❤️ <span id="hearts">0</span>/12</span>
+    <div class="header">
+        <h1>Jogo da Memória</h1>
+        <p style="color:#6e6e73;font-size:1.1rem;">Acha todos os pares</p>
     </div>
     
-    <div class="stage-msg" id="stageMsg">Ache todos os corações</div>
-    
-    <div id="hint">Toque nos botões ou use WASD</div>
-    
-    <button id="startBtn" onclick="startGame()">Começar</button>
-    
-    <div id="controls">
-        <div id="joyArea">
-            <div id="joyKnob"></div>
-        </div>
+    <div class="stats">
+        <div class="stat">🎯 Movimentos: <span class="moves" id="moves">0</span></div>
+        <div class="stat">⏱️ <span id="timer">0:00</span></div>
     </div>
     
-    <div class="msg" id="msgSurprise">
-        <h2 style="font-size:4rem;">🎁</h2>
-        <h2>Você encontrou tudo!</h2>
-        <p>Cada coração representa algo que eu sinto. Agora, clique pra ver a surpresa.</p>
-        <button onclick="openGift()">Abrir presente</button>
+    <div class="grid" id="grid"></div>
+    
+    <div class="win-screen" id="winScreen">
+        <h2>Você ganhou!</h2>
+        <p id="winMessage">Parabéns! Você encontrou todos os pares. Agora, sobre aquela pergunta...</p>
+        <button onclick="showPedido()">Ver surpresa</button>
     </div>
     
-    <div class="msg" id="msgFinal">
+    <div class="win-screen" id="pedidoScreen">
         <h2>Quer namorar comigo?</h2>
-        <p>Eu sei que é diferente. Mas eu queria fazer algo que mostrasse que eu me importo. E aí, qual vai ser?</p>
-        <button onclick="aceitar()">Sim ❤️</button>
+        <p>Eu fiz esse jogo pra você. Cada par que você encontrou, era um motivo pra eu te querer aqui. E aí, qual vai ser?</p>
+        <button onclick="aceitar()">Sim!</button>
         <button class="ghost" onclick="recusar()">Me dá tempo</button>
     </div>
     
-    <div class="msg" id="msgYes">
-        <h2 style="font-size:4rem;">Você disse sim!</h2>
-        <p>Sou o cara mais feliz do mundo. Vamos escrever nossa história juntos. Te amo.</p>
+    <div class="win-screen" id="aceitouScreen">
+        <h2 style="font-size:3.5rem;">❤️</h2>
+        <h2>Você disse sim!</h2>
+        <p>Agora eu sou o cara mais feliz do mundo. Vamos ser felizes juntos.</p>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        var scene, camera, renderer;
-        var player = { mesh: null, x: 0, z: 0, angle: 0 };
-        var pet = { mesh: null, x: 0, z: 0 };
-        var hearts = [];
-        var heartsCollected = 0;
+        var emojis = ['❤️', '🌹', '💌', '⭐', '🌟', '💍', '🦋', '🌙'];
+        var cards = [];
+        var flippedCards = [];
+        var matchedPairs = 0;
+        var moves = 0;
         var gameStarted = false;
-        var keys = {};
-        var joyActive = false;
-        var joyDir = { x: 0, y: 0 };
+        var timerInterval = null;
+        var seconds = 0;
+        
+        function shuffle(array) {
+            for (var i = array.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+            return array;
+        }
         
         function init() {
-            scene = new THREE.Scene();
-            scene.fog = new THREE.FogExp2(0x0a0a1a, 0.008);
+            var grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            cards = [];
+            flippedCards = [];
+            matchedPairs = 0;
+            moves = 0;
+            seconds = 0;
+            gameStarted = false;
             
-            camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+            if (timerInterval) clearInterval(timerInterval);
+            document.getElementById('moves').textContent = '0';
+            document.getElementById('timer').textContent = '0:00';
+            document.getElementById('winScreen').classList.remove('show');
+            document.getElementById('pedidoScreen').classList.remove('show');
+            document.getElementById('aceitouScreen').classList.remove('show');
             
-            renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.shadowMap.enabled = true;
-            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-            renderer.toneMapping = THREE.ACESFilmicToneMapping;
-            renderer.toneMappingExposure = 1;
-            document.body.insertBefore(renderer.domElement, document.body.firstChild);
+            // Create pairs
+            var pairs = [...emojis, ...emojis];
+            shuffle(pairs);
             
-            setupLighting();
-            createGround();
-            createTrees();
-            createFlowers();
-            createStars();
-            createMoon();
-            createPlayer();
-            createPet();
-            createHearts();
-            
-            setupControls();
-            
-            window.addEventListener('resize', onResize);
-            animate();
-        }
-        
-        function setupLighting() {
-            scene.add(new THREE.AmbientLight(0x404060, 0.3));
-            
-            var moon = new THREE.DirectionalLight(0x6688ff, 0.5);
-            moon.position.set(30, 50, 30);
-            moon.castShadow = true;
-            moon.shadow.mapSize.set(2048, 2048);
-            moon.shadow.camera.left = -40;
-            moon.shadow.camera.right = 40;
-            moon.shadow.camera.top = 40;
-            moon.shadow.camera.bottom = -40;
-            scene.add(moon);
-            
-            var pink = new THREE.PointLight(0xff4466, 1.5, 40);
-            pink.position.set(-8, 4, -8);
-            scene.add(pink);
-            
-            var gold = new THREE.PointLight(0xffaa00, 1.5, 40);
-            gold.position.set(8, 4, 8);
-            scene.add(gold);
-        }
-        
-        function createGround() {
-            var geo = new THREE.PlaneGeometry(200, 200, 80, 80);
-            var mat = new THREE.MeshStandardMaterial({ color: 0x1a3320, roughness: 0.9 });
-            var pos = geo.attributes.position;
-            for (var i = 0; i < pos.count; i++) {
-                pos.setZ(i, Math.sin(pos.getX(i) * 0.08) * Math.cos(pos.getY(i) * 0.08) * 0.4);
-            }
-            geo.computeVertexNormals();
-            var ground = new THREE.Mesh(geo, mat);
-            ground.rotation.x = -Math.PI / 2;
-            ground.receiveShadow = true;
-            scene.add(ground);
-        }
-        
-        function createTrees() {
-            for (var i = 0; i < 40; i++) {
-                var tree = new THREE.Group();
-                
-                var trunkH = 3 + Math.random() * 2;
-                var trunk = new THREE.Mesh(
-                    new THREE.CylinderGeometry(0.15, 0.3, trunkH, 8),
-                    new THREE.MeshStandardMaterial({ color: 0x4a3520, roughness: 0.9 })
-                );
-                trunk.position.y = trunkH / 2;
-                trunk.castShadow = true;
-                tree.add(trunk);
-                
-                for (var j = 0; j < 3; j++) {
-                    var leaves = new THREE.Mesh(
-                        new THREE.SphereGeometry(1.2 - j * 0.3, 8, 8),
-                        new THREE.MeshStandardMaterial({ color: new THREE.Color().setHSL(0.3, 0.6, 0.2 + j * 0.05), roughness: 0.8 })
-                    );
-                    leaves.position.set((Math.random() - 0.5) * 0.8, trunkH + j * 0.6, (Math.random() - 0.5) * 0.8);
-                    leaves.castShadow = true;
-                    tree.add(leaves);
-                }
-                
-                var angle = Math.random() * Math.PI * 2;
-                var dist = 12 + Math.random() * 35;
-                tree.position.set(Math.cos(angle) * dist, 0, Math.sin(angle) * dist);
-                tree.scale.setScalar(0.7 + Math.random() * 0.5);
-                scene.add(tree);
-            }
-        }
-        
-        function createFlowers() {
-            for (var i = 0; i < 80; i++) {
-                var flower = new THREE.Mesh(
-                    new THREE.SphereGeometry(0.1, 6, 6),
-                    new THREE.MeshStandardMaterial({ 
-                        color: new THREE.Color().setHSL(Math.random() * 0.15 + 0.9, 0.8, 0.6),
-                        emissive: new THREE.Color().setHSL(Math.random() * 0.15 + 0.9, 0.5, 0.2)
-                    })
-                );
-                flower.position.set((Math.random() - 0.5) * 60, 0.1, (Math.random() - 0.5) * 60);
-                scene.add(flower);
-            }
-        }
-        
-        function createStars() {
-            var geo = new THREE.BufferGeometry();
-            var positions = [];
-            for (var i = 0; i < 1500; i++) {
-                positions.push((Math.random() - 0.5) * 200, 40 + Math.random() * 40, (Math.random() - 0.5) * 200);
-            }
-            geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-            scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.15 })));
-        }
-        
-        function createMoon() {
-            var moon = new THREE.Mesh(
-                new THREE.SphereGeometry(3, 32, 32),
-                new THREE.MeshBasicMaterial({ color: 0xffffee })
-            );
-            moon.position.set(20, 45, -30);
-            scene.add(moon);
-        }
-        
-        function createPlayer() {
-            var g = new THREE.Group();
-            
-            var body = new THREE.Mesh(
-                new THREE.CapsuleGeometry(0.35, 1, 4, 8),
-                new THREE.MeshStandardMaterial({ color: 0x2c3e50, roughness: 0.4 })
-            );
-            body.position.y = 1;
-            body.castShadow = true;
-            g.add(body);
-            
-            var head = new THREE.Mesh(
-                new THREE.SphereGeometry(0.3, 32, 32),
-                new THREE.MeshStandardMaterial({ color: 0xffdbac, roughness: 0.5 })
-            );
-            head.position.y = 1.95;
-            head.castShadow = true;
-            g.add(head);
-            
-            // Hair
-            var hair = new THREE.Mesh(
-                new THREE.SphereGeometry(0.32, 16, 16, 0, Math.PI * 2, 0, Math.PI / 2),
-                new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.7 })
-            );
-            hair.position.y = 2.1;
-            g.add(hair);
-            
-            var armGeo = new THREE.CapsuleGeometry(0.08, 0.5, 4, 8);
-            var armMat = new THREE.MeshStandardMaterial({ color: 0x2c3e50 });
-            
-            var lArm = new THREE.Mesh(armGeo, armMat);
-            lArm.position.set(-0.45, 1.2, 0);
-            lArm.name = 'lArm';
-            g.add(lArm);
-            
-            var rArm = new THREE.Mesh(armGeo, armMat);
-            rArm.position.set(0.45, 1.2, 0);
-            rArm.name = 'rArm';
-            g.add(rArm);
-            
-            var legGeo = new THREE.CapsuleGeometry(0.1, 0.6, 4, 8);
-            var legMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a });
-            
-            var lLeg = new THREE.Mesh(legGeo, legMat);
-            lLeg.position.set(-0.15, 0.2, 0);
-            lLeg.name = 'lLeg';
-            g.add(lLeg);
-            
-            var rLeg = new THREE.Mesh(legGeo, legMat);
-            rLeg.position.set(0.15, 0.2, 0);
-            rLeg.name = 'rLeg';
-            g.add(rLeg);
-            
-            player.mesh = g;
-            scene.add(g);
-        }
-        
-        function createPet() {
-            var g = new THREE.Group();
-            
-            var body = new THREE.Mesh(
-                new THREE.CapsuleGeometry(0.25, 0.5, 4, 8),
-                new THREE.MeshStandardMaterial({ color: 0xd4a574, roughness: 0.7 })
-            );
-            body.rotation.z = Math.PI / 2;
-            body.position.y = 0.35;
-            body.castShadow = true;
-            g.add(body);
-            
-            var head = new THREE.Mesh(
-                new THREE.SphereGeometry(0.2, 16, 16),
-                new THREE.MeshStandardMaterial({ color: 0xd4a574, roughness: 0.7 })
-            );
-            head.position.set(0.4, 0.5, 0);
-            head.castShadow = true;
-            g.add(head);
-            
-            var snout = new THREE.Mesh(
-                new THREE.SphereGeometry(0.1, 8, 8),
-                new THREE.MeshStandardMaterial({ color: 0xc49a6c, roughness: 0.7 })
-            );
-            snout.position.set(0.55, 0.4, 0);
-            g.add(snout);
-            
-            var nose = new THREE.Mesh(
-                new THREE.SphereGeometry(0.04, 8, 8),
-                new THREE.MeshStandardMaterial({ color: 0x1a1a1a })
-            );
-            nose.position.set(0.62, 0.42, 0);
-            g.add(nose);
-            
-            // Ears
-            var earGeo = new THREE.ConeGeometry(0.08, 0.15, 4);
-            var ear1 = new THREE.Mesh(earGeo, new THREE.MeshStandardMaterial({ color: 0xb8956a }));
-            ear1.position.set(0.3, 0.65, 0.1);
-            ear1.rotation.z = -0.3;
-            g.add(ear1);
-            
-            var ear2 = new THREE.Mesh(earGeo, new THREE.MeshStandardMaterial({ color: 0xb8956a }));
-            ear2.position.set(0.3, 0.65, -0.1);
-            ear2.rotation.z = -0.3;
-            g.add(ear2);
-            
-            // Tail
-            var tail = new THREE.Mesh(
-                new THREE.CylinderGeometry(0.03, 0.05, 0.3, 6),
-                new THREE.MeshStandardMaterial({ color: 0xd4a574 })
-            );
-            tail.position.set(-0.4, 0.45, 0);
-            tail.rotation.z = 0.8;
-            tail.name = 'tail';
-            g.add(tail);
-            
-            // Legs
-            var legGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.25, 6);
-            var positions = [[0.2, 0.1, 0.12], [0.2, 0.1, -0.12], [-0.2, 0.1, 0.12], [-0.2, 0.1, -0.12]];
-            positions.forEach(function(p) {
-                var leg = new THREE.Mesh(legGeo, new THREE.MeshStandardMaterial({ color: 0xc49a6c }));
-                leg.position.set(p[0], p[1], p[2]);
-                g.add(leg);
-            });
-            
-            pet.mesh = g;
-            g.position.set(-2, 0, 2);
-            scene.add(g);
-        }
-        
-        function createHearts() {
-            var path = [
-                {x: 0, y: 1.2, z: -6}, {x: 6, y: 1.2, z: -8}, {x: 10, y: 1.2, z: -3}, {x: 12, y: 1.2, z: 3},
-                {x: 8, y: 1.2, z: 8}, {x: 0, y: 1.2, z: 10}, {x: -8, y: 1.2, z: 8}, {x: -12, y: 1.2, z: 3},
-                {x: -10, y: 1.2, z: -3}, {x: -6, y: 1.2, z: -8}, {x: 3, y: 1.2, z: 3}, {x: -3, y: 1.2, z: -3}
-            ];
-            
-            path.forEach(function(p) {
-                var heart = createHeart();
-                heart.position.set(p.x, p.y, p.z);
-                heart.userData.floatOffset = Math.random() * Math.PI * 2;
-                scene.add(heart);
-                hearts.push(heart);
+            pairs.forEach(function(emoji, i) {
+                var card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.emoji = emoji;
+                card.dataset.index = i;
+                card.innerHTML = '<div class="card-face card-front"></div><div class="card-face card-back">' + emoji + '</div>';
+                card.onclick = function() { flipCard(card); };
+                grid.appendChild(card);
+                cards.push(card);
             });
         }
         
-        function createHeart() {
-            var shape = new THREE.Shape();
-            shape.moveTo(0, 0);
-            shape.bezierCurveTo(0, -0.5, -0.5, -1, -1, -1);
-            shape.bezierCurveTo(-2.5, -1, -2.5, 1.5, -2.5, 1.5);
-            shape.bezierCurveTo(-2.5, 2.5, -1, 3.5, 0, 4);
-            shape.bezierCurveTo(1, 3.5, 2.5, 2.5, 2.5, 1.5);
-            shape.bezierCurveTo(2.5, 1.5, 2.5, -1, 1, -1);
-            shape.bezierCurveTo(0.5, -1, 0, -0.5, 0, 0);
+        function flipCard(card) {
+            if (card.classList.contains('flipped')) return;
+            if (card.classList.contains('matched')) return;
+            if (flippedCards.length >= 2) return;
             
-            var geo = new THREE.ExtrudeGeometry(shape, { depth: 0.3, bevelEnabled: true, bevelSegments: 2, bevelSize: 0.05, bevelThickness: 0.05 });
-            var mat = new THREE.MeshStandardMaterial({
-                color: 0xff2d55,
-                roughness: 0.2,
-                metalness: 0.4,
-                emissive: 0xff2d55,
-                emissiveIntensity: 0.3
-            });
-            var mesh = new THREE.Mesh(geo, mat);
-            mesh.scale.set(0.12, 0.12, 0.12);
-            mesh.castShadow = true;
-            return mesh;
-        }
-        
-        function setupControls() {
-            document.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
-            document.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
-            
-            var joyArea = document.getElementById('joyArea');
-            var knob = document.getElementById('joyKnob');
-            var joyRect = joyArea.getBoundingClientRect();
-            var centerX = joyRect.left + joyRect.width / 2;
-            var centerY = joyRect.top + joyRect.height / 2;
-            var maxDist = 40;
-            
-            function handleJoy(clientX, clientY) {
-                var dx = clientX - centerX;
-                var dy = clientY - centerY;
-                var dist = Math.sqrt(dx * dx + dy * dy);
-                
-                if (dist > maxDist) {
-                    dx = (dx / dist) * maxDist;
-                    dy = (dy / dist) * maxDist;
-                }
-                
-                knob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
-                
-                joyDir.x = dx / maxDist;
-                joyDir.y = dy / maxDist;
+            // Start timer on first flip
+            if (!gameStarted) {
+                gameStarted = true;
+                timerInterval = setInterval(function() {
+                    seconds++;
+                    var mins = Math.floor(seconds / 60);
+                    var secs = seconds % 60;
+                    document.getElementById('timer').textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+                }, 1000);
             }
             
-            joyArea.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                joyActive = true;
-                joyRect = joyArea.getBoundingClientRect();
-                centerX = joyRect.left + joyRect.width / 2;
-                centerY = joyRect.top + joyRect.height / 2;
-                handleJoy(e.touches[0].clientX, e.touches[0].clientY);
-            });
+            card.classList.add('flipped');
+            flippedCards.push(card);
             
-            joyArea.addEventListener('touchmove', function(e) {
-                e.preventDefault();
-                if (joyActive) handleJoy(e.touches[0].clientX, e.touches[0].clientY);
-            });
-            
-            joyArea.addEventListener('touchend', function() {
-                joyActive = false;
-                joyDir.x = 0;
-                joyDir.y = 0;
-                knob.style.transform = 'translate(-50%, -50%)';
-            });
-        }
-        
-        function startGame() {
-            document.getElementById('startBtn').style.display = 'none';
-            document.getElementById('hint').style.display = 'none';
-            gameStarted = true;
-            document.getElementById('stageMsg').classList.add('show');
-        }
-        
-        function animate() {
-            requestAnimationFrame(animate);
-            
-            if (gameStarted && player.mesh) {
-                var speed = 0.12;
-                var moveX = 0, moveZ = 0;
+            if (flippedCards.length === 2) {
+                moves++;
+                document.getElementById('moves').textContent = moves;
                 
-                if (keys['w'] || keys['arrowup']) moveZ -= speed;
-                if (keys['s'] || keys['arrowdown']) moveZ += speed;
-                if (keys['a'] || keys['arrowleft']) moveX -= speed;
-                if (keys['d'] || keys['arrowright']) moveX += speed;
-                
-                if (joyActive) {
-                    moveX += joyDir.x * speed;
-                    moveZ += joyDir.y * speed;
-                }
-                
-                if (moveX !== 0 || moveZ !== 0) {
-                    player.angle = Math.atan2(moveX, moveZ);
-                    player.mesh.rotation.y = player.angle;
-                    
-                    var cycle = Date.now() * 0.012;
-                    player.mesh.getObjectByName('lLeg').rotation.x = Math.sin(cycle) * 0.5;
-                    player.mesh.getObjectByName('rLeg').rotation.x = -Math.sin(cycle) * 0.5;
-                    player.mesh.getObjectByName('lArm').rotation.x = -Math.sin(cycle) * 0.3;
-                    player.mesh.getObjectByName('rArm').rotation.x = Math.sin(cycle) * 0.3;
-                }
-                
-                player.x += moveX;
-                player.z += moveZ;
-                player.mesh.position.x = player.x;
-                player.mesh.position.z = player.z;
-                
-                // Pet follows player
-                if (pet.mesh) {
-                    var dx = player.x - pet.mesh.position.x;
-                    var dz = pet.z - pet.mesh.position.z;
-                    var dist = Math.sqrt(dx * dx + dz * dz);
-                    
-                    if (dist > 2) {
-                        pet.mesh.position.x += dx * 0.03;
-                        pet.mesh.position.z += dz * 0.03;
-                        pet.mesh.rotation.y = Math.atan2(dx, dz);
+                if (flippedCards[0].dataset.emoji === flippedCards[1].dataset.emoji) {
+                    // Match!
+                    setTimeout(function() {
+                        flippedCards[0].classList.add('matched');
+                        flippedCards[1].classList.add('matched');
+                        flippedCards = [];
+                        matchedPairs++;
                         
-                        // Tail wag
-                        var tail = pet.mesh.getObjectByName('tail');
-                        if (tail) tail.rotation.x = Math.sin(Date.now() * 0.01) * 0.3;
-                    }
-                }
-                
-                // Camera follow
-                camera.position.set(player.x, 18, player.z + 22);
-                camera.lookAt(player.x, 0, player.z);
-                
-                // Animate hearts
-                hearts.forEach(function(heart) {
-                    if (heart.visible) {
-                        heart.position.y = 1.2 + Math.sin(Date.now() * 0.003 + heart.userData.floatOffset) * 0.4;
-                        heart.rotation.y += 0.02;
-                        
-                        var hdx = player.x - heart.position.x;
-                        var hdz = player.z - heart.position.z;
-                        var hdist = Math.sqrt(hdx * hdx + hdz * hdz);
-                        
-                        if (hdist < 2) {
-                            heart.visible = false;
-                            heartsCollected++;
-                            document.getElementById('hearts').textContent = heartsCollected;
-                            
-                            if (heartsCollected >= 12) {
-                                document.getElementById('msgSurprise').classList.add('show');
-                            }
+                        if (matchedPairs === emojis.length) {
+                            clearInterval(timerInterval);
+                            setTimeout(function() {
+                                document.getElementById('winMessage').textContent = 
+                                    'Parabéns! Você encontrou todos os pares em ' + moves + ' movimentos e ' + formatTime(seconds) + '.';
+                                document.getElementById('winScreen').classList.add('show');
+                            }, 500);
                         }
-                    }
-                });
+                    }, 300);
+                } else {
+                    // No match
+                    setTimeout(function() {
+                        flippedCards[0].classList.remove('flipped');
+                        flippedCards[1].classList.remove('flipped');
+                        flippedCards = [];
+                    }, 800);
+                }
             }
-            
-            renderer.render(scene, camera);
         }
         
-        function openGift() {
-            document.getElementById('msgSurprise').classList.remove('show');
-            document.getElementById('msgFinal').classList.add('show');
+        function formatTime(secs) {
+            var mins = Math.floor(secs / 60);
+            var s = secs % 60;
+            return mins + ':' + (s < 10 ? '0' : '') + s;
+        }
+        
+        function showPedido() {
+            document.getElementById('winScreen').classList.remove('show');
+            document.getElementById('pedidoScreen').classList.add('show');
         }
         
         function aceitar() {
-            document.getElementById('msgFinal').classList.remove('show');
-            document.getElementById('msgYes').classList.add('show');
+            document.getElementById('pedidoScreen').classList.remove('show');
+            document.getElementById('aceitouScreen').classList.add('show');
         }
         
         function recusar() {
-            alert('Tudo bem. Eu entendo. Tô aqui quando quiser. 💛');
-            document.getElementById('msgFinal').classList.remove('show');
-        }
-        
-        function onResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            alert('Tudo bem. Eu entendo. Tô aqui quando você quiser. 💛');
+            init();
         }
         
         init();
