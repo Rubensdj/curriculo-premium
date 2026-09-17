@@ -1024,6 +1024,151 @@
     border-top: 1px solid var(--border);
 }
 
+
+/* FLOATING CHAT FACEBOOK STYLE */
+.chat-float {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    width: 350px;
+    max-height: 450px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.4);
+    z-index: 99999;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+}
+.chat-float.open { display: flex; }
+.chat-float-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 0.9rem;
+    background: var(--bg-3);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+}
+.chat-float-avatar {
+    width: 32px; height: 32px;
+    background: var(--gradient);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 0.9rem;
+}
+.chat-info strong { display: block; font-size: 0.85rem; }
+.chat-info span { font-size: 0.65rem; color: #34c759; }
+.chat-float-close {
+    margin-left: auto;
+    background: none; border: none;
+    color: var(--text-3); font-size: 1.2rem;
+    cursor: pointer; padding: 0 0.3rem;
+}
+.chat-float-messages {
+    flex: 1;
+    padding: 0.8rem;
+    overflow-y: auto;
+    background: var(--bg);
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+.chat-msg {
+    max-width: 75%;
+    padding: 0.5rem 0.8rem;
+    border-radius: 16px;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    animation: msgSlide 0.3s ease;
+    align-self: flex-start;
+    background: var(--bg-3);
+    border-bottom-left-radius: 4px;
+}
+@keyframes msgSlide {
+    0% { opacity: 0; transform: translateY(8px); }
+    1000% { opacity: 1; transform: translateY(0); }
+}
+.chat-typing {
+    display: none;
+    align-self: flex-start;
+    padding: 0.5rem 0.8rem;
+    background: var(--bg-3);
+    border-radius: 16px;
+    border-bottom-left-radius: 4px;
+    gap: 3px;
+}
+.chat-typing.show { display: flex; }
+.chat-typing span {
+    width: 5px; height: 5px;
+    background: var(--text-3);
+    border-radius: 50%;
+    animation: typingDot 1.4s ease-in-out infinite;
+}
+.chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+.chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingDot {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-4px); opacity: 1; }
+}
+.chat-float-input {
+    padding: 0.6rem;
+    background: var(--bg-3);
+    border-top: 1px solid var(--border);
+    text-align: center;
+}
+.chat-float-input a {
+    display: block;
+    padding: 0.6rem;
+    background: var(--text);
+    color: var(--bg);
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Open button */
+.chat-open-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 55px; height: 55px;
+    background: var(--gradient);
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 99998;
+    box-shadow: 0 4px 15px rgba(212,175,55,0.4);
+    transition: transform 0.2s;
+    display: none;
+}
+.chat-open-btn:hover { transform: scale(1.1); }
+.chat-open-btn.show { display: flex; align-items: center; justify-content: center; }
+.chat-btn-badge {
+    position: absolute;
+    top: -3px; right: -3px;
+    width: 20px; height: 20px;
+    background: var(--accent);
+    border-radius: 50%;
+    font-size: 0.65rem;
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .chat-float {
+        right: 10px;
+        bottom: 80px;
+        width: calc(100% - 20px);
+        max-width: 350px;
+    }
+}
+
 /* MAP */
         .map-container { max-width: 800px; margin: 0 auto; }
         #map { height: 350px; border-radius: 16px; border: 1px solid var(--border); }
@@ -1153,49 +1298,31 @@
         <p class="section-desc">Alguém que acorda todo dia com propósito. Trabalhador, determinado, e acima de tudo, alguém que quer fazer da vida uma história que vale a pena contar — ao lado de alguém especial.</p>
     </section>
     
-    <!-- Chat -->
-    <section class="section" id="carta">
-        <p class="section-label">Mensagem</p>
-        <h2 class="section-title">Você tem uma mensagem.</h2>
-        <div class="chat-facebook">
-            <div class="chat-fb-header">
-                <div class="chat-fb-avatar">R</div>
-                <div class="chat-fb-info">
-                    <strong>Rubens Pereira Fernandes</strong>
-                    <span class="chat-fb-online">● online agora</span>
-                </div>
+    <!-- Chat Flutuante -->
+    <div class="chat-float" id="chatFloat">
+        <div class="chat-float-header" id="chatFloatHeader">
+            <div class="chat-float-avatar">R</div>
+            <div class="chat-float-info">
+                <strong>Rubens</strong>
+                <span>online agora</span>
             </div>
-            <div class="chat-fb-messages" id="chatMessages">
-                <div class="chat-fb-time">Hoje, 14:30</div>
-                <div class="chat-fb-bubble received">
-                    <p>Ei, tudo bem?</p>
-                    <span class="chat-fb-time-bubble">14:30</span>
-                </div>
-                <div class="chat-fb-bubble received">
-                    <p>Vi que você visitou meu perfil. Obrigado por isso.</p>
-                    <span class="chat-fb-time-bubble">14:31</span>
-                </div>
-                <div class="chat-fb-bubble received">
-                    <p>Me chamo Rubens. 26 anos, Recife. Programador e trabalhador.</p>
-                    <span class="chat-fb-time-bubble">14:32</span>
-                </div>
-                <div class="chat-fb-bubble received">
-                    <p>Não bebo, não fumo, nunca namorei. Esperei a pessoa certa.</p>
-                    <span class="chat-fb-time-bubble">14:33</span>
-                </div>
-                <div class="chat-fb-bubble received">
-                    <p>Se quiser me conhecer melhor, me responde aqui. 😊</p>
-                    <span class="chat-fb-time-bubble">14:34</span>
-                </div>
-                <div class="chat-fb-typing" id="typingIndicator">
-                    <span></span><span></span><span></span>
-                </div>
-            </div>
-            <div class="chat-fb-input">
-                <a href="#candidatura" class="btn btn-primary" style="width:100%;justify-content:center;">💬 Responder mensagem</a>
-            </div>
+            <button class="chat-float-close" id="chatFloatClose">×</button>
         </div>
-    </section>
+        <div class="chat-float-messages" id="chatFloatMessages">
+            <!-- Mensagens aparecem via JS -->
+        </div>
+        <div class="chat-float-input">
+            <a href="#candidatura" id="chatRespondBtn" style="display:none;">
+                <span>💬 Responder</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Botão pra abrir chat -->
+    <button class="chat-open-btn" id="chatOpenBtn">
+        <span class="chat-btn-badge">1</span>
+        💬
+    </button>
     
 
     <!-- CANDIDATURA -->
@@ -1259,49 +1386,151 @@
             document.getElementById('mobileMenu').classList.toggle('active');
         };
         
-        // CHAT NOTIFICATION SOUND
+        // FACEBOOK STYLE CHAT
         (function() {
             var audioCtx = null;
+            var messages = [
+                'Ei, tudo bem?',
+                'Vi que você visitou meu perfil. Obrigado por isso.',
+                'Me chamo Rubens. 26 anos, Recife.',
+                'Programador, trabalhador, caseiro quando quer.',
+                'Não bebo, não fumo, nunca namorei. Esperei a pessoa certa.',
+                'Se quiser me conhecer melhor, me responde aqui. 😊'
+            ];
             
-            function playNotification() {
+            function playSound() {
                 try {
                     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    var osc = audioCtx.createOscillator();
+                    var gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.frequency.value = 1400;
+                    osc.type = 'sine';
+                    gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+                    osc.start(audioCtx.currentTime);
+                    osc.stop(audioCtx.currentTime + 0.12);
                     
-                    // First ding
-                    var osc1 = audioCtx.createOscillator();
-                    var gain1 = audioCtx.createGain();
-                    osc1.connect(gain1);
-                    gain1.connect(audioCtx.destination);
-                    osc1.frequency.value = 1200;
-                    osc1.type = 'sine';
-                    gain1.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                    gain1.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-                    osc1.start(audioCtx.currentTime);
-                    osc1.stop(audioCtx.currentTime + 0.15);
-                    
-                    // Second ding (Facebook style)
                     setTimeout(function() {
                         var osc2 = audioCtx.createOscillator();
                         var gain2 = audioCtx.createGain();
                         osc2.connect(gain2);
                         gain2.connect(audioCtx.destination);
-                        osc2.frequency.value = 1600;
+                        osc2.frequency.value = 1800;
                         osc2.type = 'sine';
-                        gain2.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                        gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                        gain2.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                        gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
                         osc2.start(audioCtx.currentTime);
-                        osc2.stop(audioCtx.currentTime + 0.2);
-                    }, 100);
+                        osc2.stop(audioCtx.currentTime + 0.15);
+                    }, 80);
                 } catch(e) {}
             }
             
-            // Play sound after 0.5s
-            setTimeout(playNotification, 500);
+            function addTyping() {
+                var typing = document.createElement('div');
+                typing.className = 'chat-typing show';
+                typing.id = 'typingNow';
+                typing.innerHTML = '<span></span><span></span><span></span>';
+                document.getElementById('chatFloatMessages').appendChild(typing);
+            }
             
-            // Show typing indicator after 4s
+            function removeTyping() {
+                var t = document.getElementById('typingNow');
+                if (t) t.remove();
+            }
+            
+            function addMessage(text) {
+                var msg = document.createElement('div');
+                msg.className = 'chat-msg';
+                msg.textContent = text;
+                document.getElementById('chatFloatMessages').appendChild(msg);
+                document.getElementById('chatFloatMessages').scrollTop = 99999;
+            }
+            
+            function startChat() {
+                playSound();
+                
+                // Message 1 after 1s
+                setTimeout(function() {
+                    addTyping();
+                    setTimeout(function() {
+                        removeTyping();
+                        addMessage(messages[0]);
+                        playSound();
+                    }, 1200);
+                }, 1000);
+                
+                // Message 2 after 3s
+                setTimeout(function() {
+                    addTyping();
+                    setTimeout(function() {
+                        removeTyping();
+                        addMessage(messages[1]);
+                        playSound();
+                    }, 1500);
+                }, 3000);
+                
+                // Message 3 after 5.5s
+                setTimeout(function() {
+                    addTyping();
+                    setTimeout(function() {
+                        removeTyping();
+                        addMessage(messages[2]);
+                        playSound();
+                    }, 1200);
+                }, 5500);
+                
+                // Message 4 after 8s
+                setTimeout(function() {
+                    addTyping();
+                    setTimeout(function() {
+                        removeTyping();
+                        addMessage(messages[3]);
+                        playSound();
+                    }, 1000);
+                }, 8000);
+                
+                // Message 5 after 10s
+                setTimeout(function() {
+                    addTyping();
+                    setTimeout(function() {
+                        removeTyping();
+                        addMessage(messages[4]);
+                        playSound();
+                    }, 1500);
+                }, 10000);
+                
+                // Message 6 after 12.5s + show respond button
+                setTimeout(function() {
+                    addTyping();
+                    setTimeout(function() {
+                        removeTyping();
+                        addMessage(messages[5]);
+                        playSound();
+                        document.getElementById('chatRespondBtn').style.display = 'block';
+                    }, 1200);
+                }, 12500);
+            }
+            
+            // Open chat on click
+            document.getElementById('chatFloatHeader').onclick = function() {
+                document.getElementById('chatFloat').classList.toggle('open');
+            };
+            document.getElementById('chatFloatClose').onclick = function(e) {
+                e.stopPropagation();
+                document.getElementById('chatFloat').classList.remove('open');
+            };
+            document.getElementById('chatOpenBtn').onclick = function() {
+                document.getElementById('chatFloat').classList.add('open');
+                document.getElementById('chatOpenBtn').classList.remove('show');
+            };
+            
+            // Auto-open after 1s and start messages
             setTimeout(function() {
-                document.getElementById('typingIndicator').style.display = 'flex';
-            }, 4000);
+                document.getElementById('chatFloat').classList.add('open');
+                startChat();
+            }, 1000);
         })();
         
         // MAP
