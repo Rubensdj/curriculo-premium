@@ -3,200 +3,398 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Um jogo pra você</title>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Algo pra você</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { height: 100%; background: #050505; color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; }
+        html, body { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Inter', sans-serif; }
+        canvas { display: block; }
         
-        .screen { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 10; opacity: 0; pointer-events: none; transition: opacity 0.8s; padding: 2rem; }
-        .screen.active { opacity: 1; pointer-events: auto; }
+        .hud {
+            position: fixed;
+            top: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            gap: 1.5rem;
+            color: white;
+            font-size: 0.9rem;
+        }
         
-        .jogo-intro { text-align: center; }
-        .jogo-intro h1 { font-family: 'Caveat', cursive; font-size: clamp(2.5rem, 8vw, 4.5rem); background: linear-gradient(135deg, #ff2d55, #d4af37); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; }
-        .jogo-intro p { color: #8e8e93; margin-bottom: 2rem; font-size: 1.1rem; }
+        .hud-item {
+            background: rgba(0,0,0,0.6);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            backdrop-filter: blur(10px);
+        }
         
-        .btn { padding: 1rem 2.5rem; background: linear-gradient(135deg, #ff2d55, #d4af37); color: white; border: none; border-radius: 100px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; font-family: inherit; }
-        .btn:hover { transform: scale(1.08); box-shadow: 0 10px 40px rgba(255,45,85,0.4); }
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 200;
+            background: rgba(5,5,5,0.95);
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            color: white;
+            max-width: 500px;
+            display: none;
+            border: 1px solid #1a1a1a;
+        }
         
-        /* MEMORY */
-        .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; max-width: 400px; width: 100%; }
-        .memory-card { aspect-ratio: 1; background: #111; border: 1px solid #1a1a1a; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: all 0.3s; }
-        .memory-card:hover { border-color: #d4af37; transform: scale(1.05); }
-        .memory-card.flipped { background: #d4af37; color: #000; }
-        .memory-card.matched { background: #34c759; border-color: #34c759; }
+        .message.show { display: block; }
+        .message h2 { font-family: 'Caveat', cursive; font-size: 2.5rem; margin-bottom: 1rem; background: linear-gradient(135deg, #ff2d55, #d4af37); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .message p { color: #a1a1a6; margin-bottom: 1.5rem; line-height: 1.6; }
+        .message button { padding: 0.85rem 2rem; background: linear-gradient(135deg, #ff2d55, #d4af37); color: white; border: none; border-radius: 100px; font-size: 1rem; cursor: pointer; font-weight: 600; margin: 0.5rem; }
+        .message button:hover { transform: scale(1.05); }
+        .message button.secondary { background: transparent; border: 1px solid #333; }
         
-        /* QUIZ */
-        .quiz-box { max-width: 550px; text-align: center; }
-        .quiz-box h2 { font-family: 'Caveat', cursive; font-size: 2rem; color: #d4af37; margin-bottom: 1.5rem; }
-        .quiz-pergunta { font-size: 1.15rem; margin-bottom: 2rem; color: #e0e0e0; }
-        .quiz-opcoes { display: flex; flex-direction: column; gap: 0.75rem; }
-        .quiz-opcao { padding: 1rem; background: #111; border: 1px solid #1a1a1a; border-radius: 12px; color: #fff; cursor: pointer; transition: all 0.3s; font-size: 0.95rem; font-family: inherit; }
-        .quiz-opcao:hover { border-color: #d4af37; }
-        .quiz-opcao.correct { background: #34c759; }
-        .quiz-opcao.wrong { background: #ff3b30; }
-        .quiz-progress { margin-top: 1rem; color: #6e6e73; font-size: 0.85rem; }
+        #startBtn {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 300;
+            padding: 1.2rem 3rem;
+            background: linear-gradient(135deg, #ff2d55, #d4af37);
+            color: white;
+            border: none;
+            border-radius: 100px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 40px rgba(255,45,85,0.4);
+        }
         
-        /* SURPRESA & FINAL */
-        .surpresa-box, .final-box { text-align: center; max-width: 500px; }
-        .coracao { font-size: 5rem; animation: pulse 1.5s ease-in-out infinite; margin-bottom: 1.5rem; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
-        .surpresa-box h2, .final-box h2 { font-family: 'Caveat', cursive; font-size: clamp(2.5rem, 8vw, 4rem); background: linear-gradient(135deg, #ff2d55, #d4af37); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; }
-        .surpresa-box p, .final-box p { color: #a1a1a6; font-size: 1.1rem; margin-bottom: 2rem; }
-        .btn-container { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-        .btn-sim { background: linear-gradient(135deg, #ff2d55, #d4af37); color: white; }
-        .btn-nao { background: transparent; color: #6e6e73; border: 1px solid #2a2a2a; }
-        .btn-nao:hover { background: #1a1a1a; color: white; }
+        #startBtn:hover { transform: translate(-50%, -50%) scale(1.08); }
         
-        @media (max-width: 768px) {
-            .memory-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+        #instructions {
+            position: fixed;
+            bottom: 5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <!-- INTRO -->
-    <div class="screen jogo-intro active" id="intro">
-        <div>
-            <h1>Vamos jogar?</h1>
-            <p>3 fases. No final, tem surpresa.</p>
-            <button class="btn" onclick="startGame()">Bora!</button>
-        </div>
+    <div class="hud">
+        <div class="hud-item">❤️ <span id="hearts">0</span>/10</div>
+        <div class="hud-item">📍 Etapa <span id="stage">1</span></div>
     </div>
     
-    <!-- MEMORY -->
-    <div class="screen" id="memory">
-        <div style="text-align:center;">
-            <h2 style="font-family:'Caveat',cursive;font-size:1.8rem;color:#d4af37;">Fase 1 - Memória</h2>
-            <p style="color:#6e6e73;margin-bottom:1.5rem;">Acha os pares</p>
-            <div class="memory-grid" id="memoryGrid"></div>
-        </div>
+    <div id="instructions">Use WASD ou setas para mover. Colete todos os corações.</div>
+    
+    <button id="startBtn" onclick="startGame()">Começar jornada</button>
+    
+    <div class="message" id="msgFinal">
+        <h2>Quer namorar comigo?</h2>
+        <p>Você coletou todos os corações. Cada um representa algo que eu sinto por você. E agora, a última pergunta...</p>
+        <button onclick="aceitar()">Sim ❤️</button>
+        <button class="secondary" onclick="recusar()">Preciso pensar</button>
     </div>
     
-    <!-- QUIZ -->
-    <div class="screen" id="quiz">
-        <div class="quiz-box">
-            <h2>Fase 2 - O que você sabe?</h2>
-            <p class="quiz-pergunta" id="quizPergunta"></p>
-            <div class="quiz-opcoes" id="quizOpcoes"></div>
-            <p class="quiz-progress" id="quizProgress">1 / 3</p>
-        </div>
+    <div class="message" id="msgAceitou">
+        <h2 style="font-size:3rem;">Você disse sim!</h2>
+        <p>Agora eu sou o cara mais feliz desse mundo. Vamos ser muito felizes juntos.</p>
     </div>
-    
-    <!-- SURPRESA -->
-    <div class="screen" id="surpresa">
-        <div class="surpresa-box">
-            <div class="coracao">🎁</div>
-            <h2>Você passou!</h2>
-            <p>Cliqa no presente. É pra você.</p>
-            <button class="btn" onclick="show('final')">Abrir</button>
-        </div>
-    </div>
-    
-    <!-- FINAL -->
-    <div class="screen" id="final">
-        <div class="final-box">
-            <div class="coracao">❤️</div>
-            <h2>Quer namorar comigo?</h2>
-            <p>Fiz tudo pra ter coragem de perguntar. E aí?</p>
-            <div class="btn-container">
-                <button class="btn btn-sim" onclick="show('aceitou')">Sim!</button>
-                <button class="btn btn-nao" onclick="alert('Tudo bem. Tô aqui quando quiser. 💛')">Me dá tempo</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- ACEITOU -->
-    <div class="screen" id="aceitou">
-        <div class="final-box">
-            <div class="coracao">❤️</div>
-            <h2>Você disse sim!</h2>
-            <p>Sou o cara mais feliz do mundo. Vamo ser feliz junto. Te amo.</p>
-        </div>
-    </div>
-    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        function show(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+        var scene, camera, renderer, player = { x: 0, z: 0, mesh: null }, hearts = [], heartsCollected = 0, stage = 1;
+        var keys = {};
+        var gameStarted = false;
+        
+        function init() {
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x050505, 0.015);
+            
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 20, 25);
+            camera.lookAt(0, 0, 0);
+            
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.2;
+            document.body.insertBefore(renderer.domElement, document.body.firstChild);
+            
+            // Lighting
+            var ambient = new THREE.AmbientLight(0x404040, 0.4);
+            scene.add(ambient);
+            
+            var moonLight = new THREE.DirectionalLight(0x8888ff, 0.6);
+            moonLight.position.set(20, 50, 20);
+            moonLight.castShadow = true;
+            moonLight.shadow.mapSize.width = 2048;
+            moonLight.shadow.mapSize.height = 2048;
+            moonLight.shadow.camera.near = 0.5;
+            moonLight.shadow.camera.far = 100;
+            moonLight.shadow.camera.left = -30;
+            moonLight.shadow.camera.right = 30;
+            moonLight.shadow.camera.top = 30;
+            moonLight.shadow.camera.bottom = -30;
+            scene.add(moonLight);
+            
+            // Romantic pink/gold lights
+            var pinkLight = new THREE.PointLight(0xff2d55, 1.5, 50);
+            pinkLight.position.set(-10, 5, 0);
+            scene.add(pinkLight);
+            
+            var goldLight = new THREE.PointLight(0xd4af37, 1.5, 50);
+            goldLight.position.set(10, 5, 0);
+            scene.add(goldLight);
+            
+            // Ground
+            var groundGeo = new THREE.PlaneGeometry(200, 200, 50, 50);
+            var groundMat = new THREE.MeshStandardMaterial({ 
+                color: 0x1a3d1a,
+                roughness: 0.8,
+                metalness: 0.1
+            });
+            var pos = groundGeo.attributes.position;
+            for (var i = 0; i < pos.count; i++) {
+                var x = pos.getX(i);
+                var y = pos.getY(i);
+                pos.setZ(i, Math.sin(x * 0.1) * Math.cos(y * 0.1) * 0.3);
+            }
+            groundGeo.computeVertexNormals();
+            var ground = new THREE.Mesh(groundGeo, groundMat);
+            ground.rotation.x = -Math.PI / 2;
+            ground.receiveShadow = true;
+            scene.add(ground);
+            
+            createHeartPath();
+            createTrees();
+            createStars();
+            createPlayer();
+            
+            document.addEventListener('keydown', (e) => keys[e.key.toLowerCase()] = true);
+            document.addEventListener('keyup', (e) => keys[e.key.toLowerCase()] = false);
+            window.addEventListener('resize', onResize);
         }
         
-        // MEMORY GAME
-        var cards = ['❤️', '💌', '⭐', '🌟', '💕', '🔥'];
-        var flipped = [], matched = 0;
+        function createPlayer() {
+            var group = new THREE.Group();
+            
+            // Body
+            var bodyGeo = new THREE.CapsuleGeometry(0.4, 1.2, 4, 8);
+            var bodyMat = new THREE.MeshStandardMaterial({ color: 0x2c3e50, roughness: 0.5 });
+            var body = new THREE.Mesh(bodyGeo, bodyMat);
+            body.position.y = 1;
+            body.castShadow = true;
+            group.add(body);
+            
+            // Head
+            var headGeo = new THREE.SphereGeometry(0.35, 32, 32);
+            var headMat = new THREE.MeshStandardMaterial({ color: 0xffdbac, roughness: 0.6 });
+            var head = new THREE.Mesh(headGeo, headMat);
+            head.position.y = 2.1;
+            head.castShadow = true;
+            group.add(head);
+            
+            // Arms
+            var armGeo = new THREE.CapsuleGeometry(0.1, 0.6, 4, 8);
+            var armMat = new THREE.MeshStandardMaterial({ color: 0x2c3e50, roughness: 0.5 });
+            var leftArm = new THREE.Mesh(armGeo, armMat);
+            leftArm.position.set(-0.55, 1.3, 0);
+            leftArm.rotation.z = 0.3;
+            leftArm.castShadow = true;
+            group.add(leftArm);
+            
+            var rightArm = new THREE.Mesh(armGeo, armMat);
+            rightArm.position.set(0.55, 1.3, 0);
+            rightArm.rotation.z = -0.3;
+            rightArm.castShadow = true;
+            group.add(rightArm);
+            
+            // Legs
+            var legGeo = new THREE.CapsuleGeometry(0.12, 0.7, 4, 8);
+            var legMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.5 });
+            var leftLeg = new THREE.Mesh(legGeo, legMat);
+            leftLeg.position.set(-0.2, 0.2, 0);
+            leftLeg.castShadow = true;
+            group.add(leftLeg);
+            
+            var rightLeg = new THREE.Mesh(legGeo, legMat);
+            rightLeg.position.set(0.2, 0.2, 0);
+            rightLeg.castShadow = true;
+            group.add(rightLeg);
+            
+            group.position.set(0, 0, 0);
+            player.mesh = group;
+            scene.add(group);
+        }
         
-        function startGame() {
-            show('memory');
-            flipped = []; matched = 0;
-            var grid = document.getElementById('memoryGrid');
-            grid.innerHTML = '';
-            var all = [...cards, ...cards].sort(() => Math.random() - 0.5);
-            all.forEach((emoji, i) => {
-                var card = document.createElement('div');
-                card.className = 'memory-card';
-                card.textContent = '?';
-                card.dataset.emoji = emoji;
-                card.onclick = () => flip(card);
-                grid.appendChild(card);
+        function createHeartPath() {
+            var path = [
+                {x: 0, z: -5}, {x: 5, z: -8}, {x: 10, z: -5}, {x: 12, z: 0}, {x: 10, z: 5},
+                {x: 5, z: 8}, {x: 0, z: 10}, {x: -5, z: 8}, {x: -10, z: 5}, {x: -12, z: 0}
+            ];
+            
+            path.forEach(function(p) {
+                var heart = createHeartMesh();
+                heart.position.set(p.x, 1.5, p.z);
+                heart.userData.baseY = 1.5;
+                heart.userData.floatOffset = Math.random() * Math.PI * 2;
+                scene.add(heart);
+                hearts.push(heart);
             });
         }
         
-        function flip(card) {
-            if (card.classList.contains('flipped') || flipped.length >= 2) return;
-            card.classList.add('flipped');
-            card.textContent = card.dataset.emoji;
-            flipped.push(card);
+        function createHeartMesh() {
+            var heartShape = new THREE.Shape();
+            heartShape.moveTo(0, 0);
+            heartShape.bezierCurveTo(0, -0.5, -0.5, -1, -1, -1);
+            heartShape.bezierCurveTo(-2.5, -1, -2.5, 1.5, -2.5, 1.5);
+            heartShape.bezierCurveTo(-2.5, 2.5, -1, 3.5, 0, 4);
+            heartShape.bezierCurveTo(1, 3.5, 2.5, 2.5, 2.5, 1.5);
+            heartShape.bezierCurveTo(2.5, 1.5, 2.5, -1, 1, -1);
+            heartShape.bezierCurveTo(0.5, -1, 0, -0.5, 0, 0);
             
-            if (flipped.length === 2) {
-                if (flipped[0].dataset.emoji === flipped[1].dataset.emoji) {
-                    setTimeout(() => {
-                        flipped[0].classList.add('matched');
-                        flipped[1].classList.add('matched');
-                        flipped = []; matched++;
-                        if (matched === cards.length) setTimeout(() => { show('quiz'); initQuiz(); }, 800);
-                    }, 400);
-                } else {
-                    setTimeout(() => {
-                        flipped[0].classList.remove('flipped');
-                        flipped[1].classList.remove('flipped');
-                        flipped[0].textContent = '?';
-                        flipped[1].textContent = '?';
-                        flipped = [];
-                    }, 800);
-                }
+            var extrudeSettings = { depth: 0.3, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 0.05, bevelThickness: 0.05 };
+            var geo = new THREE.ExtrudeGeometry(heartShape, extrudeSettings);
+            var mat = new THREE.MeshStandardMaterial({ 
+                color: 0xff2d55,
+                roughness: 0.3,
+                metalness: 0.3,
+                emissive: 0xff2d55,
+                emissiveIntensity: 0.2
+            });
+            var mesh = new THREE.Mesh(geo, mat);
+            mesh.scale.set(0.15, 0.15, 0.15);
+            mesh.castShadow = true;
+            return mesh;
+        }
+        
+        function createTrees() {
+            for (var i = 0; i < 30; i++) {
+                var tree = createTree();
+                var angle = Math.random() * Math.PI * 2;
+                var dist = 15 + Math.random() * 40;
+                tree.position.set(Math.cos(angle) * dist, 0, Math.sin(angle) * dist);
+                tree.rotation.y = Math.random() * Math.PI * 2;
+                var scale = 0.8 + Math.random() * 0.6;
+                tree.scale.set(scale, scale, scale);
+                scene.add(tree);
             }
         }
         
-        // QUIZ
-        var quizQ = [
-            { q: "O que eu mais amo?", ops: ["Festas", "Casa com você", "Sozinho"], c: 1 },
-            { q: "Maior qualidade?", ops: ["Rico", "Bonito", "Fiel"], c: 2 },
-            { q: "O que busco?", ops: ["Curtição", "Sério pra vida", "Um tempo"], c: 1 }
-        ];
-        var qi = 0;
-        
-        function initQuiz() { qi = 0; showQuiz(); }
-        function showQuiz() {
-            var d = quizQ[qi];
-            document.getElementById('quizPergunta').textContent = d.q;
-            document.getElementById('quizProgress').textContent = (qi + 1) + ' / ' + quizQ.length;
-            var op = document.getElementById('quizOpcoes');
-            op.innerHTML = '';
-            d.ops.forEach((o, i) => {
-                var b = document.createElement('button');
-                b.className = 'quiz-opcao';
-                b.textContent = o;
-                b.onclick = () => {
-                    if (i === d.c) b.classList.add('correct');
-                    else { b.classList.add('wrong'); op.children[d.c].classList.add('correct'); }
-                    setTimeout(() => {
-                        qi++;
-                        if (qi < quizQ.length) showQuiz();
-                        else show('surpresa');
-                    }, 1000);
-                };
-                op.appendChild(b);
-            });
+        function createTree() {
+            var group = new THREE.Group();
+            
+            var trunkGeo = new THREE.CylinderGeometry(0.2, 0.4, 3, 8);
+            var trunkMat = new THREE.MeshStandardMaterial({ color: 0x4a3728, roughness: 0.8 });
+            var trunk = new THREE.Mesh(trunkGeo, trunkMat);
+            trunk.position.y = 1.5;
+            trunk.castShadow = true;
+            group.add(trunk);
+            
+            var leavesGeo = new THREE.SphereGeometry(1.5, 8, 8);
+            var leavesMat = new THREE.MeshStandardMaterial({ color: 0x2d5a27, roughness: 0.8 });
+            var leaves = new THREE.Mesh(leavesGeo, leavesMat);
+            leaves.position.y = 3.5;
+            leaves.castShadow = true;
+            group.add(leaves);
+            
+            return group;
         }
+        
+        function createStars() {
+            var starsGeo = new THREE.BufferGeometry();
+            var starsCount = 1000;
+            var positions = new Float32Array(starsCount * 3);
+            for (var i = 0; i < starsCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 200;
+                positions[i + 1] = 30 + Math.random() * 50;
+                positions[i + 2] = (Math.random() - 0.5) * 200;
+            }
+            starsGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            var starsMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.1 });
+            scene.add(new THREE.Points(starsGeo, starsMat));
+        }
+        
+        function startGame() {
+            document.getElementById('startBtn').style.display = 'none';
+            gameStarted = true;
+        }
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            if (gameStarted && player.mesh) {
+                var speed = 0.15;
+                if (keys['w'] || keys['arrowup']) player.z -= speed;
+                if (keys['s'] || keys['arrowdown']) player.z += speed;
+                if (keys['a'] || keys['arrowleft']) player.x -= speed;
+                if (keys['d'] || keys['arrowright']) player.x += speed;
+                
+                player.mesh.position.x = player.x;
+                player.mesh.position.z = player.z;
+                
+                // Animate player walking
+                var walkCycle = Date.now() * 0.01;
+                player.mesh.children[4].rotation.x = Math.sin(walkCycle) * 0.5; // left leg
+                player.mesh.children[5].rotation.x = -Math.sin(walkCycle) * 0.5; // right leg
+                player.mesh.children[2].rotation.x = -Math.sin(walkCycle) * 0.3; // left arm
+                player.mesh.children[3].rotation.x = Math.sin(walkCycle) * 0.3; // right arm
+                
+                // Camera follow
+                camera.position.x = player.x;
+                camera.position.z = player.z + 20;
+                camera.lookAt(player.x, 0, player.z);
+                
+                // Animate hearts floating
+                hearts.forEach(function(heart, i) {
+                    if (heart.visible) {
+                        heart.position.y = heart.userData.baseY + Math.sin(Date.now() * 0.003 + heart.userData.floatOffset) * 0.3;
+                        heart.rotation.y += 0.02;
+                        
+                        // Check collision
+                        var dx = player.x - heart.position.x;
+                        var dz = player.z - heart.position.z;
+                        var dist = Math.sqrt(dx * dx + dz * dz);
+                        if (dist < 2) {
+                            heart.visible = false;
+                            heartsCollected++;
+                            document.getElementById('hearts').textContent = heartsCollected;
+                            if (heartsCollected >= 10) {
+                                document.getElementById('msgFinal').classList.add('show');
+                            }
+                        }
+                    }
+                });
+            }
+            
+            renderer.render(scene, camera);
+        }
+        
+        function onResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        function aceitar() {
+            document.getElementById('msgFinal').classList.remove('show');
+            document.getElementById('msgAceitou').classList.add('show');
+        }
+        
+        function recusar() {
+            alert('Tudo bem. Eu entendo. Tô aqui quando você quiser. 💛');
+            document.getElementById('msgFinal').classList.remove('show');
+        }
+        
+        init();
+        animate();
     </script>
 </body>
 </html>
