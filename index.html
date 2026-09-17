@@ -9,8 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    
+        
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -1258,93 +1257,6 @@
     </section>
     
 
-    <!-- MAPA -->
-    <section class="section" id="localizacao">
-        <p class="section-label">Localização</p>
-        <h2 class="section-title">Onde eu tô.</h2>
-        <div class="map-container">
-            <div id="map"></div>
-        </div>
-    </section>
-    
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-        // TERMS
-        var overlay = document.getElementById('termsOverlay');
-        var btn = document.getElementById('termsAccept');
-        if (btn) {
-            btn.onclick = function() {
-                overlay.style.display = 'none';
-                localStorage.setItem('termsAccepted', 'true');
-            };
-        }
-        if (localStorage.getItem('termsAccepted') === 'true') {
-            overlay.style.display = 'none';
-        }
-        
-        // NAV
-        window.onscroll = function() {
-            document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
-        };
-        document.getElementById('hamburger').onclick = function() {
-            document.getElementById('mobileMenu').classList.toggle('active');
-        };
-        
-        
-// GALERIA
-(function() {
-    var track = document.getElementById('galeriaTrack');
-    var items = document.querySelectorAll('.galeria-item');
-    var dots = document.getElementById('galeriaDots');
-    var current = 0;
-    var total = items.length;
-    
-    // Create dots
-    for (var i = 0; i < total; i++) {
-        var dot = document.createElement('div');
-        dot.className = 'galeria-dot' + (i === 0 ? ' active' : '');
-        dot.onclick = (function(idx) {
-            return function() { goTo(idx); };
-        })(i);
-        dots.appendChild(dot);
-    }
-    
-    function goTo(idx) {
-        current = idx;
-        track.style.transform = 'translateX(-' + (idx * 100) + '%)';
-        var allDots = document.querySelectorAll('.galeria-dot');
-        for (var i = 0; i < allDots.length; i++) {
-            allDots[i].classList.remove('active');
-        }
-        allDots[idx].classList.add('active');
-    }
-    
-    document.getElementById('galeriaPrev').onclick = function() {
-        goTo(current > 0 ? current - 1 : total - 1);
-    };
-    document.getElementById('galeriaNext').onclick = function() {
-        goTo(current < total - 1 ? current + 1 : 0);
-    };
-})();
 
-// MAP
-        if (typeof L !== 'undefined') {
-            var map = L.map('map').setView([-8.0476, -34.8770], 13);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
-            L.marker([-8.0476, -34.8770]).addTo(map).bindPopup('Recife, PE').openPopup();
-        }
-        
-        // WHATSAPP
-        document.getElementById('sendWhatsApp').onclick = function() {
-            var nome = document.querySelector('input[name="nome"]').value || '';
-            var idade = document.querySelector('input[name="idade"]').value || '';
-            var cidade = document.querySelector('input[name="cidade"]').value || '';
-            var whats = document.querySelector('input[name="whatsapp"]').value || '';
-            var motivo = document.querySelector('textarea[name="motivo"]').value || '';
-            var busca = document.querySelector('textarea[name="busca"]').value || '';
-            var msg = '💌 Nova Candidatura\n\nNome: ' + nome + '\nIdade: ' + idade + '\nCidade: ' + cidade + '\nWhatsApp: ' + whats + '\n\nMotivo:\n' + motivo + '\n\nBusca:\n' + busca;
-            window.open('https://wa.me/5581989501999?text=' + encodeURIComponent(msg), '_blank');
-        };
-    </script>
 </body>
 </html>
