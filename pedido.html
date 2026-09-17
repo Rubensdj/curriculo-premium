@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algo que eu preciso te dizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html, body { 
+            height: 100%; 
+            background: #0a0a0a; 
+            color: #fff; 
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+        
+        /* Particles */
+        .particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #d4af37;
+            border-radius: 50%;
+            opacity: 0;
+            animation: float-up 4s ease-in-out infinite;
+        }
+        @keyframes float-up {
+            0% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { opacity: 0; transform: translateY(-10vh) scale(1); }
+        }
+        
+        /* Screen 1 - Intro */
+        .screen { 
+            position: fixed; inset: 0; 
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease;
+            z-index: 10;
+        }
+        .screen.hidden { opacity: 0; pointer-events: none; }
+        
+        .intro-content { text-align: center; }
+        .intro-content h1 {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff2d55, #d4af37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            animation: reveal 1.5s ease 0.5s forwards;
+        }
+        .intro-content p {
+            font-size: 1.1rem;
+            color: #a1a1a6;
+            margin-top: 1rem;
+            opacity: 0;
+            animation: reveal 1s ease 2s forwards;
+        }
+        @keyframes reveal { to { opacity: 1; } }
+        
+        /* Screen 2 - Countdown */
+        .countdown-screen { background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0a 100%); }
+        .countdown-box { text-align: center; }
+        .countdown-box h2 {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(2rem, 6vw, 4rem);
+            margin-bottom: 2rem;
+        }
+        .countdown-number {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(5rem, 20vw, 12rem);
+            font-weight: 600;
+            background: linear-gradient(135deg, #ff2d55, #d4af37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+        .countdown-label {
+            font-size: 1.2rem;
+            color: #a1a1a6;
+            margin-top: 1rem;
+        }
+        
+        /* Screen 3 - Letter */
+        .letter-screen { background: #0a0a0a; overflow-y: auto; }
+        .letter-container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        .letter-date {
+            text-align: center;
+            color: #6e6e73;
+            font-size: 0.85rem;
+            margin-bottom: 3rem;
+        }
+        .letter-content {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            line-height: 1.8;
+            color: #e0e0e0;
+        }
+        .letter-content p {
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: write-letter 0.8s ease forwards;
+        }
+        @keyframes write-letter {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .letter-content .delay-1 { animation-delay: 0.5s; }
+        .letter-content .delay-2 { animation-delay: 1.5s; }
+        .letter-content .delay-3 { animation-delay: 2.5s; }
+        .letter-content .delay-4 { animation-delay: 3.5s; }
+        .letter-content .delay-5 { animation-delay: 4.5s; }
+        .letter-content .delay-6 { animation-delay: 5.5s; }
+        .letter-content .delay-7 { animation-delay: 6.5s; }
+        .letter-content .signature {
+            font-size: 2rem;
+            color: #d4af37;
+            text-align: right;
+            margin-top: 3rem;
+            animation-delay: 8s;
+        }
+        
+        /* Screen 4 - Question */
+        .question-screen { 
+            background: linear-gradient(180deg, #0a0a0a 0%, #1a1a2e 100%);
+            text-align: center;
+        }
+        .question-content { max-width: 600px; padding: 2rem; }
+        .heart-beat {
+            font-size: 5rem;
+            animation: heartbeat 1s ease-in-out infinite;
+            margin-bottom: 2rem;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        .question-content h2 {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ff2d55, #d4af37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .question-content p {
+            font-size: 1.1rem;
+            color: #a1a1a6;
+            margin-bottom: 3rem;
+        }
+        .botoes { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn-sim, .btn-nao {
+            padding: 1rem 3rem;
+            border: none;
+            border-radius: 100px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-sim {
+            background: linear-gradient(135deg, #ff2d55, #d4af37);
+            color: white;
+        }
+        .btn-sim:hover { transform: scale(1.1); box-shadow: 0 10px 40px rgba(255,45,85,0.4); }
+        .btn-nao {
+            background: transparent;
+            color: #a1a1a6;
+            border: 1px solid #1a1a1a;
+        }
+        .btn-nao:hover { background: #1a1a1a; }
+        
+        /* Screen 5 - Yes */
+        .yes-screen { background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0a 100%); }
+        .yes-content { text-align: center; padding: 2rem; }
+        .yes-content .heart { font-size: 6rem; animation: heartbeat 1s ease-in-out infinite; }
+        .yes-content h2 {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            margin: 2rem 0;
+            background: linear-gradient(135deg, #ff2d55, #d4af37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .yes-content p {
+            font-size: 1.2rem;
+            color: #a1a1a6;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+        }
+        
+        /* Skip button */
+        .skip-btn {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.1);
+            color: #a1a1a6;
+            border: 1px solid #1a1a1a;
+            padding: 0.5rem 1.5rem;
+            border-radius: 100px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            z-index: 100;
+            transition: all 0.3s;
+        }
+        .skip-btn:hover { background: rgba(255,255,255,0.2); color: white; }
+        
+        @media (max-width: 768px) {
+            .letter-container { padding: 2rem 1.5rem; }
+            .botoes { flex-direction: column; align-items: center; }
+            .btn-sim, .btn-nao { width: 100%; max-width: 280px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Screen 1 - Intro -->
+    <div class="screen intro-screen" id="screen1">
+        <div class="intro-content">
+            <h1>Algo que eu preciso te dizer</h1>
+            <p>Senta, pega um café, e lê com calma.</p>
+        </div>
+    </div>
+    
+    <!-- Screen 2 - Countdown -->
+    <div class="screen countdown-screen hidden" id="screen2">
+        <div class="countdown-box">
+            <h2>Faz exatamente...</h2>
+            <div class="countdown-number" id="countdownNumber">0</div>
+            <p class="countdown-label">dias que eu sei que quero você</p>
+        </div>
+    </div>
+    
+    <!-- Screen 3 - Letter -->
+    <div class="screen letter-screen hidden" id="screen3">
+        <div class="letter-container">
+            <p class="letter-date">Recife, 17 de setembro de 2026</p>
+            <div class="letter-content">
+                <p class="delay-1">Ei,</p>
+                <p class="delay-2">Eu não sei muito bem como começar isso. Mas eu precisava falar, e escrito é mais fácil do que olho no olho, porque aí eu tremo.</p>
+                <p class="delay-3">Desde que eu te conheci, tem uma coisa aqui dentro que não para. Não é só beleza, não. É o jeito que você existe. É coisa de alma.</p>
+                <p class="delay-4">Eu sei que não sou perfeito. Sei que tenho defeito, que às vez erro, que sou teimoso. Mas eu te juro uma coisa: eu vou tentar todo dia ser melhor pra você.</p>
+                <p class="delay-5">Eu quero chegar em casa e ter você. Quero café junto, almoço junto, domingo preguiçoso junto. Quero cuidar de você e quero que você cuide de mim também.</p>
+                <p class="delay-6">Eu não tô brincando. Eu não quero curtição. Eu quero construção. Quero um "nós" de verdade, com data pra começar e sem data pra acabar.</p>
+                <p class="delay-7">Se você quiser, eu vou ali na sua porta e peço em voz alta. Mas se você quiser ler aqui primeiro, então lê:</p>
+                <p class="signature">Quer namorar comigo?</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Screen 4 - Question -->
+    <div class="screen question-screen hidden" id="screen4">
+        <div class="question-content">
+            <div class="heart-beat">❤️</div>
+            <h2>Quer namorar comigo?</h2>
+            <p>Pensa com calma. Não tem resposta errada. Mas eu tô aqui torcendo pra ser sim.</p>
+            <div class="botoes">
+                <button class="btn-sim" onclick="aceitar()">Sim ❤️</button>
+                <button class="btn-nao" onclick="recusar()">Preciso pensar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Screen 5 - Yes -->
+    <div class="screen yes-screen hidden" id="screen5">
+        <div class="yes-content">
+            <div class="heart">❤️</div>
+            <h2>Você disse sim!</h2>
+            <p>Agora eu sou o cara mais feliz do mundo. Vamo construir tudo isso que eu falei, juntos. Te amo.</p>
+        </div>
+    </div>
+    
+    <button class="skip-btn" id="skipBtn" onclick="pularTudo()">Pular animação →</button>
+    
+    <script>
+        // Create particles
+        var particles = document.getElementById('particles');
+        for (var i = 0; i < 30; i++) {
+            var p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDelay = Math.random() * 4 + 's';
+            p.style.animationDuration = (3 + Math.random() * 2) + 's';
+            particles.appendChild(p);
+        }
+        
+        // Screen transitions
+        var screen1 = document.getElementById('screen1');
+        var screen2 = document.getElementById('screen2');
+        var screen3 = document.getElementById('screen3');
+        var screen4 = document.getElementById('screen4');
+        var screen5 = document.getElementById('screen5');
+        var skipBtn = document.getElementById('skipBtn');
+        
+        // After 4s, go to countdown
+        setTimeout(function() {
+            screen1.classList.add('hidden');
+            screen2.classList.remove('hidden');
+            
+            // Countdown animation
+            var count = 0;
+            var target = 1; // Start from 1 day (change to actual number)
+            var interval = setInterval(function() {
+                count++;
+                document.getElementById('countdownNumber').textContent = count;
+                if (count >= target) {
+                    clearInterval(interval);
+                    setTimeout(function() {
+                        screen2.classList.add('hidden');
+                        screen3.classList.remove('hidden');
+                    }, 1500);
+                }
+            }, 100);
+        }, 4000);
+        
+        // After letter finishes (9s), show question
+        setTimeout(function() {
+            if (!screen3.classList.contains('hidden')) {
+                screen3.classList.add('hidden');
+                screen4.classList.remove('hidden');
+                skipBtn.style.display = 'none';
+            }
+        }, 13000);
+        
+        function pularTudo() {
+            screen1.classList.add('hidden');
+            screen2.classList.add('hidden');
+            screen3.classList.add('hidden');
+            screen4.classList.remove('hidden');
+            skipBtn.style.display = 'none';
+        }
+        
+        function aceitar() {
+            screen4.classList.add('hidden');
+            screen5.classList.remove('hidden');
+            skipBtn.style.display = 'none';
+        }
+        
+        function recusar() {
+            alert('Tudo bem. Eu entendo. Fico aqui se você mudar de idéia. 💛');
+        }
+    </script>
+</body>
+</html>
