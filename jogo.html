@@ -70,6 +70,8 @@
         
         #startBtn:hover { transform: translate(-50%, -50%) scale(1.08); }
         
+        #touchControls { display: none; }
+        @media (max-width: 768px) { #touchControls { display: flex; } #instructions { bottom: 8rem; } }
         #instructions {
             position: fixed;
             bottom: 5rem;
@@ -396,5 +398,17 @@
         init();
         animate();
     </script>
+
+    <div id="touchControls" style="position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);z-index:100;display:flex;gap:1rem;align-items:center;">
+        <div style="display:grid;grid-template-columns:repeat(3,55px);grid-template-rows:repeat(2,55px);gap:6px;">
+            <div></div>
+            <button ontouchstart="keys['w']=true" ontouchend="keys['w']=false" style="background:rgba(255,255,255,0.15);border:1px solid #333;border-radius:12px;color:#fff;font-size:1.4rem;user-select:none;">↑</button>
+            <div></div>
+            <button ontouchstart="keys['a']=true" ontouchend="keys['a']=false" style="background:rgba(255,255,255,0.15);border:1px solid #333;border-radius:12px;color:#fff;font-size:1.4rem;user-select:none;">←</button>
+            <button ontouchstart="keys['s']=true" ontouchend="keys['s']=false" style="background:rgba(255,255,255,0.15);border:1px solid #333;border-radius:12px;color:#fff;font-size:1.4rem;user-select:none;">↓</button>
+            <button ontouchstart="keys['d']=true" ontouchend="keys['d']=false" style="background:rgba(255,255,255,0.15);border:1px solid #333;border-radius:12px;color:#fff;font-size:1.4rem;user-select:none;">→</button>
+        </div>
+    </div>
+
 </body>
 </html>
