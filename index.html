@@ -1423,25 +1423,32 @@
     
     <script>
         // ===== TERMS =====
-        const termsOverlay = document.getElementById('termsOverlay');
-        const termsAccept = document.getElementById('termsAccept');
-        if (termsAccept) {
-            termsAccept.addEventListener('click', () => {
-                termsOverlay.classList.add('hidden');
+        (function() {
+            var overlay = document.getElementById('termsOverlay');
+            var btn = document.getElementById('termsAccept');
+            
+            function acceptTerms() {
+                if (overlay) {
+                    overlay.style.display = 'none';
+                    overlay.classList.add('hidden');
+                }
                 localStorage.setItem('termsAccepted', 'true');
                 document.body.style.overflow = '';
-                // Hide loader immediately
-                const loader = document.getElementById('loader');
+                var loader = document.getElementById('loader');
                 if (loader) loader.classList.add('hidden');
-            });
-        }
-        if (localStorage.getItem('termsAccepted') === 'true' && termsOverlay) {
-            termsOverlay.classList.add('hidden');
-            document.body.style.overflow = '';
-        }
-        if (!localStorage.getItem('termsAccepted')) {
-            document.body.style.overflow = 'hidden';
-        }
+            }
+            
+            if (btn) {
+                btn.onclick = acceptTerms;
+            }
+            
+            if (localStorage.getItem('termsAccepted') === 'true' && overlay) {
+                overlay.style.display = 'none';
+                document.body.style.overflow = '';
+            } else if (overlay) {
+                document.body.style.overflow = 'hidden';
+            }
+        })();
         
         // ===== LOADER =====
         window.addEventListener('load', () => {
