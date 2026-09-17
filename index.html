@@ -1688,7 +1688,8 @@
         // ===== WHATSAPP =====
         document.getElementById('sendWhatsApp')?.addEventListener('click', () => {
             const nome = document.querySelector('input[name="nome"]')?.value || '';
-            const idade = document.querySelector('input[name="idade"]?.value' || '';
+            const idadeEl = document.querySelector('input[name="idade"]');
+            const idade = idadeEl ? idadeEl.value : '';
             const cidade = document.querySelector('input[name="cidade"]')?.value || '';
             const whats = document.querySelector('input[name="whatsapp"]')?.value || '';
             const motivo = document.querySelector('textarea[name="motivo"]')?.value || '';
