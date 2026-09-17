@@ -329,7 +329,73 @@
         .form-group textarea { resize: vertical; min-height: 70px; }
         .form-submit { padding: 1.5rem; text-align: center; background: var(--bg-3); }
 
-        /* MAP */
+        
+/* ENVELOPE */
+.env-wrapper {
+    max-width: 500px;
+    margin: 3rem auto 0;
+    text-align: center;
+}
+.env-container {
+    width: 280px;
+    height: 180px;
+    margin: 0 auto;
+    background: #d4c5a9;
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.env-container:hover { transform: translateY(-3px); }
+.env-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: #c4b393;
+    clip-path: polygon(0 0, 50% 100%, 100% 0);
+    transition: transform 0.5s;
+    transform-origin: top;
+}
+.env-container.open .env-flap {
+    transform: rotateX(180deg);
+}
+.env-body {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+.env-stamp { font-size: 2rem; }
+.env-to { font-size: 1.1rem; color: #555; }
+.env-hint {
+    margin-top: 1rem;
+    color: var(--text-3);
+    font-size: 0.85rem;
+    transition: opacity 0.3s;
+}
+.env-hint.hide { opacity: 0; }
+.env-letter {
+    display: none;
+    margin-top: 2rem;
+    background: #faf8f0;
+    border-radius: 8px;
+    padding: 2rem;
+    color: #1a1a1a;
+    font-family: 'Georgia', serif;
+    text-align: left;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.env-letter.show { display: block; }
+.letter-paper p { margin-bottom: 1rem; line-height: 1.7; }
+.letter-paper .sign { margin-top: 1.5rem; font-weight: 600; }
+
+/* MAP */
         .map-container { max-width: 800px; margin: 0 auto; }
         #map { height: 350px; border-radius: 16px; border: 1px solid var(--border); }
         .leaflet-pane { z-index: 1 !important; }
@@ -460,45 +526,31 @@
     
     <!-- CARTA -->
     <section class="section" id="carta">
-        <p class="section-label">Entrega especial</p>
-        <h2 class="section-title">Alguém te entregou algo.</h2>
-        
-        <div class="pet-scene">
-            <div class="ground"></div>
-            <div class="pet-walk">
-                <div class="pet">
-                    <div class="pet-head">
-                        <div class="pet-ear left"></div>
-                        <div class="pet-ear right"></div>
-                        <div class="pet-eye left"></div>
-                        <div class="pet-eye right"></div>
-                        <div class="pet-nose"></div>
-                        <div class="pet-mouth"></div>
-                    </div>
-                    <div class="pet-tail"></div>
-                    <div class="pet-leg fl"></div>
-                    <div class="pet-leg fr"></div>
-                    <div class="pet-leg bl"></div>
-                    <div class="pet-leg br"></div>
+        <p class="section-label">Carta pra você</p>
+        <h2 class="section-title">Abra com calma.</h2>
+        <div class="env-wrapper">
+            <div class="env-container" id="envContainer">
+                <div class="env-flap"></div>
+                <div class="env-body">
+                    <div class="env-stamp">❤️</div>
+                    <p class="env-to">Pra você</p>
                 </div>
             </div>
-            <div class="thrown-letter" id="thrownLetter">
-                <div class="env"><div class="env-flap"></div><span>❤️</span></div>
-            </div>
-            <div class="letter-popup" id="letterPopup">
-                <div class="letter-card">
-                    <h3>Querido(a) futuro(a) de mim,</h3>
-                    <p>Se você está lendo isso, é porque algo em mim te chamou atenção.</p>
-                    <p>Eu sou o Rubens. 26 anos. Programador, trabalhador, caseiro quando quer.</p>
-                    <p>Não bebo, não fumo, nunca namorei — esperei a pessoa certa.</p>
-                    <p>Esperei alguém que quisesse caminhar junto. Servir a Deus. Construir família. Rir do nada.</p>
+            <p class="env-hint" id="envHint">Clique no envelope</p>
+            <div class="env-letter" id="envLetter">
+                <div class="letter-paper">
+                    <p>Querido(a) futuro(a) de mim,</p>
+                    <p>Se você chegou até aqui, algo em mim te chamou atenção.</p>
+                    <p>Sou o Rubens. 26 anos, Recife. Programador, trabalhador, caseiro quando quer.</p>
+                    <p>Não bebo, não fumo, nunca namorei. Esperei a pessoa certa.</p>
+                    <p>Esperei alguém pra caminhar junto, servir a Deus, construir família.</p>
                     <p class="sign">Com esperança,<br><strong>Rubens Pereira Fernandes</strong></p>
-                    <button class="btn btn-primary" onclick="document.getElementById('letterPopup').classList.remove('show')" style="margin-top: 1rem;">Fechar</button>
                 </div>
             </div>
         </div>
     </section>
     
+
     <!-- CANDIDATURA -->
     <section class="section" id="candidatura">
         <p class="section-label">Candidatura</p>
@@ -560,9 +612,11 @@
             document.getElementById('mobileMenu').classList.toggle('active');
         };
         
-        // PET LETTER
-        document.getElementById('thrownLetter').onclick = function() {
-            document.getElementById('letterPopup').classList.add('show');
+        // ENVELOPE
+        document.getElementById('envContainer').onclick = function() {
+            this.classList.toggle('open');
+            document.getElementById('envHint').classList.toggle('hide');
+            document.getElementById('envLetter').classList.toggle('show');
         };
         
         // MAP
