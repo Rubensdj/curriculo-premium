@@ -181,37 +181,7 @@
         .terms-footer .btn { width: 100%; justify-content: center; }
         .terms-note { text-align: center; font-size: 0.8rem; color: var(--text-3); margin-top: 0.5rem; }
         
-        /* ===== LOADER ===== */
-        .loader {
-            position: fixed;
-            inset: 0;
-            background: var(--bg);
-            z-index: 99999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.8s, visibility 0.8s;
-        }
-        .loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-        .loader-content { text-align: center; }
-        .loader-heart {
-            font-size: 5rem;
-            animation: heartbeat 1s ease-in-out infinite;
-        }
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-        .loader-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.75rem;
-            font-weight: 600;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-top: 1rem;
-        }
+
         
         /* ===== NAV ===== */
         .nav {
@@ -1134,14 +1104,6 @@
         </div>
     </div>
     
-    <!-- Loader -->
-    <div class="loader" id="loader">
-        <div class="loader-content">
-            <div class="loader-heart">❤️</div>
-            <div class="loader-text">Carregando...</div>
-        </div>
-    </div>
-    
     <!-- Nav -->
     <nav class="nav" id="nav">
         <div class="nav-inner">
@@ -1428,8 +1390,7 @@
                 }
                 localStorage.setItem('termsAccepted', 'true');
                 document.body.style.overflow = '';
-                var loader = document.getElementById('loader');
-                if (loader) loader.classList.add('hidden');
+
             }
             
             if (btn) {
@@ -1444,13 +1405,7 @@
             }
         })();
         
-        // ===== LOADER =====
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const loader = document.getElementById('loader');
-                if (loader) loader.classList.add('hidden');
-            }, 800);
-        });
+
         
         // ===== NAV =====
         window.addEventListener('scroll', () => {
