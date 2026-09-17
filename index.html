@@ -11,8 +11,7 @@
     <meta property="og:title" content="Rubens — Pra você que chegou até aqui">
     <meta property="og:description" content="26 anos, Recife. Busco alguém pra caminhar comigo.">
     
-    <!-- Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Three.js disabled -->
     <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -73,7 +72,7 @@
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
         }
-        .terms-overlay.hidden { display: none; }
+        .terms-overlay.hidden { display: none !important; }
         .terms-container {
             max-width: 650px;
             width: 100%;
@@ -281,12 +280,7 @@
             overflow: hidden;
             padding: 2rem;
         }
-        #three-canvas {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-        }
+        #three-canvas { display: none !important; }
         .hero-overlay {
             position: absolute;
             inset: 0;
@@ -1457,64 +1451,6 @@
                 if (loader) loader.classList.add('hidden');
             }, 800);
         });
-        
-        // ===== THREE.JS BACKGROUND =====
-        const canvas = document.getElementById('three-canvas');
-        if (canvas && typeof THREE !== 'undefined') {
-            try {
-                const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-                const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-                
-                // Particles
-                const particlesGeometry = new THREE.BufferGeometry();
-                const particlesCount = 1500;
-                const posArray = new Float32Array(particlesCount * 3);
-                for (let i = 0; i < particlesCount * 3; i++) {
-                    posArray[i] = (Math.random() - 0.5) * 15;
-                }
-                particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-                const particlesMaterial = new THREE.PointsMaterial({
-                    size: 0.03,
-                    color: 0xd4af37,
-                    transparent: true,
-                    opacity: 0.6
-                });
-                const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-                scene.add(particlesMesh);
-                
-                camera.position.z = 3;
-                
-                // Mouse movement
-                let mouseX = 0;
-                let mouseY = 0;
-                document.addEventListener('mousemove', (e) => {
-                    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-                    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-                });
-                
-                // Animation
-                function animate() {
-                    requestAnimationFrame(animate);
-                    particlesMesh.rotation.y += 0.0005;
-                    particlesMesh.rotation.x += mouseY * 0.001;
-                    particlesMesh.rotation.z += mouseX * 0.001;
-                    renderer.render(scene, camera);
-                }
-                animate();
-                
-                // Resize
-                window.addEventListener('resize', () => {
-                    camera.aspect = window.innerWidth / window.innerHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(window.innerWidth, window.innerHeight);
-                });
-            } catch(e) {
-                console.log('Three.js error:', e);
-            }
-        }
         
         // ===== NAV =====
         window.addEventListener('scroll', () => {
