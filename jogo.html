@@ -6,7 +6,8 @@
     <title>Jogo da Memória</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: 'Caveat', cursive;
             background: linear-gradient(135deg, #0a0a1a 0%, #1a0a20 100%);
@@ -17,15 +18,12 @@
             justify-content: center;
             padding: 1rem;
             color: #fff;
+            overflow-y: auto;
         }
         
-        .header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-        
+        .header { text-align: center; margin-bottom: 1rem; }
         .header h1 {
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 6vw, 3rem);
             background: linear-gradient(135deg, #ff2d55, #d4af37);
             -webkit-background-clip: text;
             background-clip: text;
@@ -34,23 +32,25 @@
         
         .stats {
             display: flex;
-            gap: 1.5rem;
+            gap: 1rem;
             justify-content: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            flex-wrap: wrap;
         }
         
         .stat {
-            background: rgba(255,255,255,0.08);
-            padding: 0.4rem 1.2rem;
+            background: rgba(255,255,255,0.06);
+            padding: 0.3rem 1rem;
             border-radius: 100px;
+            font-size: 1rem;
         }
         
         .grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 0.75rem;
-            max-width: 400px;
+            gap: 0.6rem;
+            max-width: 380px;
             width: 100%;
             perspective: 1000px;
         }
@@ -60,20 +60,18 @@
             position: relative;
             cursor: pointer;
             transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        .card.flipped {
-            transform: rotateY(180deg);
-        }
+        .card.flipped { transform: rotateY(180deg); }
         
         .card.matched {
-            animation: matchPulse 0.5s ease;
+            animation: pop 0.4s ease;
         }
         
-        @keyframes matchPulse {
+        @keyframes pop {
             0%, 100% { transform: rotateY(180deg) scale(1); }
-            50% { transform: rotateY(180deg) scale(1.1); }
+            50% { transform: rotateY(180deg) scale(1.15); }
         }
         
         .card-face {
@@ -83,20 +81,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
+            font-size: clamp(1.5rem, 5vw, 2.2rem);
             backface-visibility: hidden;
-            border: 2px solid rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.08);
         }
         
         .card-front {
             background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
-            transform: rotateY(0deg);
         }
         
         .card-front::after {
             content: '?';
-            font-size: 2rem;
-            color: rgba(255,255,255,0.3);
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.2);
             font-weight: 700;
         }
         
@@ -108,9 +105,73 @@
         .card.matched .card-back {
             background: linear-gradient(145deg, #1a3a1a 0%, #0a2a0a 100%);
             border-color: #34c759;
-            box-shadow: 0 0 15px rgba(52,199,89,0.3);
+            box-shadow: 0 0 12px rgba(52,199,89,0.3);
         }
         
+        /* Bot bully */
+        .bot-container {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+            z-index: 50;
+        }
+        
+        .bot-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ff2d55, #d4af37);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            animation: botBounce 2s ease-in-out infinite;
+            cursor: pointer;
+        }
+        
+        @keyframes botBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .bot-bubble {
+            background: white;
+            color: #1a1a1a;
+            padding: 0.8rem 1.2rem;
+            border-radius: 18px;
+            border-bottom-right-radius: 4px;
+            max-width: 280px;
+            font-size: 1rem;
+            line-height: 1.3;
+            opacity: 0;
+            transform: translateY(10px) scale(0.9);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .bot-bubble.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        .bot-bubble.shake {
+            animation: shake 0.5s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+        
+        /* Win screen */
         .win-screen {
             position: fixed;
             inset: 0;
@@ -126,7 +187,7 @@
         .win-screen.show { display: flex; }
         
         .win-screen h2 {
-            font-size: 3rem;
+            font-size: clamp(2.5rem, 8vw, 4rem);
             margin-bottom: 1rem;
             background: linear-gradient(135deg, #ff2d55, #d4af37);
             -webkit-background-clip: text;
@@ -135,65 +196,72 @@
         }
         
         .win-screen p {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #a1a1a6;
             text-align: center;
             margin-bottom: 2rem;
-            max-width: 400px;
+            max-width: 450px;
             line-height: 1.5;
         }
         
         .win-screen button {
-            padding: 1rem 2.5rem;
+            padding: 0.9rem 2.2rem;
             background: linear-gradient(135deg, #ff2d55, #d4af37);
             color: white;
             border: none;
             border-radius: 100px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            margin: 0.5rem;
+            margin: 0.4rem;
+            font-family: inherit;
         }
         
         .win-screen button:hover { transform: scale(1.05); }
-        
         .win-screen button.ghost {
             background: transparent;
             border: 1px solid #333;
             color: #888;
         }
         
-        .moves { color: #d4af37; }
+        .erros { color: #ff3b30; }
         
         @media (max-width: 400px) {
-            .grid { gap: 0.5rem; }
-            .card-face { font-size: 2rem; }
-            .header h1 { font-size: 2rem; }
+            .grid { gap: 0.4rem; }
+            .bot-container { bottom: 1rem; right: 1rem; }
         }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>Jogo da Memória</h1>
-        <p style="color:#6e6e73;font-size:1.1rem;">Acha todos os pares</p>
+        <p style="color:#6e6e73;">Acha os pares... se conseguir.</p>
     </div>
     
     <div class="stats">
-        <div class="stat">🎯 Movimentos: <span class="moves" id="moves">0</span></div>
+        <div class="stat">🎯 <span id="moves">0</span></div>
+        <div class="stat">❌ Erros: <span class="erros" id="erros">0</span></div>
         <div class="stat">⏱️ <span id="timer">0:00</span></div>
     </div>
     
     <div class="grid" id="grid"></div>
     
+    <!-- Bot bully -->
+    <div class="bot-container">
+        <div class="bot-bubble" id="botBubble"></div>
+        <div class="bot-avatar" onclick="botFala()">🤖</div>
+    </div>
+    
+    <!-- Win screens -->
     <div class="win-screen" id="winScreen">
         <h2>Você ganhou!</h2>
-        <p id="winMessage">Parabéns! Você encontrou todos os pares. Agora, sobre aquela pergunta...</p>
+        <p id="winMsg">Até que fim... Vamos ver a surpresa.</p>
         <button onclick="showPedido()">Ver surpresa</button>
     </div>
     
     <div class="win-screen" id="pedidoScreen">
         <h2>Quer namorar comigo?</h2>
-        <p>Eu fiz esse jogo pra você. Cada par que você encontrou, era um motivo pra eu te querer aqui. E aí, qual vai ser?</p>
+        <p>Eu fiz esse jogo pra você. Cada par era um motivo pra te querer aqui. E aí, qual vai ser?</p>
         <button onclick="aceitar()">Sim!</button>
         <button class="ghost" onclick="recusar()">Me dá tempo</button>
     </div>
@@ -201,7 +269,7 @@
     <div class="win-screen" id="aceitouScreen">
         <h2 style="font-size:3.5rem;">❤️</h2>
         <h2>Você disse sim!</h2>
-        <p>Agora eu sou o cara mais feliz do mundo. Vamos ser felizes juntos.</p>
+        <p>Sou o cara mais feliz. Vamos ser felizes juntos.</p>
     </div>
 
     <script>
@@ -210,18 +278,48 @@
         var flippedCards = [];
         var matchedPairs = 0;
         var moves = 0;
+        var errors = 0;
         var gameStarted = false;
         var timerInterval = null;
         var seconds = 0;
+        var botTimeout = null;
         
-        function shuffle(array) {
-            for (var i = array.length - 1; i > 0; i--) {
+        var falasErrado = [
+            'Kkkkk errou! Nem pra isso serve?',
+            'Fraca. Muito fraca.',
+            'Você é horrível nisso!',
+            'Meus avós jogam melhor.',
+            'Desiste, você não consegue.',
+            'Seu cérebro é do tamanho de um amendoim.',
+            'Eu vi um pato jogar melhor.',
+            'Isso foi triste de ver.',
+            'Você não nasceu pra isso.',
+            'Kkkk tenta de novo... se tiver coragem.',
+            'Ruim demais.',
+            'Você faz isso até eu dormir.',
+            'Até minha vó cega joga melhor.',
+            'Isso é uma piada, né?',
+            'Tu é a vergonha da profissão.',
+            'Desiste, vai.'
+        ];
+        
+        var falasDemorado = [
+            'Tá demorando muito... Tá difícil?',
+            'Você ainda tá aí? Pensei que tinha desistido.',
+            'Já vi tartaruga jogando mais rápido.',
+            'Seu reflexo é de lesma.',
+            'Isso tá triste de assistir.',
+            'Você não é tão inteligente quanto pensa.'
+        ];
+        
+        function shuffle(arr) {
+            for (var i = arr.length - 1; i > 0; i--) {
                 var j = Math.floor(Math.random() * (i + 1));
-                var temp = array[i];
-                array[i] = array[j];
-                array[j] = temp;
+                var t = arr[i];
+                arr[i] = arr[j];
+                arr[j] = t;
             }
-            return array;
+            return arr;
         }
         
         function init() {
@@ -231,17 +329,19 @@
             flippedCards = [];
             matchedPairs = 0;
             moves = 0;
+            errors = 0;
             seconds = 0;
             gameStarted = false;
             
             if (timerInterval) clearInterval(timerInterval);
             document.getElementById('moves').textContent = '0';
+            document.getElementById('erros').textContent = '0';
             document.getElementById('timer').textContent = '0:00';
             document.getElementById('winScreen').classList.remove('show');
             document.getElementById('pedidoScreen').classList.remove('show');
             document.getElementById('aceitouScreen').classList.remove('show');
+            document.getElementById('botBubble').classList.remove('show');
             
-            // Create pairs
             var pairs = [...emojis, ...emojis];
             shuffle(pairs);
             
@@ -262,7 +362,6 @@
             if (card.classList.contains('matched')) return;
             if (flippedCards.length >= 2) return;
             
-            // Start timer on first flip
             if (!gameStarted) {
                 gameStarted = true;
                 timerInterval = setInterval(function() {
@@ -270,6 +369,11 @@
                     var mins = Math.floor(seconds / 60);
                     var secs = seconds % 60;
                     document.getElementById('timer').textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+                    
+                    // Bot fala quando tá demorando
+                    if (seconds === 15 || seconds === 30 || seconds === 45 || seconds === 60) {
+                        botFala(falasDemorado[Math.floor(Math.random() * falasDemorado.length)]);
+                    }
                 }, 1000);
             }
             
@@ -281,7 +385,7 @@
                 document.getElementById('moves').textContent = moves;
                 
                 if (flippedCards[0].dataset.emoji === flippedCards[1].dataset.emoji) {
-                    // Match!
+                    // Acertou
                     setTimeout(function() {
                         flippedCards[0].classList.add('matched');
                         flippedCards[1].classList.add('matched');
@@ -291,27 +395,68 @@
                         if (matchedPairs === emojis.length) {
                             clearInterval(timerInterval);
                             setTimeout(function() {
-                                document.getElementById('winMessage').textContent = 
-                                    'Parabéns! Você encontrou todos os pares em ' + moves + ' movimentos e ' + formatTime(seconds) + '.';
+                                document.getElementById('winMsg').textContent = 
+                                    'Finalmente! Com ' + moves + ' jogadas e ' + errors + ' erros. Até que enfim.';
                                 document.getElementById('winScreen').classList.add('show');
+                                sumirBot();
                             }, 500);
                         }
                     }, 300);
                 } else {
-                    // No match
+                    // ERROU
+                    errors++;
+                    document.getElementById('erros').textContent = errors;
+                    
+                    // Bot fala zombando
+                    var fala = falasErrado[Math.floor(Math.random() * falasErrado.length)];
+                    botFala(fala);
+                    
+                    // Esconde as cartas
                     setTimeout(function() {
                         flippedCards[0].classList.remove('flipped');
                         flippedCards[1].classList.remove('flipped');
                         flippedCards = [];
+                        
+                        // Embaralha as cartas que não foram encontradas
+                        embaralharRestantes();
                     }, 800);
                 }
             }
         }
         
-        function formatTime(secs) {
-            var mins = Math.floor(secs / 60);
-            var s = secs % 60;
-            return mins + ':' + (s < 10 ? '0' : '') + s;
+        function embaralharRestantes() {
+            var grid = document.getElementById('grid');
+            var cardsNaoEncontradas = cards.filter(function(c) { return !c.classList.contains('matched'); });
+            var emojisNaoEncontrados = cardsNaoEncontradas.map(function(c) { return c.dataset.emoji; });
+            
+            // Embaralha os emojis
+            shuffle(emojisNaoEncontrados);
+            
+            // Reatribui os novos emojis às cartas
+            cardsNaoEncontradas.forEach(function(card, i) {
+                var novoEmoji = emojisNaoEncontrados[i];
+                card.dataset.emoji = novoEmoji;
+                card.querySelector('.card-back').textContent = novoEmoji;
+            });
+        }
+        
+        function botFala(texto) {
+            var bubble = document.getElementById('botBubble');
+            if (texto) bubble.textContent = texto;
+            bubble.classList.add('show', 'shake');
+            
+            if (botTimeout) clearTimeout(botTimeout);
+            botTimeout = setTimeout(function() {
+                bubble.classList.remove('shake');
+                setTimeout(function() {
+                    bubble.classList.remove('show');
+                }, 3000);
+            }, 500);
+        }
+        
+        function sumirBot() {
+            document.getElementById('botBubble').classList.remove('show');
+            document.querySelector('.bot-avatar').style.display = 'none';
         }
         
         function showPedido() {
@@ -325,7 +470,7 @@
         }
         
         function recusar() {
-            alert('Tudo bem. Eu entendo. Tô aqui quando você quiser. 💛');
+            alert('Tudo bem. Eu entendo. Tô aqui quando quiser. 💛');
             init();
         }
         
