@@ -1094,6 +1094,48 @@
 }
 .galeria-dot.active { background: var(--gold); transform: scale(1.2); }
 
+
+/* MÚSICA */
+.musica-container { max-width: 500px; margin: 2rem auto 0; }
+.musica-player {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1rem;
+}
+.musica-capa {
+    width: 50px; height: 50px; background: var(--gradient);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+}
+.musica-info h3 { font-size: 1rem; font-weight: 600; }
+.musica-info p { font-size: 0.8rem; color: var(--text-3); }
+.musica-botoes { margin-left: auto; }
+.musica-btn { font-size: 1.5rem; cursor: pointer; }
+.musica-lista { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.musica-item {
+    padding: 0.5rem 1rem; background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: 100px; font-size: 0.85rem;
+}
+
+/* FAQ */
+.faq-container { max-width: 600px; margin: 2rem auto 0; }
+.faq-item {
+    margin-bottom: 1rem; padding: 1.25rem;
+    background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px;
+}
+.faq-pergunta { font-weight: 600; margin-bottom: 0.5rem; }
+.faq-resposta { color: var(--text-2); font-size: 0.9rem; }
+
+/* COMPARTILHAR */
+.compartilhar-container {
+    display: flex; flex-wrap: wrap; gap: 1rem; max-width: 500px; margin: 2rem auto 0;
+}
+.compartilhar-btn {
+    flex: 1; min-width: 120px; padding: 1rem;
+    background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px;
+    text-align: center; color: var(--text); text-decoration: none;
+    transition: all 0.3s;
+}
+.compartilhar-btn:hover { border-color: var(--gold); transform: translateY(-2px); }
+
 /* MAP */
         .map-container { max-width: 800px; margin: 0 auto; }
         #map { height: 350px; border-radius: 16px; border: 1px solid var(--border); }
@@ -1174,6 +1216,7 @@
                 <li><a href="#sobre">Sobre</a></li>
                 <li><a href="#carta">Carta</a></li>
                 <li><a href="#candidatura">Candidatura</a></li>
+                <li><a href="#musica">Música</a></li>
                 <li><a href="#galeria">Fotos</a></li>
                 <li><a href="#localizacao">Mapa</a></li>
             </ul>
@@ -1253,6 +1296,76 @@
             <div class="form-submit">
                 <button type="button" class="btn btn-primary" id="sendWhatsApp">📱 Enviar pelo WhatsApp</button>
             </div>
+        </div>
+    </section>
+    
+    <!-- Player de Música -->
+    <section class="section" id="musica">
+        <p class="section-label">Música</p>
+        <h2 class="section-title">O que eu ando ouvindo.</h2>
+        <div class="musica-container">
+            <div class="musica-player">
+                <div class="musica-capa">🎵</div>
+                <div class="musica-info">
+                    <h3>Sertanejo & Pagode</h3>
+                    <p>Minha playlist atual</p>
+                </div>
+                <div class="musica-botoes">
+                    <span class="musica-btn">▶️</span>
+                </div>
+            </div>
+            <div class="musica-lista">
+                <div class="musica-item">🎵 Sertanejo Universitário</div>
+                <div class="musica-item">🎵 Pagode</div>
+                <div class="musica-item">🎵 Gospel</div>
+                <div class="musica-item">🎵 Funk</div>
+                <div class="musica-item">🎵 Rock</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ -->
+    <section class="section" id="faq">
+        <p class="section-label">Perguntas</p>
+        <h2 class="section-title">Dúvidas comuns.</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-pergunta">Você fuma ou bebe?</div>
+                <div class="faq-resposta">Não bebo e não fumo. Nunca gostei disso.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-pergunta">Você namora?</div>
+                <div class="faq-resposta">Tô solteiro. Esperei a pessoa certa aparecer.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-pergunta">Você quer filhos?</div>
+                <div class="faq-resposta">Quero sim. Construir uma família é um dos meus objetivos.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-pergunta">Você é religioso?</div>
+                <div class="faq-resposta">Sim, servo a Deus. Fé é prioridade pra mim.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-pergunta">Você mora sozinho?</div>
+                <div class="faq-resposta">Moro em Recife, PE. Disponível pra quem quiser aparecer.</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Compartilhar -->
+    <section class="section" id="compartilhar">
+        <p class="section-label">Compartilhar</p>
+        <h2 class="section-title">Curtiu? Manda pra alguém.</h2>
+        <div class="compartilhar-container">
+            <a href="https://wa.me/?text=Vem%20conhecer%20o%20Rubens!%20https://rubenspereirafernandes.github.io/curriculo-premium/" class="compartilhar-btn" target="_blank">
+                WhatsApp
+            </a>
+            <a href="https://t.me/share/url?url=https://rubenspereirafernandes.github.io/curriculo-premium/" class="compartilhar-btn" target="_blank">
+                Telegram
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://rubenspereirafernandes.github.io/curriculo-premium/" class="compartilhar-btn" target="_blank">
+                Facebook
+            </a>
         </div>
     </section>
     
