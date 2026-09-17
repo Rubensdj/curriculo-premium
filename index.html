@@ -395,6 +395,330 @@
 .letter-paper p { margin-bottom: 1rem; line-height: 1.7; }
 .letter-paper .sign { margin-top: 1.5rem; font-weight: 600; }
 
+
+/* REALISTIC DOG */
+.pet-scene {
+    position: relative;
+    height: 420px;
+    max-width: 650px;
+    margin: 2rem auto 0;
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #1a1510 100%);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+.scene-ground {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(180deg, transparent 0%, rgba(101, 67, 33, 0.3) 100%);
+    border-top: 2px solid rgba(101, 67, 33, 0.4);
+}
+
+/* Dog container */
+.pet-dog {
+    position: absolute;
+    bottom: 80px;
+    left: -120px;
+    animation: dog-walk 5s ease-in-out forwards;
+    animation-delay: 1.5s;
+    z-index: 5;
+}
+@keyframes dog-walk {
+    0% { left: -120px; }
+    40% { left: calc(50% - 60px); }
+    100% { left: calc(50% - 60px); }
+}
+
+/* Dog body */
+.dog-body {
+    width: 120px;
+    height: 70px;
+    background: linear-gradient(180deg, #d4a574 0%, #b8956a 50%, #a07850 100%);
+    border-radius: 50px 60px 40px 40px;
+    position: relative;
+    box-shadow: inset 0 -10px 20px rgba(0,0,0,0.1);
+}
+
+/* Dog head */
+.dog-head {
+    position: absolute;
+    top: -35px;
+    left: 60px;
+    width: 70px;
+    height: 60px;
+    background: linear-gradient(135deg, #d4a574 0%, #c49a6c 100%);
+    border-radius: 50% 50% 45% 45%;
+    box-shadow: inset 0 -5px 10px rgba(0,0,0,0.1);
+}
+
+/* Ears */
+.dog-ear {
+    position: absolute;
+    top: -5px;
+    width: 25px;
+    height: 35px;
+    background: linear-gradient(135deg, #a07850 0%, #8b6540 100%);
+    border-radius: 50% 50% 30% 30%;
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.2);
+}
+.dog-ear.left { left: -5px; transform: rotate(-25deg); animation: ear-flop 2s ease-in-out infinite; }
+.dog-ear.right { right: -5px; transform: rotate(25deg); animation: ear-flop 2s ease-in-out infinite 0.5s; }
+@keyframes ear-flop {
+    0%, 100% { transform: rotate(-25deg) scaleY(1); }
+    50% { transform: rotate(-30deg) scaleY(0.95); }
+}
+.dog-ear.right { animation-name: ear-flop-r; }
+@keyframes ear-flop-r {
+    0%, 100% { transform: rotate(25deg) scaleY(1); }
+    50% { transform: rotate(30deg) scaleY(0.95); }
+}
+
+/* Eyes */
+.dog-eye {
+    position: absolute;
+    top: 15px;
+    width: 16px;
+    height: 18px;
+    background: white;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: inset 0 2px 3px rgba(0,0,0,0.2);
+}
+.dog-eye.left { left: 12px; }
+.dog-eye.right { right: 12px; }
+.dog-pupil {
+    width: 10px;
+    height: 12px;
+    background: #2c1810;
+    border-radius: 50%;
+    margin: 3px auto;
+    position: relative;
+    animation: look-around 3s ease-in-out infinite;
+}
+.dog-pupil::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+}
+@keyframes look-around {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(2px); }
+    75% { transform: translateX(-2px); }
+}
+
+/* Snout */
+.dog-snout {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 30px;
+    background: linear-gradient(180deg, #e8c9a0 0%, #d4a574 100%);
+    border-radius: 50% 50% 40% 40%;
+}
+
+/* Nose */
+.dog-nose {
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 10px;
+    background: #2c1810;
+    border-radius: 50% 50% 40% 40%;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.3);
+}
+
+/* Mouth with letter */
+.dog-mouth {
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 15px;
+}
+.dog-letter {
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5rem;
+    animation: letter-wiggle 0.4s ease-in-out infinite;
+}
+@keyframes letter-wiggle {
+    0%, 100% { transform: translateX(-50%) rotate(-8deg); }
+    50% { transform: translateX(-50%) rotate(8deg); }
+}
+
+/* Tongue */
+.dog-tongue {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 10px;
+    background: #ff6b8a;
+    border-radius: 0 0 50% 50%;
+    opacity: 0;
+    animation: tongue-pant 1s ease-in-out infinite;
+}
+@keyframes tongue-pant {
+    0%, 100% { opacity: 0.7; transform: translateX(-50%) scaleY(1); }
+    50% { opacity: 1; transform: translateX(-50%) scaleY(1.2); }
+}
+
+/* Tail */
+.dog-tail {
+    position: absolute;
+    top: 10px;
+    left: -20px;
+    width: 35px;
+    height: 12px;
+    background: linear-gradient(90deg, #a07850 0%, #d4a574 100%);
+    border-radius: 10px;
+    transform-origin: right;
+    animation: tail-wag 0.25s ease-in-out infinite;
+}
+@keyframes tail-wag {
+    0%, 100% { transform: rotate(-30deg); }
+    50% { transform: rotate(30deg); }
+}
+
+/* Legs */
+.dog-leg {
+    position: absolute;
+    bottom: -15px;
+    width: 14px;
+    height: 22px;
+    background: linear-gradient(180deg, #b8956a 0%, #8b6540 100%);
+    border-radius: 8px 8px 5px 5px;
+    box-shadow: inset 0 -3px 5px rgba(0,0,0,0.2);
+}
+.dog-leg.fl { left: 20px; animation: leg-walk 0.5s ease-in-out infinite; }
+.dog-leg.fr { left: 38px; animation: leg-walk 0.5s ease-in-out infinite 0.25s; }
+.dog-leg.bl { right: 35px; animation: leg-walk 0.5s ease-in-out infinite 0.25s; }
+.dog-leg.br { right: 17px; animation: leg-walk 0.5s ease-in-out infinite; }
+@keyframes leg-walk {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-8px) rotate(-10deg); }
+    75% { transform: translateY(-4px) rotate(5deg); }
+}
+
+/* Speech bubble */
+.speech-bubble {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    color: #333;
+    padding: 0.75rem 1.25rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    opacity: 0;
+    animation: bubble-pop 5s ease-in-out forwards;
+    animation-delay: 1.5s;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+.speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 10px solid transparent;
+    border-top-color: white;
+}
+@keyframes bubble-pop {
+    0%, 30% { opacity: 0; transform: translateX(-50%) scale(0.8); }
+    40% { opacity: 1; transform: translateX(-50%) scale(1); }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Flying letter */
+.flying-letter {
+    position: absolute;
+    bottom: 150px;
+    left: 50%;
+    transform: translateX(-50%) scale(0) rotate(0deg);
+    opacity: 0;
+    animation: fly-letter 5s ease-in-out forwards;
+    animation-delay: 1.5s;
+    cursor: pointer;
+    z-index: 15;
+}
+@keyframes fly-letter {
+    0%, 45% { transform: translateX(-50%) scale(0) rotate(0deg); opacity: 0; }
+    55% { transform: translateX(-50%) scale(1.2) rotate(15deg); opacity: 1; }
+    65% { transform: translateX(-50%) scale(1) rotate(-5deg); opacity: 1; bottom: 250px; }
+    100% { transform: translateX(-50%) scale(1) rotate(0deg); opacity: 1; bottom: 280px; }
+}
+.fly-env {
+    width: 55px;
+    height: 42px;
+    background: linear-gradient(135deg, #f5f0e0 0%, #e8e0d0 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    position: relative;
+    transition: transform 0.3s;
+}
+.fly-env:hover { transform: scale(1.1) rotate(5deg); }
+.fly-env span { font-size: 1.4rem; }
+.fly-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, #e0d8c8 0%, #d4ccbc 100%);
+    clip-path: polygon(0 0, 50% 100%, 100% 0);
+    border-radius: 8px 8px 0 0;
+}
+
+/* Letter opened */
+.letter-opened {
+    position: absolute;
+    inset: 0;
+    background: rgba(5,5,5,0.95);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    z-index: 20;
+}
+.letter-opened.show { display: flex; }
+.opened-card {
+    max-width: 450px;
+    background: #faf8f0;
+    border-radius: 12px;
+    padding: 2.5rem;
+    color: #1a1a1a;
+    font-family: 'Georgia', serif;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.opened-card h3 { font-size: 1.3rem; margin-bottom: 1rem; }
+.opened-card p { margin-bottom: 1rem; line-height: 1.7; font-size: 0.95rem; }
+.opened-card .sign { margin-top: 1.5rem; font-weight: 600; }
+.opened-card .btn { margin-top: 1.5rem; }
+
 /* MAP */
         .map-container { max-width: 800px; margin: 0 auto; }
         #map { height: 350px; border-radius: 16px; border: 1px solid var(--border); }
@@ -526,25 +850,52 @@
     
     <!-- CARTA -->
     <section class="section" id="carta">
-        <p class="section-label">Carta pra você</p>
-        <h2 class="section-title">Abra com calma.</h2>
-        <div class="env-wrapper">
-            <div class="env-container" id="envContainer">
-                <div class="env-flap"></div>
-                <div class="env-body">
-                    <div class="env-stamp">❤️</div>
-                    <p class="env-to">Pra você</p>
+        <p class="section-label">Entrega especial</p>
+        <h2 class="section-title">Seu cartão chegou!</h2>
+        <div class="pet-scene">
+            <div class="scene-ground"></div>
+            <div class="pet-dog" id="petDog">
+                <div class="dog-body">
+                    <div class="dog-tail"></div>
+                    <div class="dog-head">
+                        <div class="dog-ear left"></div>
+                        <div class="dog-ear right"></div>
+                        <div class="dog-snout">
+                            <div class="dog-nose"></div>
+                            <div class="dog-mouth">
+                                <div class="dog-letter">💌</div>
+                            </div>
+                        </div>
+                        <div class="dog-eye left">
+                            <div class="dog-pupil"></div>
+                        </div>
+                        <div class="dog-eye right">
+                            <div class="dog-pupil"></div>
+                        </div>
+                        <div class="dog-tongue"></div>
+                    </div>
+                    <div class="dog-leg fl"></div>
+                    <div class="dog-leg fr"></div>
+                    <div class="dog-leg bl"></div>
+                    <div class="dog-leg br"></div>
                 </div>
             </div>
-            <p class="env-hint" id="envHint">Clique no envelope</p>
-            <div class="env-letter" id="envLetter">
-                <div class="letter-paper">
-                    <p>Querido(a) futuro(a) de mim,</p>
-                    <p>Se você chegou até aqui, algo em mim te chamou atenção.</p>
+            <div class="speech-bubble" id="speechBubble">Au au! Essa é pra você! 🐾</div>
+            <div class="flying-letter" id="flyingLetter">
+                <div class="fly-env">
+                    <div class="fly-flap"></div>
+                    <span>❤️</span>
+                </div>
+            </div>
+            <div class="letter-opened" id="letterOpened">
+                <div class="opened-card">
+                    <h3>Pra você,</h3>
+                    <p>Se chegou até aqui, é porque algo em mim te chamou atenção.</p>
                     <p>Sou o Rubens. 26 anos, Recife. Programador, trabalhador, caseiro quando quer.</p>
                     <p>Não bebo, não fumo, nunca namorei. Esperei a pessoa certa.</p>
-                    <p>Esperei alguém pra caminhar junto, servir a Deus, construir família.</p>
+                    <p>Esperei alguém pra caminhar junto, servir a Deus, construir família, rir do nada.</p>
                     <p class="sign">Com esperança,<br><strong>Rubens Pereira Fernandes</strong></p>
+                    <button class="btn btn-primary" onclick="document.getElementById('letterOpened').classList.remove('show')">Fechar</button>
                 </div>
             </div>
         </div>
@@ -612,11 +963,9 @@
             document.getElementById('mobileMenu').classList.toggle('active');
         };
         
-        // ENVELOPE
-        document.getElementById('envContainer').onclick = function() {
-            this.classList.toggle('open');
-            document.getElementById('envHint').classList.toggle('hide');
-            document.getElementById('envLetter').classList.toggle('show');
+        // DOG LETTER
+        document.getElementById('flyingLetter').onclick = function() {
+            document.getElementById('letterOpened').classList.add('show');
         };
         
         // MAP
