@@ -920,6 +920,110 @@
 .delivery-card .sign { margin-top: 1.2rem; font-weight: 600; }
 .delivery-card .btn { margin-top: 1.2rem; }
 
+
+/* FACEBOOK CHAT */
+.chat-facebook {
+    max-width: 450px;
+    margin: 2rem auto 0;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+}
+.chat-fb-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    background: var(--bg-3);
+    border-bottom: 1px solid var(--border);
+}
+.chat-fb-avatar {
+    width: 38px;
+    height: 38px;
+    background: var(--gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+.chat-fb-info strong { display: block; font-size: 0.9rem; }
+.chat-fb-online { font-size: 0.7rem; color: #34c759; }
+.chat-fb-messages {
+    padding: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.chat-fb-time {
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--text-3);
+    margin: 0.5rem 0;
+}
+.chat-fb-bubble {
+    max-width: 80%;
+    padding: 0.6rem 0.9rem;
+    border-radius: 18px;
+    position: relative;
+    animation: msg-pop 0.3s ease;
+}
+@keyframes msg-pop {
+    0% { opacity: 0; transform: translateY(10px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.chat-fb-bubble.received {
+    background: var(--bg-3);
+    border-bottom-left-radius: 4px;
+    align-self: flex-start;
+}
+.chat-fb-bubble p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin-bottom: 0.2rem;
+}
+.chat-fb-time-bubble {
+    font-size: 0.6rem;
+    color: var(--text-3);
+    display: block;
+    text-align: right;
+}
+.chat-fb-typing {
+    display: none;
+    align-self: flex-start;
+    padding: 0.6rem 0.9rem;
+    background: var(--bg-3);
+    border-radius: 18px;
+    border-bottom-left-radius: 4px;
+    gap: 3px;
+}
+.chat-fb-typing span {
+    width: 6px;
+    height: 6px;
+    background: var(--text-3);
+    border-radius: 50%;
+    animation: typing-dot 1.4s ease-in-out infinite;
+}
+.chat-fb-typing span:nth-child(2) { animation-delay: 0.2s; }
+.chat-fb-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing-dot {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-5px); opacity: 1; }
+}
+.chat-fb-input {
+    padding: 0.75rem;
+    background: var(--bg-3);
+    border-top: 1px solid var(--border);
+}
+
 /* MAP */
         .map-container { max-width: 800px; margin: 0 auto; }
         #map { height: 350px; border-radius: 16px; border: 1px solid var(--border); }
@@ -1049,49 +1153,46 @@
         <p class="section-desc">Alguém que acorda todo dia com propósito. Trabalhador, determinado, e acima de tudo, alguém que quer fazer da vida uma história que vale a pena contar — ao lado de alguém especial.</p>
     </section>
     
-    <!-- CARTA -->
+    <!-- Chat -->
     <section class="section" id="carta">
-        <p class="section-label">Entrega especial</p>
-        <h2 class="section-title">Seu cartório está a caminho!</h2>
-        <div class="delivery-scene">
-            <div class="delivery-ground"></div>
-            <div class="delivery-dog" id="deliveryDog">
-                <div class="delivery-dog-body">
-                    <div class="delivery-tail"></div>
-                    <div class="delivery-head">
-                        <div class="delivery-ear left"></div>
-                        <div class="delivery-ear right"></div>
-                        <div class="delivery-eye left"><div class="delivery-pupil"></div></div>
-                        <div class="delivery-eye right"><div class="delivery-pupil"></div></div>
-                        <div class="delivery-snout">
-                            <div class="delivery-nose"></div>
-                            <div class="delivery-mouth">
-                                <span class="delivery-letter">💌</span>
-                            </div>
-                        </div>
-                        <div class="delivery-tongue"></div>
-                    </div>
-                    <div class="delivery-leg fl"></div>
-                    <div class="delivery-leg fr"></div>
-                    <div class="delivery-leg bl"></div>
-                    <div class="delivery-leg br"></div>
+        <p class="section-label">Mensagem</p>
+        <h2 class="section-title">Você tem uma mensagem.</h2>
+        <div class="chat-facebook">
+            <div class="chat-fb-header">
+                <div class="chat-fb-avatar">R</div>
+                <div class="chat-fb-info">
+                    <strong>Rubens Pereira Fernandes</strong>
+                    <span class="chat-fb-online">● online agora</span>
                 </div>
-                <div class="delivery-bark" id="deliveryBark">Au au!</div>
             </div>
-            <div class="delivery-envelope" id="deliveryEnvelope">
-                <div class="delivery-env-flap"></div>
-                <span>❤️</span>
-            </div>
-            <div class="delivery-opened" id="deliveryOpened">
-                <div class="delivery-card">
-                    <h3>Pra você,</h3>
-                    <p>Se chegou até aqui, é porque algo em mim te chamou atenção.</p>
-                    <p>Sou o Rubens. 26 anos, Recife. Programador, trabalhador, caseiro quando quer.</p>
+            <div class="chat-fb-messages" id="chatMessages">
+                <div class="chat-fb-time">Hoje, 14:30</div>
+                <div class="chat-fb-bubble received">
+                    <p>Ei, tudo bem?</p>
+                    <span class="chat-fb-time-bubble">14:30</span>
+                </div>
+                <div class="chat-fb-bubble received">
+                    <p>Vi que você visitou meu perfil. Obrigado por isso.</p>
+                    <span class="chat-fb-time-bubble">14:31</span>
+                </div>
+                <div class="chat-fb-bubble received">
+                    <p>Me chamo Rubens. 26 anos, Recife. Programador e trabalhador.</p>
+                    <span class="chat-fb-time-bubble">14:32</span>
+                </div>
+                <div class="chat-fb-bubble received">
                     <p>Não bebo, não fumo, nunca namorei. Esperei a pessoa certa.</p>
-                    <p>Esperei alguém pra caminhar junto, servir a Deus, construir família.</p>
-                    <p class="sign">Com esperança,<br><strong>Rubens Pereira Fernandes</strong></p>
-                    <button class="btn btn-primary" onclick="fecharCarta()">Fechar carta</button>
+                    <span class="chat-fb-time-bubble">14:33</span>
                 </div>
+                <div class="chat-fb-bubble received">
+                    <p>Se quiser me conhecer melhor, me responde aqui. 😊</p>
+                    <span class="chat-fb-time-bubble">14:34</span>
+                </div>
+                <div class="chat-fb-typing" id="typingIndicator">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+            <div class="chat-fb-input">
+                <a href="#candidatura" class="btn btn-primary" style="width:100%;justify-content:center;">💬 Responder mensagem</a>
             </div>
         </div>
     </section>
@@ -1158,66 +1259,50 @@
             document.getElementById('mobileMenu').classList.toggle('active');
         };
         
-        // DELIVERY DOG
+        // CHAT NOTIFICATION SOUND
         (function() {
-            var dog = document.getElementById('deliveryDog');
-            var bark = document.getElementById('deliveryBark');
-            var envelope = document.getElementById('deliveryEnvelope');
-            var opened = document.getElementById('deliveryOpened');
-            var delivered = false;
+            var audioCtx = null;
             
-            // Dog walks in after 1s
-            setTimeout(function() {
-                dog.classList.add('arrived');
-            }, 1000);
+            function playNotification() {
+                try {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    
+                    // First ding
+                    var osc1 = audioCtx.createOscillator();
+                    var gain1 = audioCtx.createGain();
+                    osc1.connect(gain1);
+                    gain1.connect(audioCtx.destination);
+                    osc1.frequency.value = 1200;
+                    osc1.type = 'sine';
+                    gain1.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain1.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                    osc1.start(audioCtx.currentTime);
+                    osc1.stop(audioCtx.currentTime + 0.15);
+                    
+                    // Second ding (Facebook style)
+                    setTimeout(function() {
+                        var osc2 = audioCtx.createOscillator();
+                        var gain2 = audioCtx.createGain();
+                        osc2.connect(gain2);
+                        gain2.connect(audioCtx.destination);
+                        osc2.frequency.value = 1600;
+                        osc2.type = 'sine';
+                        gain2.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                        gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                        osc2.start(audioCtx.currentTime);
+                        osc2.stop(audioCtx.currentTime + 0.2);
+                    }, 100);
+                } catch(e) {}
+            }
             
-            // Show bark after 2s
-            setTimeout(function() {
-                bark.classList.add('show');
-            }, 2000);
+            // Play sound after 0.5s
+            setTimeout(playNotification, 500);
             
-            // Hide bark after 4s
+            // Show typing indicator after 4s
             setTimeout(function() {
-                bark.classList.remove('show');
+                document.getElementById('typingIndicator').style.display = 'flex';
             }, 4000);
-            
-            // Show envelope after 3s
-            setTimeout(function() {
-                envelope.classList.add('show');
-            }, 3000);
-            
-            // Click envelope to open
-            envelope.onclick = function() {
-                if (delivered) return;
-                delivered = true;
-                opened.classList.add('show');
-                bark.textContent = 'Au au au! 🐾';
-                bark.classList.add('show');
-                // Dog leaves after 1s
-                setTimeout(function() {
-                    dog.classList.add('leaving');
-                    bark.classList.remove('show');
-                }, 1500);
-            };
         })();
-        
-        function fecharCarta() {
-            var dog = document.getElementById('deliveryDog');
-            var bark = document.getElementById('deliveryBark');
-            var envelope = document.getElementById('deliveryEnvelope');
-            var opened = document.getElementById('deliveryOpened');
-            
-            opened.classList.remove('show');
-            dog.classList.remove('leaving');
-            dog.classList.add('arrived');
-            bark.textContent = 'Au au! De novo!';
-            bark.classList.add('show');
-            envelope.classList.add('show');
-            
-            setTimeout(function() {
-                bark.classList.remove('show');
-            }, 3000);
-        }
         
         // MAP
         if (typeof L !== 'undefined') {
