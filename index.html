@@ -5,23 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rubens — Pra você que chegou até aqui</title>
     <meta name="description" content="Rubens, 26 anos, Recife. Busco alguém pra caminhar comigo, pra servir a Deus e pra viver algo real.">
-    <meta name="theme-color" content="#000000">
     
-    <!-- Open Graph -->
-    <meta property="og:title" content="Rubens — Pra você que chegou até aqui">
-    <meta property="og:description" content="26 anos, Recife. Busco alguém pra caminhar comigo.">
-    
-    <!-- Three.js disabled -->
-    <!-- GSAP -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -35,750 +23,333 @@
             --text-2: #a1a1a6;
             --text-3: #6e6e73;
             --accent: #ff2d55;
-            --accent-2: #ff6b8a;
             --gold: #d4af37;
-            --purple: #bf5af2;
-            --blue: #0071e3;
             --gradient: linear-gradient(135deg, #ff2d55, #d4af37);
-            --gradient-2: linear-gradient(135deg, #bf5af2, #ff2d55);
         }
         
-        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        html { scroll-behavior: smooth; }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', sans-serif;
             background: var(--bg);
             color: var(--text);
             overflow-x: hidden;
             line-height: 1.6;
         }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
-        
-        /* ===== TERMS OVERLAY ===== */
+
+        /* TERMS */
         .terms-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.97);
+            background: rgba(5,5,5,0.99);
             z-index: 999999;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 1rem;
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
         }
         .terms-overlay.hidden { display: none !important; }
         .terms-container {
-            max-width: 650px;
+            max-width: 600px;
             width: 100%;
             max-height: 90vh;
             background: var(--bg-2);
             border: 1px solid var(--border);
-            border-radius: 24px;
+            border-radius: 20px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
-        .terms-header {
-            text-align: center;
-            padding: 2rem 2rem 1rem;
-            border-bottom: 1px solid var(--border);
-        }
+        .terms-header { text-align: center; padding: 1.5rem; border-bottom: 1px solid var(--border); }
         .terms-logo {
-            width: 70px;
-            height: 70px;
+            width: 60px; height: 60px;
             background: var(--gradient);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2rem;
-            font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.5rem; font-weight: 700;
             margin: 0 auto 1rem;
-            font-family: 'Playfair Display', serif;
         }
-        .terms-header h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.25rem; }
-        .terms-header p { color: var(--text-3); font-size: 0.9rem; }
-        .terms-body {
-            flex: 1;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        .terms-scroll { padding: 2rem; }
-        .terms-welcome { font-size: 1.1rem; margin-bottom: 1.5rem; line-height: 1.6; }
+        .terms-header h2 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+        .terms-header p { color: var(--text-3); font-size: 0.85rem; }
+        .terms-body { flex: 1; overflow-y: auto; padding: 1.5rem; }
         .terms-clause {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            padding: 1.25rem;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            transition: all 0.3s;
+            display: flex; gap: 1rem; margin-bottom: 1rem;
+            padding: 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
         }
-        .terms-clause:hover { border-color: rgba(212,175,55,0.3); }
         .clause-num {
-            width: 36px;
-            height: 36px;
-            background: var(--gradient);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 0.9rem;
-            flex-shrink: 0;
+            width: 32px; height: 32px;
+            background: var(--gradient); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
         }
-        .clause-content h4 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
-        .clause-content p { color: var(--text-2); font-size: 0.88rem; line-height: 1.6; }
-        .terms-acceptance {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: var(--accent-3);
-            border: 1px solid var(--accent);
-            border-radius: 14px;
+        .clause-content h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+        .clause-content p { color: var(--text-2); font-size: 0.85rem; line-height: 1.5; }
+        .terms-accept {
+            margin-top: 1.5rem; padding: 1rem;
+            background: rgba(255,45,85,0.1); border: 1px solid var(--accent); border-radius: 12px;
         }
-        .terms-checkbox-label {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            cursor: pointer;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            color: var(--text);
+        .terms-accept label {
+            display: flex; align-items: flex-start; gap: 0.75rem;
+            cursor: pointer; font-size: 0.9rem; line-height: 1.4;
         }
-        .terms-checkbox-label input[type="checkbox"] { display: none; }
-        .terms-checkbox-box {
-            width: 26px;
-            height: 26px;
-            border: 2px solid var(--accent);
-            border-radius: 8px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .terms-accept input { display: none; }
+        .terms-check {
+            width: 22px; height: 22px;
+            border: 2px solid var(--accent); border-radius: 6px;
+            flex-shrink: 0; display: flex; align-items: center; justify-content: center;
             transition: all 0.3s;
-            margin-top: 2px;
         }
-        .terms-checkbox-label input:checked + .terms-checkbox-box { background: var(--accent); }
-        .terms-checkbox-label input:checked + .terms-checkbox-box::after {
-            content: '✓'; color: white; font-weight: 700; font-size: 0.9rem;
-        }
-        .terms-footer {
-            padding: 1.5rem 2rem;
-            border-top: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
+        .terms-accept input:checked + .terms-check { background: var(--accent); }
+        .terms-accept input:checked + .terms-check::after { content: '✓'; color: white; font-weight: 700; font-size: 0.8rem; }
+        .terms-footer { padding: 1.5rem; border-top: 1px solid var(--border); }
         .terms-footer .btn { width: 100%; justify-content: center; }
-        .terms-note { text-align: center; font-size: 0.8rem; color: var(--text-3); margin-top: 0.5rem; }
-        
 
-        
-        /* ===== NAV ===== */
+        /* NAV */
         .nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 9999;
-            padding: 1rem 2rem;
-            transition: background 0.4s, backdrop-filter 0.4s;
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 9999; padding: 1rem 2rem;
+            transition: background 0.3s;
         }
-        .nav.scrolled {
-            background: rgba(5,5,5,0.85);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-        }
+        .nav.scrolled { background: rgba(5,5,5,0.9); backdrop-filter: blur(20px); }
         .nav-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 50px;
+            max-width: 1200px; margin: 0 auto; height: 50px;
+            display: flex; justify-content: space-between; align-items: center;
         }
         .nav-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-decoration: none;
+            font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700;
+            background: var(--gradient); -webkit-background-clip: text;
+            background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none;
         }
-        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-        .nav-links a {
-            color: var(--text-2);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { color: var(--text-2); text-decoration: none; font-size: 0.85rem; transition: color 0.3s; }
         .nav-links a:hover { color: var(--text); }
         .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
-        .hamburger-line { display: block; width: 22px; height: 2px; background: var(--text); margin: 5px 0; }
+        .hamburger-line { display: block; width: 20px; height: 2px; background: var(--text); margin: 4px 0; }
         .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 70px;
-            left: 0;
-            right: 0;
-            background: var(--bg-2);
-            padding: 1rem;
-            border-bottom: 1px solid var(--border);
+            display: none; position: fixed; top: 70px; left: 0; right: 0;
+            background: var(--bg-2); padding: 1rem; border-bottom: 1px solid var(--border);
         }
         .mobile-menu.active { display: block; }
         .mobile-menu a { display: block; padding: 0.75rem 1rem; color: var(--text); text-decoration: none; }
-        
-        /* ===== HERO ===== */
+
+        /* HERO */
         .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            padding: 2rem;
-        }
-        #three-canvas { display: none !important; }
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(5,5,5,0.4) 0%, rgba(5,5,5,0.7) 100%);
-            z-index: 1;
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 6rem 2rem 2rem; background: var(--bg);
         }
         .hero-split {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 4rem;
-            align-items: center;
-            max-width: 1100px;
-            margin: 0 auto;
-            width: 100%;
-            z-index: 2;
-            position: relative;
-            padding: 0 2rem;
+            display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: center;
+            max-width: 1100px; margin: 0 auto; width: 100%;
         }
-        .hero-left { display: flex; flex-direction: column; align-items: center; gap: 2rem; }
-        .hero-right { text-align: left; }
-        
         .hero-avatar {
-            width: 280px;
-            height: 380px;
-            border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.15);
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-            transition: transform 0.5s ease;
+            width: 250px; height: 340px; border-radius: 20px;
+            border: 1px solid var(--border); overflow: hidden; position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
-        .hero-avatar:hover { transform: scale(1.02); }
-        .hero-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: top;
-        }
-        .hero-avatar::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 40%;
-            background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
-            z-index: 1;
-            pointer-events: none;
-        }
-        .hero-social {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        .social-link {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-            background: var(--bg-2);
-            text-decoration: none;
-        }
-        .social-link:hover {
-            border-color: var(--accent);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(255,45,85,0.3);
-        }
-        
-        .hero-greeting {
-            font-size: clamp(1rem, 2vw, 1.25rem) !important;
-            font-weight: 300 !important;
-            color: var(--text-2) !important;
-            background: none !important;
-            -webkit-text-fill-color: var(--text-2) !important;
-            animation: none !important;
-        }
-        .hero-title {
+        .hero-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+        .hero-right h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(3rem, 10vw, 7rem);
-            font-weight: 600;
-            line-height: 1;
-            margin: 1rem 0;
-            letter-spacing: -0.03em;
+            font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 600;
+            line-height: 1; margin-bottom: 1rem; letter-spacing: -0.02em;
         }
-        .gradient-shine {
-            background: linear-gradient(90deg, #fff 0%, #d4af37 25%, #ff2d55 50%, #d4af37 75%, #fff 100%);
-            background-size: 300% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: nameshine 4s linear infinite;
-            filter: drop-shadow(0 0 20px rgba(212,175,55,0.3));
+        .gradient-text {
+            background: var(--gradient); -webkit-background-clip: text;
+            background-clip: text; -webkit-text-fill-color: transparent;
         }
-        @keyframes nameshine {
-            0% { background-position: 0% center; }
-            100% { background-position: 300% center; }
+        .hero-subtitle { color: var(--text-2); font-size: 1.1rem; margin-bottom: 1.5rem; max-width: 500px; }
+        .hero-meta {
+            display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;
         }
-        .hero-tagline {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: clamp(1.25rem, 3vw, 1.75rem) !important;
-            color: var(--text-2) !important;
-            background: none !important;
-            -webkit-text-fill-color: var(--text-2) !important;
-            animation: none !important;
+        .hero-meta span {
+            padding: 0.4rem 0.8rem; background: var(--bg-2);
+            border: 1px solid var(--border); border-radius: 100px; font-size: 0.85rem; color: var(--text-2);
         }
-        
-        .hero-info-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-        .info-item {
-            display: flex;
-            flex-direction: column;
-            padding: 1rem;
-            background: var(--bg-2);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
-        .info-item:hover {
-            border-color: rgba(212,175,55,0.3);
-            transform: translateY(-2px);
-        }
-        .info-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-3);
-            margin-bottom: 0.25rem;
-        }
-        .info-value { font-size: 1rem; font-weight: 600; }
-        
-        .hero-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-        .tag {
-            padding: 0.4rem 1rem;
-            background: var(--bg-3);
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            font-size: 0.8rem;
-            color: var(--text-2);
-            transition: all 0.3s ease;
-        }
-        .tag:hover {
-            background: var(--accent-3);
-            border-color: var(--accent);
-            color: var(--text);
-        }
-        .hero-subtitle {
-            color: var(--text-2);
-            font-size: 1rem;
-            font-weight: 300;
-            margin-bottom: 2rem;
-            max-width: 500px;
-        }
-        .hero-cta {
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-start;
-            flex-wrap: wrap;
-        }
+        .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
         .btn {
-            padding: 0.9rem 2.5rem;
-            border-radius: 100px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-            border: none;
-            letter-spacing: 0.01em;
+            padding: 0.85rem 2rem; border-radius: 100px; font-size: 0.95rem;
+            font-weight: 500; text-decoration: none; cursor: pointer; border: none;
+            transition: all 0.3s; display: inline-flex; align-items: center;
         }
-        .btn-primary {
-            background: var(--text);
-            color: var(--bg);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(255,255,255,0.2);
-        }
-        .btn-outline {
-            background: transparent;
-            color: var(--text);
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        .btn-outline:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(255,255,255,0.5);
-        }
-        .btn-large { padding: 1.1rem 3rem; font-size: 1.05rem; }
-        
-        /* ===== SECTIONS ===== */
-        .section {
-            padding: 10rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .btn-primary { background: var(--text); color: var(--bg); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,255,255,0.15); }
+        .btn-outline { background: transparent; color: var(--text); border: 1px solid rgba(255,255,255,0.3); }
+        .btn-outline:hover { background: rgba(255,255,255,0.05); }
+
+        /* SECTIONS */
+        .section { padding: 8rem 2rem; max-width: 1000px; margin: 0 auto; }
         .section-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--text-3);
-            margin-bottom: 1.5rem;
+            font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.12em; color: var(--text-3); margin-bottom: 1rem;
         }
         .section-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            font-weight: 600;
-            line-height: 1.1;
-            margin-bottom: 2rem;
-            letter-spacing: -0.02em;
+            font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 600;
+            line-height: 1.1; margin-bottom: 1.5rem;
         }
-        .section-desc {
-            font-size: 1.1rem;
-            color: var(--text-2);
-            max-width: 600px;
-            font-weight: 300;
+        .section-desc { color: var(--text-2); font-size: 1rem; max-width: 550px; margin-bottom: 2rem; }
+
+        /* PET SCENE */
+        .pet-scene {
+            position: relative; height: 400px; max-width: 600px; margin: 2rem auto 0;
+            background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 70%, #1a1510 100%);
+            border-radius: 20px; border: 1px solid var(--border); overflow: hidden;
         }
-        
-        /* ===== CARDS ===== */
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1px;
-            margin-top: 3rem;
+        .ground {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 70px;
+            background: linear-gradient(180deg, transparent 0%, rgba(139,90,43,0.08) 100%);
+            border-top: 2px solid rgba(139,90,43,0.15);
         }
-        .card {
-            background: var(--bg-2);
-            padding: 3rem;
-            transition: background 0.4s;
-            position: relative;
+        .pet-walk {
+            position: absolute; bottom: 70px; left: -80px;
+            animation: pet-come 6s ease-in-out forwards; animation-delay: 1s; opacity: 0;
         }
-        .card:hover { background: var(--bg-3); }
-        .card h3 { font-size: 1.3rem; font-weight: 600; margin-bottom: 0.75rem; letter-spacing: -0.01em; }
-        .card p { color: var(--text-2); font-size: 0.95rem; font-weight: 300; line-height: 1.7; }
-        
-        /* ===== SKILLS ===== */
-        .skills { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 3rem; }
-        .skill {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: end;
-            gap: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border);
+        @keyframes pet-come {
+            0% { left: -80px; opacity: 1; }
+            35% { left: 50%; opacity: 1; }
+            100% { left: 50%; opacity: 1; }
         }
-        .skill-name { font-weight: 500; font-size: 1rem; }
-        .skill-pct { color: var(--text-3); font-size: 0.85rem; }
-        .skill-bar {
-            grid-column: 1 / -1;
-            height: 2px;
-            background: var(--border);
-            position: relative;
+        .pet {
+            width: 70px; height: 50px;
+            background: linear-gradient(135deg, #d4a574 0%, #b8956a 100%);
+            border-radius: 35px 35px 25px 25px; position: relative;
+            transform: translateX(-50%);
         }
-        .skill-fill {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            background: var(--gradient);
-            width: 0;
-            transition: width 2s cubic-bezier(0.16, 1, 0.3, 1);
+        .pet-head {
+            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+            width: 45px; height: 40px;
+            background: linear-gradient(135deg, #d4a574 0%, #c49a6c 100%);
+            border-radius: 50% 50% 40% 40%;
         }
-        
-        /* ===== LETTER ===== */
-        .letter-real-wrapper {
-            max-width: 700px;
-            margin: 0 auto;
-            perspective: 1000px;
+        .pet-ear {
+            position: absolute; top: -8px; width: 14px; height: 20px;
+            background: #a07850; border-radius: 50% 50% 30% 30%;
         }
-        .letter-envelope-real {
-            position: relative;
-            cursor: pointer;
+        .pet-ear.left { left: 2px; transform: rotate(-15deg); }
+        .pet-ear.right { right: 2px; transform: rotate(15deg); }
+        .pet-eye {
+            position: absolute; top: 10px; width: 8px; height: 8px;
+            background: #1a1a1a; border-radius: 50%;
+        }
+        .pet-eye.left { left: 8px; }
+        .pet-eye.right { right: 8px; }
+        .pet-nose {
+            position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+            width: 6px; height: 5px; background: #2a2a2a; border-radius: 50%;
+        }
+        .pet-mouth {
+            position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+            width: 25px; height: 12px;
+        }
+        .pet-mouth::after {
+            content: '💌'; position: absolute; bottom: 0; left: 50%;
+            transform: translateX(-50%); font-size: 1rem;
+        }
+        .pet-tail {
+            position: absolute; top: 8px; right: -12px; width: 20px; height: 6px;
+            background: #b8956a; border-radius: 8px;
+            animation: wag 0.3s ease-in-out infinite;
+        }
+        @keyframes wag {
+            0%, 100% { transform: rotate(-15deg); }
+            50% { transform: rotate(15deg); }
+        }
+        .pet-leg {
+            position: absolute; bottom: -10px; width: 8px; height: 12px;
+            background: #a07850; border-radius: 4px;
+        }
+        .pet-leg.fl { left: 10px; animation: walk 0.4s ease-in-out infinite; }
+        .pet-leg.fr { left: 22px; animation: walk 0.4s ease-in-out infinite 0.2s; }
+        .pet-leg.bl { right: 22px; animation: walk 0.4s ease-in-out infinite 0.2s; }
+        .pet-leg.br { right: 10px; animation: walk 0.4s ease-in-out infinite; }
+        @keyframes walk {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        .thrown-letter {
+            position: absolute; bottom: 100px; left: 50%;
+            transform: translateX(-50%) scale(0); opacity: 0;
+            animation: throw 6s ease-in-out forwards; animation-delay: 1s;
+            cursor: pointer; z-index: 10;
+        }
+        @keyframes throw {
+            0%, 40% { transform: translateX(-50%) scale(0); opacity: 0; }
+            50% { transform: translateX(-50%) scale(1.1); opacity: 1; }
+            60% { transform: translateX(-50%) scale(1); opacity: 1; bottom: 100px; }
+            100% { transform: translateX(-50%) scale(1); opacity: 1; bottom: 180px; }
+        }
+        .env {
+            width: 50px; height: 38px;
+            background: linear-gradient(135deg, #d4c5a9 0%, #c4b393 100%);
+            border-radius: 6px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative;
             transition: transform 0.3s;
         }
-        .letter-envelope-real:hover { transform: translateY(-5px); }
-        .envelope-body {
-            position: relative;
-            background: linear-gradient(145deg, #d4c5a9 0%, #c4b393 100%);
-            border-radius: 4px;
-            padding: 2.5rem;
-            min-height: 280px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            transition: all 0.5s ease;
-        }
-        .letter-envelope-real.opened .envelope-body {
-            transform: translateY(-20px);
-            opacity: 0;
-            pointer-events: none;
-        }
-        .envelope-flap {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 60%;
+        .env:hover { transform: scale(1.1); }
+        .env span { font-size: 1.2rem; }
+        .env-flap {
+            position: absolute; top: 0; left: 0; right: 0; height: 50%;
             background: linear-gradient(180deg, #c4b393 0%, #b8a583 100%);
-            clip-path: polygon(0 0, 50% 100%, 100% 0);
-            transform-origin: top;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 3;
+            clip-path: polygon(0 0, 50% 100%, 100% 0); border-radius: 6px 6px 0 0;
         }
-        .letter-envelope-real.opened .envelope-flap { transform: rotateX(180deg); }
-        .envelope-front {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 2rem;
+        .letter-popup {
+            position: absolute; inset: 0; background: rgba(5,5,5,0.95);
+            display: none; align-items: center; justify-content: center; padding: 2rem;
         }
-        .envelope-stamp {
-            background: rgba(139,90,43,0.1);
-            border: 2px dashed rgba(139,90,43,0.3);
-            padding: 0.75rem;
-            text-align: center;
-            min-width: 80px;
+        .letter-popup.show { display: flex; }
+        .letter-card {
+            max-width: 450px; background: #faf8f0; border-radius: 8px;
+            padding: 2rem; color: #1a1a1a; font-family: 'Georgia', serif;
         }
-        .envelope-stamp span { font-size: 2rem; display: block; }
-        .envelope-stamp p { font-size: 0.6rem; color: #8b5a2b; margin-top: 0.25rem; letter-spacing: 0.1em; }
-        .envelope-address { flex: 1; text-align: center; }
-        .env-to { font-size: 0.8rem; color: #8b5a2b; margin-bottom: 0.5rem; }
-        .env-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #333; font-weight: 600; }
-        .env-street { font-size: 0.8rem; color: #666; margin-top: 0.25rem; }
-        .envelope-seal { position: absolute; bottom: 1rem; right: 1.5rem; }
-        .seal-circle {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            box-shadow: 0 3px 10px rgba(255,45,85,0.4);
-        }
-        .letter-paper-real {
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(30px);
-            width: 90%;
-            max-width: 600px;
-            background: #faf8f0;
-            border-radius: 2px;
-            padding: 3rem 2.5rem;
-            opacity: 0;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
-            z-index: 5;
-            max-height: 70vh;
-            overflow-y: auto;
-            pointer-events: none;
-        }
-        .letter-envelope-real.opened .letter-paper-real {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-            pointer-events: auto;
-        }
-        .paper-texture {
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 10% 10%, rgba(139,90,43,0.03) 0%, transparent 40%);
-            pointer-events: none;
-        }
-        .paper-content { position: relative; z-index: 1; }
-        .paper-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid rgba(139,90,43,0.2);
-            margin-bottom: 2rem;
-        }
-        .paper-logo {
-            width: 45px;
-            height: 45px;
-            background: var(--gradient);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-        .paper-from { font-weight: 600; color: #333; font-size: 0.95rem; }
-        .paper-date { font-size: 0.8rem; color: #888; }
-        .paper-body p {
-            color: #333;
-            line-height: 1.85;
-            margin-bottom: 1.25rem;
-            font-family: 'Georgia', serif;
-            font-size: 1rem;
-        }
-        .paper-signature { margin-top: 2rem; font-size: 1rem; }
-        .paper-footer {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(139,90,43,0.2);
-            font-size: 0.8rem;
-            color: #888;
-            text-align: center;
-        }
-        .letter-hint-real {
-            text-align: center;
-            margin-top: 1.5rem;
-            color: var(--text-3);
-            font-size: 0.85rem;
-            transition: opacity 0.3s;
-        }
-        .letter-hint-real.hidden { opacity: 0; }
-        
-        /* ===== APPLICATION FORM ===== */
+        .letter-card h3 { margin-bottom: 1rem; }
+        .letter-card p { margin-bottom: 1rem; line-height: 1.7; font-size: 0.95rem; }
+        .letter-card .sign { margin-top: 1.5rem; font-weight: 600; }
+
+        /* FORM */
         .app-form {
-            background: var(--bg-2);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            overflow: hidden;
-            max-width: 700px;
-            margin: 0 auto;
+            background: var(--bg-2); border: 1px solid var(--border);
+            border-radius: 20px; overflow: hidden; max-width: 600px; margin: 0 auto;
         }
-        .form-section { padding: 2rem; border-bottom: 1px solid var(--border); }
-        .form-section:last-of-type { border-bottom: none; }
-        .form-section-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem; }
-        .form-section-desc { color: var(--text-3); font-size: 0.85rem; margin-bottom: 1.5rem; }
+        .form-section { padding: 1.5rem; border-bottom: 1px solid var(--border); }
+        .form-section:last-child { border-bottom: none; }
+        .form-section h3 { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-        .form-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+        .form-group { margin-bottom: 1rem; }
         .form-group label {
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--text-2);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            display: block; font-size: 0.75rem; font-weight: 500;
+            color: var(--text-2); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem;
         }
         .form-group input, .form-group textarea {
-            padding: 0.85rem 1rem;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 0.95rem;
-            transition: all 0.3s;
+            width: 100%; padding: 0.75rem 1rem; background: var(--bg);
+            border: 1px solid var(--border); border-radius: 10px; color: var(--text);
+            font-family: inherit; font-size: 0.9rem; transition: all 0.3s;
         }
         .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(212,175,55,0.1);
+            outline: none; border-color: var(--gold);
         }
-        .form-group textarea { resize: vertical; min-height: 80px; }
-        .form-checkbox-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
-        }
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-        }
-        .checkbox-item:hover { border-color: rgba(212,175,55,0.3); }
-        .checkbox-item input[type="checkbox"] { display: none; }
-        .checkbox-box {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--border);
-            border-radius: 6px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-        .checkbox-item input:checked + .checkbox-box { background: var(--gradient); border-color: transparent; }
-        .checkbox-item input:checked + .checkbox-box::after { content: '✓'; color: white; font-size: 0.75rem; font-weight: 700; }
-        .checkbox-item:has(input:checked) { background: var(--accent-3); border-color: var(--accent); }
-        .form-submit { padding: 2rem; text-align: center; background: var(--bg-3); }
-        .form-note { margin-top: 1rem; font-size: 0.8rem; color: var(--text-3); }
-        
-        /* ===== MOBILE ===== */
+        .form-group textarea { resize: vertical; min-height: 70px; }
+        .form-submit { padding: 1.5rem; text-align: center; background: var(--bg-3); }
+
+        /* MAP */
+        .map-container { max-width: 800px; margin: 0 auto; }
+        #map { height: 350px; border-radius: 16px; border: 1px solid var(--border); }
+        .leaflet-pane { z-index: 1 !important; }
+        .leaflet-top, .leaflet-bottom { z-index: 2 !important; }
+
+        /* MOBILE */
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .hamburger { display: block; }
-            .hero-split { grid-template-columns: 1fr; gap: 2rem; }
-            .hero-right { text-align: center; }
-            .hero-cta { justify-content: center !important; }
-            .hero-subtitle { margin-left: auto; margin-right: auto; }
-            .hero-avatar { width: 200px; height: 260px; }
-            .hero-info-grid { grid-template-columns: repeat(2, 1fr); }
-            .hero-tags { justify-content: center; }
+            .hero-split { grid-template-columns: 1fr; text-align: center; }
+            .hero-subtitle { margin: 0 auto 1.5rem; }
+            .hero-cta { justify-content: center; }
+            .hero-meta { justify-content: center; }
             .section { padding: 5rem 1rem; }
-            .cards { grid-template-columns: 1fr; }
-            .cert-grid { grid-template-columns: 1fr; }
-            .book { grid-template-columns: 1fr; }
-            .book::before { display: none; }
-            #biblePageLeft { border-right: none; border-bottom: 3px solid rgba(139,90,43,0.2); }
             .form-row { grid-template-columns: 1fr; }
-            .form-checkbox-group { grid-template-columns: 1fr; }
-            .terms-container { max-height: 100vh; border-radius: 0; }
-            .terms-scroll { padding: 1.5rem 1rem; }
-            .terms-footer { padding: 1rem; }
         }
     </style>
 </head>
 <body>
-    <!-- Terms Overlay -->
+    <!-- TERMS -->
     <div class="terms-overlay" id="termsOverlay">
         <div class="terms-container">
             <div class="terms-header">
@@ -787,52 +358,50 @@
                 <p>Leia antes de continuar</p>
             </div>
             <div class="terms-body">
-                <div class="terms-scroll">
-                    <p class="terms-welcome">Bem-vindo(a) ao perfil de <strong>Rubens Pereira Fernandes</strong>.</p>
-                    <div class="terms-clause">
-                        <div class="clause-num">1</div>
-                        <div class="clause-content">
-                            <h4>Compromisso de Sigilo</h4>
-                            <p>Todas as informações, fotos, textos e conteúdos aqui apresentados são de natureza exclusiva e pessoal. Você se compromete a manter em absoluto sigilo.</p>
-                        </div>
+                <p style="margin-bottom: 1rem;">Bem-vindo(a) ao perfil de <strong>Rubens Pereira Fernandes</strong>. Antes de prosseguira, leia e concorde:</p>
+                <div class="terms-clause">
+                    <div class="clause-num">1</div>
+                    <div class="clause-content">
+                        <h4>Compromisso de Sigilo</h4>
+                        <p>Todas as informações aqui são pessoais. Você se compromete a manter em absoluto sigilo, não compartilhando ou divulgando nada sem autorização.</p>
                     </div>
-                    <div class="terms-clause">
-                        <div class="clause-num">2</div>
-                        <div class="clause-content">
-                            <h4>Nada sai daqui</h4>
-                            <p>Este espaço é um encontro privado entre duas pessoas. O que for compartilhado, conversado ou vivido a partir daqui permanece entre nós.</p>
-                        </div>
+                </div>
+                <div class="terms-clause">
+                    <div class="clause-num">2</div>
+                    <div class="clause-content">
+                        <h4>Nada sai daqui</h4>
+                        <p>Este espaço é privado. O que for compartilhado permanece entre nós. Sem prints, sem exposição.</p>
                     </div>
-                    <div class="terms-clause">
-                        <div class="clause-num">3</div>
-                        <div class="clause-content">
-                            <h4>Respeito Mútuo</h4>
-                            <p>Independente do desfecho, o respeito deve ser mantido em todos os momentos. Se não der certo, a porta se fecha com dignidade.</p>
-                        </div>
+                </div>
+                <div class="terms-clause">
+                    <div class="clause-num">3</div>
+                    <div class="clause-content">
+                        <h4>Respeito Mútuo</h4>
+                        <p>Independente do desfecho, o respeito deve ser mantido. Se não der certo, a porta se fecha com dignidade.</p>
                     </div>
-                    <div class="terms-clause">
-                        <div class="clause-num">4</div>
-                        <div class="clause-content">
-                            <h4>LGPD</h4>
-                            <p>Seus dados serão protegidos conforme a Lei Geral de Proteção de Dados (Lei 13.709/2018).</p>
-                        </div>
+                </div>
+                <div class="terms-clause">
+                    <div class="clause-num">4</div>
+                    <div class="clause-content">
+                        <h4>LGPD</h4>
+                        <p>Seus dados serão protegidos conforme a Lei Geral de Proteção de Dados (Lei 13.709/2018).</p>
                     </div>
-                    <div class="terms-acceptance">
-                        <label class="terms-checkbox-label">
-                            <input type="checkbox" id="termsCheck" checked>
-                            <span class="terms-checkbox-box"></span>
-                            <span>Li e aceito todos os termos acima.</span>
-                        </label>
-                    </div>
+                </div>
+                <div class="terms-accept">
+                    <label>
+                        <input type="checkbox" id="termsCheck" checked>
+                        <span class="terms-check"></span>
+                        <span>Li e aceito todos os termos acima.</span>
+                    </label>
                 </div>
             </div>
             <div class="terms-footer">
-                <button class="btn btn-primary btn-large" id="termsAccept">Aceitar e Continuar</button>
+                <button class="btn btn-primary" id="termsAccept">Aceitar e Continuar</button>
             </div>
         </div>
     </div>
     
-    <!-- Nav -->
+    <!-- NAV -->
     <nav class="nav" id="nav">
         <div class="nav-inner">
             <a href="#hero" class="nav-logo">Rubens</a>
@@ -840,7 +409,6 @@
                 <li><a href="#sobre">Sobre</a></li>
                 <li><a href="#carta">Carta</a></li>
                 <li><a href="#candidatura">Candidatura</a></li>
-                <li><a href="#biblia">Bíblia</a></li>
                 <li><a href="#localizacao">Mapa</a></li>
             </ul>
             <button class="hamburger" id="hamburger">
@@ -852,469 +420,169 @@
         <div class="mobile-menu" id="mobileMenu">
             <a href="#sobre">Sobre</a>
             <a href="#carta">Carta</a>
-            <a href="#certificados">Certificados</a>
-            <a href="#quiz">Quiz</a>
             <a href="#candidatura">Candidatura</a>
-            <a href="#biblia">Bíblia</a>
             <a href="#localizacao">Mapa</a>
         </div>
     </nav>
     
-    <!-- Hero -->
+    <!-- HERO -->
     <section class="hero" id="hero">
-        <canvas id="three-canvas"></canvas>
-        <div class="hero-overlay"></div>
         <div class="hero-split">
-            <div class="hero-left">
-                <div class="hero-avatar">
-                    <img src="img/eu-novo.jpg" alt="Rubens">
-                </div>
-                <div class="hero-social">
-                    <a href="https://wa.me/5581989501999" class="social-link">📱</a>
-                    <a href="mailto:rubensfernandes2112@gmail.com" class="social-link">📧</a>
-                    <a href="https://instagram.com/Rubens.nandes.021" class="social-link">📷</a>
-                </div>
+            <div class="hero-avatar">
+                <img src="img/eu-novo.jpg" alt="Rubens">
             </div>
             <div class="hero-right">
-                <h1 class="hero-title">
-                    <span class="line hero-greeting">Eu sou o</span>
-                    <span class="line gradient-shine">Rubens Pereira Fernandes</span>
-                    <span class="line hero-tagline">Prazer em conquistar você.</span>
-                </h1>
-                <div class="hero-info-grid">
-                    <div class="info-item"><span class="info-label">Idade</span><span class="info-value">26 anos</span></div>
-                    <div class="info-item"><span class="info-label">Signo</span><span class="info-value">♉ Touro</span></div>
-                    <div class="info-item"><span class="info-label">Altura</span><span class="info-value">171cm</span></div>
-                    <div class="info-item"><span class="info-label">Peso</span><span class="info-value">69kg</span></div>
-                    <div class="info-item"><span class="info-label">Cidade</span><span class="info-value">Recife, PE</span></div>
-                    <div class="info-item"><span class="info-label">Status</span><span class="info-value">Solteiro</span></div>
+                <h1>Eu sou o <span class="gradient-text">Rubens Pereira Fernandes</span></h1>
+                <p class="hero-subtitle">26 anos, Recife, PE. Busco alguém pra caminhar comigo — pra viver algo real e servir a Deus juntos.</p>
+                <div class="hero-meta">
+                    <span>26 anos</span>
+                    <span>171cm</span>
+                    <span>69kg</span>
+                    <span>♉ Touro</span>
+                    <span>Não bebo</span>
+                    <span>Não fumo</span>
+                    <span>Solteiro</span>
                 </div>
-                <div class="hero-tags">
-                    <span class="tag">Não bebo</span>
-                    <span class="tag">Não fumo</span>
-                    <span class="tag">Caseiro</span>
-                    <span class="tag">Gamer</span>
-                    <span class="tag">Praia</span>
-                    <span class="tag">Cozinhar</span>
-                    <span class="tag">Massagem</span>
-                    <span class="tag">Música</span>
-                </div>
-                <p class="hero-subtitle">Busco alguém pra caminhar comigo — pra viver algo real e servir a Deus juntos.</p>
                 <div class="hero-cta">
                     <a href="#candidatura" class="btn btn-primary">💬 Me escolhe</a>
-                    <a href="#sobre" class="btn btn-outline">Conhecer</a>
+                    <a href="#sobre" class="btn btn-outline">Conhecer mais</a>
                 </div>
             </div>
         </div>
     </section>
     
-    <!-- Sobre -->
+    <!-- SOBRE -->
     <section class="section" id="sobre">
         <p class="section-label">Sobre</p>
-        <h2 class="section-title">Não sou perfeito.<br>Sou real.</h2>
+        <h2 class="section-title">Não sou perfeito. Sou real.</h2>
         <p class="section-desc">Alguém que acorda todo dia com propósito. Trabalhador, determinado, e acima de tudo, alguém que quer fazer da vida uma história que vale a pena contar — ao lado de alguém especial.</p>
-        <div class="cards">
-            <div class="card"><h3>Trabalhador</h3><p>Levanto cedo, faço acontecer. Não é só sobre ganhar dinheiro — é sobre construir algo com as próprias mãos.</p></div>
-            <div class="card"><h3>Gamer</h3><p>Free Fire, Valorant, Weplay. A competição é divertida, mas te vencer é melhor.</p></div>
-            <div class="card"><h3>Amante de música</h3><p>Todo tipo de música — do sertanejo ao gospel, do funk ao rock. O ritmo muda, o sentimento é o mesmo.</p></div>
-            <div class="card"><h3>Caseiro</h3><p>Amo ficar em casa, mas também amo praia. Cozinho de tudo, arrumo casa, resolvo problema. O simples é o que me faz feliz — principalmente com companhia.</p></div>
-        </div>
     </section>
     
-    <!-- Habilidades Românticas -->
-    <section class="section">
-        <p class="section-label">Habilidades românticas</p>
-        <h2 class="section-title">O que eu ofereço</h2>
-        <div class="skills">
-            <div class="skill"><div class="skill-name">Fazer rir</div><div class="skill-bar"><div class="skill-fill" data-width="95"></div></div><div class="skill-pct">95%</div></div>
-            <div class="skill"><div class="skill-name">Ouvir e entender</div><div class="skill-bar"><div class="skill-fill" data-width="98"></div></div><div class="skill-pct">98%</div></div>
-            <div class="skill"><div class="skill-name">Ser presente</div><div class="skill-bar"><div class="skill-fill" data-width="100"></div></div><div class="skill-pct">100%</div></div>
-            <div class="skill"><div class="skill-name">Ser fiel e leal</div><div class="skill-bar"><div class="skill-fill" data-width="100"></div></div><div class="skill-pct">100%</div></div>
-            <div class="skill"><div class="skill-name">Cozinhar pra nós</div><div class="skill-bar"><div class="skill-fill" data-width="75"></div></div><div class="skill-pct">75%</div></div>
-            <div class="skill"><div class="skill-name">Fazer massagem</div><div class="skill-bar"><div class="skill-fill" data-width="90"></div></div><div class="skill-pct">90%</div></div>
-        </div>
-    </section>
-    
-    <!-- Carta -->
+    <!-- CARTA -->
     <section class="section" id="carta">
         <p class="section-label">Entrega especial</p>
         <h2 class="section-title">Alguém te entregou algo.</h2>
         
         <div class="pet-scene">
-            <!-- Ground -->
             <div class="ground"></div>
-            
-            <!-- Pet walking in -->
             <div class="pet-walk">
-                <div class="pet-body">
+                <div class="pet">
                     <div class="pet-head">
                         <div class="pet-ear left"></div>
                         <div class="pet-ear right"></div>
                         <div class="pet-eye left"></div>
                         <div class="pet-eye right"></div>
                         <div class="pet-nose"></div>
-                        <div class="pet-mouth">
-                            <div class="letter-in-mouth">
-                                <span>💌</span>
-                            </div>
-                        </div>
+                        <div class="pet-mouth"></div>
                     </div>
                     <div class="pet-tail"></div>
-                    <div class="pet-leg front-left"></div>
-                    <div class="pet-leg front-right"></div>
-                    <div class="pet-leg back-left"></div>
-                    <div class="pet-leg back-right"></div>
+                    <div class="pet-leg fl"></div>
+                    <div class="pet-leg fr"></div>
+                    <div class="pet-leg bl"></div>
+                    <div class="pet-leg br"></div>
                 </div>
             </div>
-            
-            <!-- Letter that gets thrown -->
-            <div class="thrown-letter">
-                <div class="letter-envelope">
-                    <div class="envelope-flap"></div>
-                    <div class="envelope-body">
-                        <span>❤️</span>
-                    </div>
-                </div>
+            <div class="thrown-letter" id="thrownLetter">
+                <div class="env"><div class="env-flap"></div><span>❤️</span></div>
             </div>
-            
-            <!-- Pet throws message -->
-            <div class="pet-message" id="petMessage">
-                <p>Aqui está! 🐾</p>
-            </div>
-            
-            <!-- Actual letter content (hidden until clicked) -->
-            <div class="letter-received" id="letterReceived">
+            <div class="letter-popup" id="letterPopup">
                 <div class="letter-card">
-                    <div class="letter-header">
-                        <div class="letter-avatar">R</div>
-                        <div>
-                            <p class="letter-from">Rubens Pereira Fernandes</p>
-                            <p class="letter-date">Recife, 16 de setembro de 2026</p>
-                        </div>
-                    </div>
-                    <div class="letter-body">
-                        <p>Querido(a) futuro(a) de mim,</p>
-                        <p>Se você está lendo isso, é porque algo em mim te chamou atenção.</p>
-                        <p>Eu sou o Rubens. 26 anos. Programador, trabalhador, caseiro quando quer.</p>
-                        <p>Não bebo, não fumo, nunca namorei — esperei a pessoa certa.</p>
-                        <p>Esperei alguém que quisesse caminhar junto. Servir a Deus. Construir família.</p>
-                        <p class="letter-sign">Com esperança,<br><strong>Rubens Pereira Fernandes</strong></p>
-                    </div>
+                    <h3>Querido(a) futuro(a) de mim,</h3>
+                    <p>Se você está lendo isso, é porque algo em mim te chamou atenção.</p>
+                    <p>Eu sou o Rubens. 26 anos. Programador, trabalhador, caseiro quando quer.</p>
+                    <p>Não bebo, não fumo, nunca namorei — esperei a pessoa certa.</p>
+                    <p>Esperei alguém que quisesse caminhar junto. Servir a Deus. Construir família. Rir do nada.</p>
+                    <p class="sign">Com esperança,<br><strong>Rubens Pereira Fernandes</strong></p>
+                    <button class="btn btn-primary" onclick="document.getElementById('letterPopup').classList.remove('show')" style="margin-top: 1rem;">Fechar</button>
                 </div>
             </div>
         </div>
     </section>
     
-
-    <!-- Candidatura -->
+    <!-- CANDIDATURA -->
     <section class="section" id="candidatura">
         <p class="section-label">Candidatura</p>
         <h2 class="section-title">Você me escolhe?<br>Mostre que é a certa.</h2>
         <p class="section-desc">Preencha com sinceridade. Se atender as expectativas, eu entro em contato.</p>
         <div class="app-form">
             <div class="form-section">
-                <h3 class="form-section-title">Seus dados</h3>
+                <h3>Seus dados</h3>
                 <div class="form-row">
-                    <div class="form-group"><label>Nome completo</label><input type="text" name="nome" placeholder="Seu nome"></div>
+                    <div class="form-group"><label>Nome</label><input type="text" name="nome" placeholder="Seu nome"></div>
                     <div class="form-group"><label>Idade</label><input type="number" name="idade" placeholder="25"></div>
                 </div>
                 <div class="form-row">
                     <div class="form-group"><label>Cidade</label><input type="text" name="cidade" placeholder="Cidade - UF"></div>
                     <div class="form-group"><label>WhatsApp</label><input type="tel" name="whatsapp" placeholder="(00) 00000-0000"></div>
                 </div>
+                <div class="form-group"><label>Instagram</label><input type="text" name="instagram" placeholder="@seuusuario"></div>
             </div>
             <div class="form-section">
-                <h3 class="form-section-title">Requisitos</h3>
-                <p class="form-section-desc">Marque o que se aplica a você:</p>
-                <div class="form-checkbox-group">
-                    <label class="checkbox-item"><input type="checkbox" name="req[]" value="fe"><span class="checkbox-box"></span><span>Servir a Deus é prioridade</span></label>
-                    <label class="checkbox-item"><input type="checkbox" name="req[]" value="serio"><span class="checkbox-box"></span><span>Busco algo sério</span></label>
-                    <label class="checkbox-item"><input type="checkbox" name="req[]" value="familia"><span class="checkbox-box"></span><span>Quero construir família</span></label>
-                    <label class="checkbox-item"><input type="checkbox" name="req[]" value="lealdade"><span class="checkbox-box"></span><span>Sou leal e exijo lealdade</span></label>
-                    <label class="checkbox-item"><input type="checkbox" name="req[]" value="casa"><span class="checkbox-box"></span><span>Amo ficar em casa</span></label>
-                    <label class="checkbox-item"><input type="checkbox" name="req[]" value="praia"><span class="checkbox-box"></span><span>Amo praia</span></label>
-                    <label class="checkbox-item"><input type="checkbox" name="req[]" value="cozinhar"><span class="checkbox-box"></span><span>Sei cozinhar</span></label>
-                    <label class="checkbox-item"><input type="checkbox" name="req[]" value="paciencia"><span class="checkbox-box"></span><span>Tenho paciência</span></label>
-                </div>
-            </div>
-            <div class="form-section">
-                <h3 class="form-section-title">Sobre você</h3>
+                <h3>Sobre você</h3>
                 <div class="form-group"><label>Por que eu?</label><textarea name="motivo" rows="3" placeholder="Me convence..."></textarea></div>
                 <div class="form-group"><label>O que busca?</label><textarea name="busca" rows="3" placeholder="Fala pra eu ver se combina..."></textarea></div>
             </div>
             <div class="form-submit">
-                <button type="button" class="btn btn-primary btn-large" id="sendWhatsApp">📱 Enviar pelo WhatsApp</button>
-                <p class="form-note">Ao enviar, você concorda que analisarei suas informações.</p>
+                <button type="button" class="btn btn-primary" id="sendWhatsApp">📱 Enviar pelo WhatsApp</button>
             </div>
         </div>
     </section>
     
-    <!-- Bíblia -->
-    <section class="section" id="biblia">
-        <p class="section-label">Bíblia Digital</p>
-        <h2 class="section-title">O que a Palavra diz sobre amor.</h2>
-        <p class="section-desc">Versículos reais, organizados por tema. Pra ler, refletir e viver.</p>
-        <div class="bible-book">
-            <div class="book-container">
-                <div class="book">
-                    <div class="book-page" id="biblePageLeft"></div>
-                    <div class="book-page" id="biblePageRight"></div>
-                </div>
-                <div class="book-nav">
-                    <button class="book-btn" id="biblePrev" disabled>← Anterior</button>
-                    <span class="book-page-num" id="biblePageNum">1 / 1</span>
-                    <button class="book-btn" id="bibleNext">Próxima →</button>
-                </div>
-                <div class="book-topics">
-                    <button class="topic-btn active" data-topic="amor">Amor</button>
-                    <button class="topic-btn" data-topic="casamento">Casamento</button>
-                    <button class="topic-btn" data-topic="familia">Família</button>
-                    <button class="topic-btn" data-topic="fe">Fé</button>
-                    <button class="topic-btn" data-topic="proposito">Propósito</button>
-                    <button class="topic-btn" data-topic="sabedoria">Sabedoria</button>
-                    <button class="topic-btn" data-topic="perdao">Perdão</button>
-                    <button class="topic-btn" data-topic="gratidao">Gratidão</button>
-                    <button class="topic-btn" data-topic="humildade">Humildade</button>
-                    <button class="topic-btn" data-topic="perseveranca">Perseverança</button>
-                    <button class="topic-btn" data-topic="comunhao">Comunhão</button>
-                    <button class="topic-btn" data-topic="esperanca">Esperança</button>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Mapa -->
+    <!-- MAPA -->
     <section class="section" id="localizacao">
         <p class="section-label">Localização</p>
         <h2 class="section-title">Onde eu tô.</h2>
         <div class="map-container">
             <div id="map"></div>
-            <div class="map-info">
-                <div class="map-pin">📍</div>
-                <div><strong>Recife, Pernambuco</strong><p>Capital das praias, culinária e cultura.</p></div>
-            </div>
         </div>
     </section>
     
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // ===== TERMS =====
-        (function() {
-            var overlay = document.getElementById('termsOverlay');
-            var btn = document.getElementById('termsAccept');
-            
-            function acceptTerms() {
-                if (overlay) {
-                    overlay.style.display = 'none';
-                    overlay.classList.add('hidden');
-                }
-                localStorage.setItem('termsAccepted', 'true');
-                document.body.style.overflow = '';
-
-            }
-            
-            if (btn) {
-                btn.onclick = acceptTerms;
-            }
-            
-            if (localStorage.getItem('termsAccepted') === 'true' && overlay) {
+        // TERMS
+        var overlay = document.getElementById('termsOverlay');
+        var btn = document.getElementById('termsAccept');
+        if (btn) {
+            btn.onclick = function() {
                 overlay.style.display = 'none';
-                document.body.style.overflow = '';
-            } else if (overlay) {
-                document.body.style.overflow = 'hidden';
-            }
-        })();
+                localStorage.setItem('termsAccepted', 'true');
+            };
+        }
+        if (localStorage.getItem('termsAccepted') === 'true') {
+            overlay.style.display = 'none';
+        }
         
-
-        
-        // ===== NAV =====
-        window.addEventListener('scroll', () => {
+        // NAV
+        window.onscroll = function() {
             document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
-        });
-        document.getElementById('hamburger')?.addEventListener('click', () => {
+        };
+        document.getElementById('hamburger').onclick = function() {
             document.getElementById('mobileMenu').classList.toggle('active');
-        });
-        
-        // ===== GSAP SCROLL ANIMATIONS =====
-        if (typeof gsap !== 'undefined') {
-            gsap.registerPlugin(ScrollTrigger);
-            gsap.utils.toArray('.reveal').forEach(el => {
-                gsap.fromTo(el, 
-                    { opacity: 0, y: 40 },
-                    { opacity: 1, y: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%' } }
-                );
-            });
-        }
-        
-
-        // ===== PET LETTER =====
-        const thrownLetter = document.querySelector('.thrown-letter');
-        const letterReceived = document.getElementById('letterReceived');
-        if (thrownLetter) {
-            thrownLetter.addEventListener('click', () => {
-                if (letterReceived) letterReceived.classList.add('show');
-            });
-        }
-        
-        // ===== BIBLE =====
-        const bibleVerses = {
-            amor: [
-                { ref: "1 Coríntios 13:4-8", text: "O amor é paciente, o amor é bondoso. Não inveja, não se vangloria, não se orgulha. O amor jamais acaba." },
-                { ref: "1 João 4:18-19", text: "No amor não existe medo; antes, o perfeito amor lança fora o medo. Nós amamos porque ele nos amou primeiro." },
-                { ref: "Cantares 8:6-7", text: "Põe-me como selo sobre o teu coração, porque o amor é forte como a morte. As muitas águas não podem apagar o amor." },
-                { ref: "Romanos 8:38-39", text: "Nem a morte, nem a vida, nem qualquer outra criatura poderá separar-nos do amor de Deus." },
-                { ref: "Efésios 5:25", text: "Maridos, amai vossa mulher, como também Cristo amou a igreja." }
-            ],
-            casamento: [
-                { ref: "Gênesis 2:24", text: "Deixará o homem seu pai e sua mãe, e se unirá à sua mulher, e serão dois numa só carne." },
-                { ref: "Marcos 10:9", text: "O que Deus ajuntou, não o separe o homem." },
-                { ref: "1 Pedro 3:7", text: "Convivei com vossas mulheres com entendimento, dando honra à mulher." },
-                { ref: "Provérbios 31:10", text: "Mulher virtuosa, quem a achará? O seu valor muito excede ao de rubis." },
-                { ref: "Colossenses 3:14", text: "Revesti-vos de amor, que é o vínculo da perfeição." }
-            ],
-            familia: [
-                { ref: "Josué 24:15", text: "Eu e a minha casa serviremos ao Senhor." },
-                { ref: "Salmo 127:3", text: "Os filhos são herança do Senhor." },
-                { ref: "Provérbios 22:6", text: "Ensina a criança no caminho em que deve andar." },
-                { ref: "Efésios 6:1-4", text: "Vós, filhos, obedecei a vossos pais. Vós, pais, não provoqueis vossos filhos." },
-                { ref: "Salmo 128:3", text: "Tua mulher será como videira frutífera às paredes da tua casa." }
-            ],
-            fe: [
-                { ref: "Hebreus 11:1", text: "A fé é a certeza de coisas que se esperam, a convicção de fatos que não se veem." },
-                { ref: "Filipenses 4:13", text: "Tudo posso naquele que me fortalece." },
-                { ref: "Isaías 41:10", text: "Não temas, porque eu sou contigo." },
-                { ref: "Jeremias 29:11", text: "Eu sei os pensamentos que tenho a vosso respeito, pensamentos de paz." },
-                { ref: "2 Coríntios 5:7", text: "Andamos por fé e não por vista." }
-            ],
-            proposito: [
-                { ref: "Romanos 8:28", text: "Todas as coisas contribuem para o bem daqueles que amam a Deus." },
-                { ref: "Filipenses 3:14", text: "Prossigo para o alvo pelo prêmio da soberana vocação de Deus." },
-                { ref: "Efésios 2:10", text: "Somos criados em Cristo Jesus para as boas obras." },
-                { ref: "Provérbios 16:3", text: "Consagra ao Senhor as tuas obras." },
-                { ref: "Jeremian 1:5", text: "Antes de te formar no ventre te conheci." }
-            ],
-            sabedoria: [
-                { ref: "Provérbios 3:5-6", text: "Confia no Senhor de todo o teu coração. Reconhece-o em todos os teus caminhos." },
-                { ref: "Tiago 1:5", text: "Se alguém tem falta de sabedoria, peça-a a Deus, que a todos dá liberalmente." },
-                { ref: "Salmo 119:105", text: "Lâmpada para os meus pés é a tua palavra." },
-                { ref: "Provérbios 1:7", text: "O temor do Senhor é o princípio da sabedoria." },
-                { ref: "Tiago 3:17", text: "A sabedoria que do alto vem é primeiramente pura, depois pacífica." }
-            ],
-            perdao: [
-                { ref: "Colossenses 3:13", text: "Suportando-vos uns aos outros e perdoando-vos, assim como Cristo vos perdoou." },
-                { ref: "Efésios 4:32", text: "Sede benignos, compassivos, perdoando-vos uns aos outros." },
-                { ref: "Mateus 6:14-15", text: "Se perdoardes aos homens, vosso Pai celestial vos perdoará." },
-                { ref: "Provérbios 17:9", text: "O que encobre a transgressão busca a amizade." },
-                { ref: "Mateus 18:21-22", text: "Não te digo até sete, mas até setenta vezes sete." }
-            ],
-            gratidao: [
-                { ref: "1 Tessalonicenses 5:18", text: "Em tudo dai graças." },
-                { ref: "Salmo 100:4", text: "Entrai pelas suas portas com ações de graças." },
-                { ref: "Filipenses 4:6", text: "As vossas petições sejam conhecidas diante de Deus com ações de graças." },
-                { ref: "Salmo 136:1", text: "Louvai ao Senhor, porque ele é bom, porque a sua misericórdia dura para sempre." },
-                { ref: "Colossenses 3:15", text: "A paz de Deus domine em vossos corações; e sede agradecidos." }
-            ],
-            humildade: [
-                { ref: "Tiago 4:10", text: "Humilhai-vos perante o Senhor, e ele vos exaltará." },
-                { ref: "Filipenses 2:3", text: "Cada um considere os outros superiores a si mesmo." },
-                { ref: "1 Pedro 5:6", text: "Humilhai-vos debaixo da potente mão de Deus." },
-                { ref: "Provérbios 22:4", text: "O galardão da humildade e o temor do Senhor são riquezas." },
-                { ref: "Mateus 23:12", text: "O que se humilhar será exaltado." }
-            ],
-            perseveranca: [
-                { ref: "Tiago 1:12", text: "Bem-aventurado o homem que suporta a tentação." },
-                { ref: "Romanos 5:3-4", text: "A tribulação produz a paciência, a paciência a experiência, a experiência a esperança." },
-                { ref: "Hebreus 12:1", text: "Corramos com paciência a carreira que nos está proposta." },
-                { ref: "Gálatas 6:9", text: "Não nos cansemos de fazer o bem, porque a seu tempo ceifaremos." },
-                { ref: "1 Coríntios 15:58", text: "Sede firmes e constantes, abundantes na obra do Senhor." }
-            ],
-            comunhao: [
-                { ref: "Atos 2:42", text: "Perseveravam na doutrina dos apóstolos, na comunhão, no partir do pão." },
-                { ref: "Salmo 133:1", text: "Eis quão bom e quão suave é que os irmãos vivam em união." },
-                { ref: "Hebreus 10:24-25", text: "Consideremo-nos uns aos outros para estimularmos ao amor." },
-                { ref: "Romanos 12:4-5", text: "Somos um corpo em Cristo, membros uns dos outros." },
-                { ref: "Efésios 4:3", text: "Procurando guardar a unidade do Espírito pelo vínculo da paz." }
-            ],
-            esperanca: [
-                { ref: "Romanos 15:13", text: "O Deus de esperança vos encha de todo o gozo e paz em fé." },
-                { ref: "Salmo 42:11", text: "Espera em Deus, pois ainda o louvarei." },
-                { ref: "Hebreus 10:23", text: "Retenhamos firme a confissão da nossa esperança." },
-                { ref: "1 Pedro 1:3", text: "Nos regenerou para uma viva esperança." },
-                { ref: "Isaías 40:31", text: "Os que esperam no Senhor renovarão as suas forças." }
-            ]
         };
         
-        let bibleCurrentPage = 0;
-        let bibleCurrentTopic = "amor";
-        const biblePerPage = 2;
+        // PET LETTER
+        document.getElementById('thrownLetter').onclick = function() {
+            document.getElementById('letterPopup').classList.add('show');
+        };
         
-        function renderBible() {
-            const verses = bibleVerses[bibleCurrentTopic] || [];
-            const totalPages = Math.ceil(verses.length / biblePerPage) || 1;
-            if (bibleCurrentPage >= totalPages) bibleCurrentPage = 0;
-            
-            const leftVerses = verses.slice(bibleCurrentPage * biblePerPage, bibleCurrentPage * biblePerPage + biblePerPage);
-            const rightVerses = verses.slice((bibleCurrentPage + 1) * biblePerPage, (bibleCurrentPage + 1) * biblePerPage + biblePerPage);
-            
-            const topics = { amor: "Amor", casamento: "Casamento", familia: "Família", fe: "Fé", proposito: "Propósito", sabedoria: "Sabedoria", perdao: "Perdão", gratidao: "Gratidão", humildade: "Humildade", perseveranca: "Perseverança", comunhao: "Comunhão", esperanca: "Esperança" };
-            
-            let leftHTML = '<div class="bible-page-content"><h3 class="bible-topic-title">' + topics[bibleCurrentTopic] + '</h3>';
-            leftVerses.forEach(v => { leftHTML += '<div class="bible-verse"><div class="bible-ref">' + v.ref + '</div><div class="bible-text">' + v.text + '</div></div>'; });
-            leftHTML += '</div>';
-            
-            let rightHTML = '<div class="bible-page-content">';
-            if (rightVerses.length > 0) {
-                rightHTML += '<h3 class="bible-topic-title">Continuação</h3>';
-                rightVerses.forEach(v => { rightHTML += '<div class="bible-verse"><div class="bible-ref">' + v.ref + '</div><div class="bible-text">' + v.text + '</div></div>'; });
-            }
-            rightHTML += '</div>';
-            
-            document.getElementById('biblePageLeft').innerHTML = leftHTML;
-            document.getElementById('biblePageRight').innerHTML = rightHTML;
-            document.getElementById('biblePageNum').textContent = (bibleCurrentPage + 1) + ' / ' + totalPages;
-            document.getElementById('biblePrev').disabled = bibleCurrentPage === 0;
-            document.getElementById('bibleNext').disabled = bibleCurrentPage >= totalPages - 1;
-        }
-        
-        document.getElementById('biblePrev')?.addEventListener('click', () => { if (bibleCurrentPage > 0) { bibleCurrentPage--; renderBible(); } });
-        document.getElementById('bibleNext')?.addEventListener('click', () => {
-            const verses = bibleVerses[bibleCurrentTopic] || [];
-            const totalPages = Math.ceil(verses.length / biblePerPage);
-            if (bibleCurrentPage < totalPages - 1) { bibleCurrentPage++; renderBible(); }
-        });
-        document.querySelectorAll('.topic-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                bibleCurrentTopic = btn.dataset.topic;
-                bibleCurrentPage = 0;
-                renderBible();
-            });
-        });
-        renderBible();
-        
-        // ===== MAP =====
+        // MAP
         if (typeof L !== 'undefined') {
-            const map = L.map('map').setView([-8.0476, -34.8770], 13);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '\u00a9 OpenStreetMap' }).addTo(map);
-            L.marker([-8.0476, -34.8770]).addTo(map).bindPopup('<strong>Recife, PE</strong>').openPopup();
+            var map = L.map('map').setView([-8.0476, -34.8770], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
+            L.marker([-8.0476, -34.8770]).addTo(map).bindPopup('Recife, PE').openPopup();
         }
         
-        // ===== WHATSAPP =====
-        document.getElementById('sendWhatsApp')?.addEventListener('click', () => {
-            const nome = document.querySelector('input[name="nome"]')?.value || '';
-            const idadeEl = document.querySelector('input[name="idade"]');
-            const idade = idadeEl ? idadeEl.value : '';
-            const cidade = document.querySelector('input[name="cidade"]')?.value || '';
-            const whats = document.querySelector('input[name="whatsapp"]')?.value || '';
-            const motivo = document.querySelector('textarea[name="motivo"]')?.value || '';
-            const busca = document.querySelector('textarea[name="busca"]')?.value || '';
-            
-            let msg = '💌 Nova Candidatura\n\n';
-            msg += 'Nome: ' + nome + '\nIdade: ' + idade + '\nCidade: ' + cidade + '\nWhatsApp: ' + whats;
-            msg += '\n\nMotivo:\n' + motivo + '\n\nBusca:\n' + busca;
-            
+        // WHATSAPP
+        document.getElementById('sendWhatsApp').onclick = function() {
+            var nome = document.querySelector('input[name="nome"]').value || '';
+            var idade = document.querySelector('input[name="idade"]').value || '';
+            var cidade = document.querySelector('input[name="cidade"]').value || '';
+            var whats = document.querySelector('input[name="whatsapp"]').value || '';
+            var motivo = document.querySelector('textarea[name="motivo"]').value || '';
+            var busca = document.querySelector('textarea[name="busca"]').value || '';
+            var msg = '💌 Nova Candidatura\n\nNome: ' + nome + '\nIdade: ' + idade + '\nCidade: ' + cidade + '\nWhatsApp: ' + whats + '\n\nMotivo:\n' + motivo + '\n\nBusca:\n' + busca;
             window.open('https://wa.me/5581989501999?text=' + encodeURIComponent(msg), '_blank');
-        });
+        };
     </script>
 </body>
 </html>
