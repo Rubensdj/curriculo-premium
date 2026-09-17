@@ -1025,184 +1025,75 @@
 }
 
 
-/* FLOATING CHAT FACEBOOK STYLE */
-.chat-float {
-    position: fixed;
-    bottom: 0;
-    right: 20px;
-    width: 350px;
-    max-height: 450px;
-    background: var(--bg-2);
-    border: 1px solid var(--border);
-    border-bottom: none;
-    border-radius: 12px 12px 0 0;
-    box-shadow: 0 -5px 30px rgba(0,0,0,0.4);
-    z-index: 99999;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    
-    /* Animation - starts hidden */
-    transform: translateY(100%);
-    opacity: 0;
-    pointer-events: none;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
-}
-.chat-float.open {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
-}
-.chat-float-header {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.7rem 0.9rem;
-    background: var(--bg-3);
-    border-bottom: 1px solid var(--border);
-    cursor: pointer;
-    transition: background 0.2s;
-}
-.chat-float-header:hover { background: var(--bg-2); }
-.chat-float-avatar {
-    width: 32px; height: 32px;
-    background: var(--gradient);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    color: white; font-weight: 700; font-size: 0.9rem;
-}
-.chat-info strong { display: block; font-size: 0.85rem; }
-.chat-info span { font-size: 0.65rem; color: #34c759; }
-.chat-float-close {
-    margin-left: auto;
-    background: none; border: none;
-    color: var(--text-3); font-size: 1.3rem;
-    cursor: pointer; padding: 0.2rem 0.4rem;
-    border-radius: 50%;
-    transition: background 0.2s;
-}
-.chat-float-close:hover { background: var(--bg); }
-.chat-float-messages {
-    flex: 1;
-    padding: 0.8rem;
-    overflow-y: auto;
-    background: var(--bg);
-    min-height: 250px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-}
-.chat-msg {
-    max-width: 75%;
-    padding: 0.5rem 0.8rem;
-    border-radius: 16px;
-    font-size: 0.82rem;
-    line-height: 1.35;
-    animation: msgSlide 0.3s ease;
-    align-self: flex-start;
-    background: var(--bg-3);
-    border-bottom-left-radius: 4px;
-}
-@keyframes msgSlide {
-    0% { opacity: 0; transform: translateY(8px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
-.chat-typing {
-    display: none;
-    align-self: flex-start;
-    padding: 0.5rem 0.8rem;
-    background: var(--bg-3);
-    border-radius: 16px;
-    border-bottom-left-radius: 4px;
-    gap: 3px;
-}
-.chat-typing.show { display: flex; }
-.chat-typing span {
-    width: 5px; height: 5px;
-    background: var(--text-3);
-    border-radius: 50%;
-    animation: typingDot 1.4s ease-in-out infinite;
-}
-.chat-typing span:nth-child(2) { animation-delay: 0.2s; }
-.chat-typing span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes typingDot {
-    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-    30% { transform: translateY(-4px); opacity: 1; }
-}
-.chat-float-input {
-    padding: 0.6rem;
-    background: var(--bg-3);
-    border-top: 1px solid var(--border);
-    text-align: center;
-}
-.chat-float-input a {
-    display: block;
-    padding: 0.6rem;
-    background: var(--text);
-    color: var(--bg);
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: transform 0.2s;
-}
-.chat-float-input a:hover { transform: scale(1.02); }
 
-/* Open button */
-.chat-open-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 55px; height: 55px;
-    background: var(--gradient);
-    border: none;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    cursor: pointer;
-    z-index: 99998;
-    box-shadow: 0 4px 15px rgba(212,175,55,0.4);
-    transition: transform 0.3s, opacity 0.3s;
+/* GALERIA */
+.galeria-container {
+    max-width: 800px;
+    margin: 2rem auto 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+}
+.galeria-track {
+    display: flex;
+    transition: transform 0.4s ease;
+}
+.galeria-item {
+    min-width: 100%;
+    height: 450px;
+    position: relative;
+}
+.galeria-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.galeria-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: btnPulse 2s ease-in-out infinite;
-}
-@keyframes btnPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.08); }
-}
-.chat-open-btn:hover { transform: scale(1.1); animation: none; }
-.chat-open-btn.hide {
-    transform: scale(0);
+    font-size: 4rem;
     opacity: 0;
+    transition: opacity 0.3s;
 }
-.chat-btn-badge {
+.galeria-item:hover .galeria-overlay { opacity: 1; }
+.galeria-nav {
     position: absolute;
-    top: -3px; right: -3px;
-    width: 20px; height: 20px;
-    background: var(--accent);
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.9);
+    color: #000;
+    border: none;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    font-size: 0.65rem;
-    color: white;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700;
-    animation: badgeBounce 0.5s ease;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s;
 }
-@keyframes badgeBounce {
-    0% { transform: scale(0); }
-    50% { transform: scale(1.3); }
-    100% { transform: scale(1); }
+.galeria-nav:hover { background: white; transform: translateY(-50%) scale(1.1); }
+.galeria-prev { left: 1rem; }
+.galeria-next { right: 1rem; }
+.galeria-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
 }
+.galeria-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.galeria-dot.active { background: var(--gold); transform: scale(1.2); }
 
-@media (max-width: 768px) {
-    .chat-float {
-        right: 0;
-        width: 100%;
-        max-width: 100%;
-        border-radius: 12px 12px 0 0;
-    }
-    .chat-open-btn { bottom: 15px; right: 15px; }
-}
 /* MAP */
         .map-container { max-width: 800px; margin: 0 auto; }
         #map { height: 350px; border-radius: 16px; border: 1px solid var(--border); }
@@ -1283,6 +1174,7 @@
                 <li><a href="#sobre">Sobre</a></li>
                 <li><a href="#carta">Carta</a></li>
                 <li><a href="#candidatura">Candidatura</a></li>
+                <li><a href="#galeria">Fotos</a></li>
                 <li><a href="#localizacao">Mapa</a></li>
             </ul>
             <button class="hamburger" id="hamburger">
@@ -1332,31 +1224,7 @@
         <p class="section-desc">Alguém que acorda todo dia com propósito. Trabalhador, determinado, e acima de tudo, alguém que quer fazer da vida uma história que vale a pena contar — ao lado de alguém especial.</p>
     </section>
     
-    <!-- Chat Flutuante -->
-    <div class="chat-float" id="chatFloat">
-        <div class="chat-float-header" id="chatFloatHeader">
-            <div class="chat-float-avatar">R</div>
-            <div class="chat-float-info">
-                <strong>Rubens</strong>
-                <span>online agora</span>
-            </div>
-            <button class="chat-float-close" id="chatFloatClose">×</button>
-        </div>
-        <div class="chat-float-messages" id="chatFloatMessages">
-            <!-- Mensagens aparecem via JS -->
-        </div>
-        <div class="chat-float-input">
-            <a href="#candidatura" id="chatRespondBtn" style="display:none;">
-                <span>💬 Responder</span>
-            </a>
-        </div>
-    </div>
-    
-    <!-- Botão pra abrir chat -->
-    <button class="chat-open-btn" id="chatOpenBtn">
-        <span class="chat-btn-badge">1</span>
-        💬
-    </button>
+
     
 
     <!-- CANDIDATURA -->
@@ -1420,160 +1288,44 @@
             document.getElementById('mobileMenu').classList.toggle('active');
         };
         
-        // FACEBOOK STYLE CHAT
-        (function() {
-            var audioCtx = null;
-            var messages = [
-                'Ei, tudo bem?',
-                'Vi que você visitou meu perfil. Obrigado por isso.',
-                'Me chamo Rubens. 26 anos, Recife.',
-                'Programador, trabalhador, caseiro quando quer.',
-                'Não bebo, não fumo, nunca namorei. Esperei a pessoa certa.',
-                'Se quiser me conhecer melhor, me responde aqui. 😊'
-            ];
-            
-            function playSound() {
-                try {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                    var osc = audioCtx.createOscillator();
-                    var gain = audioCtx.createGain();
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.frequency.value = 1400;
-                    osc.type = 'sine';
-                    gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
-                    osc.start(audioCtx.currentTime);
-                    osc.stop(audioCtx.currentTime + 0.12);
-                    
-                    setTimeout(function() {
-                        var osc2 = audioCtx.createOscillator();
-                        var gain2 = audioCtx.createGain();
-                        osc2.connect(gain2);
-                        gain2.connect(audioCtx.destination);
-                        osc2.frequency.value = 1800;
-                        osc2.type = 'sine';
-                        gain2.gain.setValueAtTime(0.25, audioCtx.currentTime);
-                        gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-                        osc2.start(audioCtx.currentTime);
-                        osc2.stop(audioCtx.currentTime + 0.15);
-                    }, 80);
-                } catch(e) {}
-            }
-            
-            function addTyping() {
-                var typing = document.createElement('div');
-                typing.className = 'chat-typing show';
-                typing.id = 'typingNow';
-                typing.innerHTML = '<span></span><span></span><span></span>';
-                document.getElementById('chatFloatMessages').appendChild(typing);
-            }
-            
-            function removeTyping() {
-                var t = document.getElementById('typingNow');
-                if (t) t.remove();
-            }
-            
-            function addMessage(text) {
-                var msg = document.createElement('div');
-                msg.className = 'chat-msg';
-                msg.textContent = text;
-                document.getElementById('chatFloatMessages').appendChild(msg);
-                document.getElementById('chatFloatMessages').scrollTop = 99999;
-            }
-            
-            function startChat() {
-                playSound();
-                
-                // Message 1 after 1s
-                setTimeout(function() {
-                    addTyping();
-                    setTimeout(function() {
-                        removeTyping();
-                        addMessage(messages[0]);
-                        playSound();
-                    }, 1200);
-                }, 1000);
-                
-                // Message 2 after 3s
-                setTimeout(function() {
-                    addTyping();
-                    setTimeout(function() {
-                        removeTyping();
-                        addMessage(messages[1]);
-                        playSound();
-                    }, 1500);
-                }, 3000);
-                
-                // Message 3 after 5.5s
-                setTimeout(function() {
-                    addTyping();
-                    setTimeout(function() {
-                        removeTyping();
-                        addMessage(messages[2]);
-                        playSound();
-                    }, 1200);
-                }, 5500);
-                
-                // Message 4 after 8s
-                setTimeout(function() {
-                    addTyping();
-                    setTimeout(function() {
-                        removeTyping();
-                        addMessage(messages[3]);
-                        playSound();
-                    }, 1000);
-                }, 8000);
-                
-                // Message 5 after 10s
-                setTimeout(function() {
-                    addTyping();
-                    setTimeout(function() {
-                        removeTyping();
-                        addMessage(messages[4]);
-                        playSound();
-                    }, 1500);
-                }, 10000);
-                
-                // Message 6 after 12.5s + show respond button
-                setTimeout(function() {
-                    addTyping();
-                    setTimeout(function() {
-                        removeTyping();
-                        addMessage(messages[5]);
-                        playSound();
-                        document.getElementById('chatRespondBtn').style.display = 'block';
-                    }, 1200);
-                }, 12500);
-            }
-            
-            // Open chat on click
-            document.getElementById('chatFloatHeader').onclick = function() {
-                document.getElementById('chatFloat').classList.toggle('open');
-            };
-            document.getElementById('chatFloatClose').onclick = function(e) {
-                e.stopPropagation();
-                document.getElementById('chatFloat').classList.remove('open');
-            };
-            document.getElementById('chatOpenBtn').onclick = function() {
-                document.getElementById('chatFloat').classList.add('open');
-                document.getElementById('chatOpenBtn').classList.remove('show');
-            };
-            
-            // Show open button after 0.5s
-            setTimeout(function() {
-                document.getElementById('chatOpenBtn').classList.add('show');
-            }, 500);
-            
-            // Auto-open after 1.5s with animation
-            setTimeout(function() {
-                document.getElementById('chatFloat').classList.add('open');
-                document.getElementById('chatOpenBtn').classList.add('hide');
-                startChat();
-            }, 1500);
-        })();
         
-        // MAP
+// GALERIA
+(function() {
+    var track = document.getElementById('galeriaTrack');
+    var items = document.querySelectorAll('.galeria-item');
+    var dots = document.getElementById('galeriaDots');
+    var current = 0;
+    var total = items.length;
+    
+    // Create dots
+    for (var i = 0; i < total; i++) {
+        var dot = document.createElement('div');
+        dot.className = 'galeria-dot' + (i === 0 ? ' active' : '');
+        dot.onclick = (function(idx) {
+            return function() { goTo(idx); };
+        })(i);
+        dots.appendChild(dot);
+    }
+    
+    function goTo(idx) {
+        current = idx;
+        track.style.transform = 'translateX(-' + (idx * 100) + '%)';
+        var allDots = document.querySelectorAll('.galeria-dot');
+        for (var i = 0; i < allDots.length; i++) {
+            allDots[i].classList.remove('active');
+        }
+        allDots[idx].classList.add('active');
+    }
+    
+    document.getElementById('galeriaPrev').onclick = function() {
+        goTo(current > 0 ? current - 1 : total - 1);
+    };
+    document.getElementById('galeriaNext').onclick = function() {
+        goTo(current < total - 1 ? current + 1 : 0);
+    };
+})();
+
+// MAP
         if (typeof L !== 'undefined') {
             var map = L.map('map').setView([-8.0476, -34.8770], 13);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
