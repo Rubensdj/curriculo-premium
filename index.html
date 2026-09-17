@@ -732,80 +732,6 @@
             letter-spacing: 0.05em;
         }
         
-        /* ===== QUIZ ===== */
-        .quiz-app {
-            background: var(--bg-2);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            overflow: hidden;
-            max-width: 700px;
-            margin: 3rem auto 0;
-        }
-        .quiz-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1.25rem;
-            background: var(--bg-3);
-            border-bottom: 1px solid var(--border);
-        }
-        .quiz-progress-bar {
-            flex: 1;
-            height: 6px;
-            background: var(--border);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        .quiz-progress-fill {
-            height: 100%;
-            background: var(--gradient);
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-        .quiz-counter { font-size: 0.85rem; color: var(--text-3); font-weight: 600; }
-        .quiz-card { padding: 2.5rem; }
-        .quiz-question { font-size: 1.3rem; font-weight: 600; margin-bottom: 2rem; line-height: 1.4; }
-        .quiz-options { display: flex; flex-direction: column; gap: 0.75rem; }
-        .quiz-option {
-            padding: 1rem 1.25rem;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: left;
-            font-family: inherit;
-            font-size: 0.95rem;
-            color: var(--text);
-        }
-        .quiz-option:hover { border-color: var(--gold); transform: translateX(4px); }
-        .quiz-option.selected { border-color: var(--accent); background: var(--accent-3); }
-        .quiz-result {
-            padding: 3rem 2rem;
-            text-align: center;
-        }
-        .result-circle {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: white;
-            margin: 0 auto 1.5rem;
-            animation: pop 0.5s ease;
-        }
-        @keyframes pop {
-            0% { transform: scale(0); }
-            80% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        .result-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem; }
-        .result-desc { color: var(--text-2); margin-bottom: 2rem; line-height: 1.6; }
-        
         /* ===== MAP ===== */
         .map-container {
             max-width: 900px;
@@ -1112,7 +1038,6 @@
                 <li><a href="#sobre">Sobre</a></li>
                 <li><a href="#carta">Carta</a></li>
                 <li><a href="#certificados">Certificados</a></li>
-                <li><a href="#quiz">Quiz</a></li>
                 <li><a href="#candidatura">Candidatura</a></li>
                 <li><a href="#biblia">Bíblia</a></li>
                 <li><a href="#localizacao">Mapa</a></li>
@@ -1267,26 +1192,6 @@
         </div>
     </section>
     
-    <!-- Quiz -->
-    <section class="section" id="quiz">
-        <p class="section-label">Questionário</p>
-        <h2 class="section-title">Vamos ver se combinamos?</h2>
-        <p class="section-desc">Responda com sinceridade. No final, você vê o resultado.</p>
-        <div class="quiz-app">
-            <div class="quiz-header">
-                <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgressFill"></div></div>
-                <span class="quiz-counter" id="quizCounter">1 / 10</span>
-            </div>
-            <div class="quiz-card" id="quizCard"></div>
-            <div class="quiz-result" id="quizResult" style="display:none;">
-                <div class="result-circle" id="resultCircle">0%</div>
-                <h3 class="result-title" id="resultTitle"></h3>
-                <p class="result-desc" id="resultDesc"></p>
-                <button class="btn btn-primary" onclick="location.reload()">Refazer</button>
-            </div>
-        </div>
-    </section>
-    
     <!-- Candidatura -->
     <section class="section" id="candidatura">
         <p class="section-label">Candidatura</p>
@@ -1435,66 +1340,6 @@
                 if (letterHintReal) letterHintReal.classList.add('hidden');
             });
         }
-        
-        // ===== QUIZ =====
-        const quizQuestions = [
-            { q: "O que é mais importante num relacionamento?", options: ["Confiança", "Dinheiro", "Aparência"], correct: 0 },
-            { q: "Qual sua visão sobre fé?", options: ["É tudo", "Não ligo", "Depende"], correct: 0 },
-            { q: "O que você busca?", options: ["Algo sério", "Só curtir", "Não sei"], correct: 0 },
-            { q: "O que te atrai?", options: ["Caráter", "Beleza", "Dinheiro"], correct: 0 },
-            { q: "O que você valoriza?", options: ["Lealdade", "Liberdade", "Mistério"], correct: 0 },
-            { q: "O que te irrita?", options: ["Todas as anteriores", "Mentira", "Falta de respeito"], correct: 0 },
-            { q: "O que você faz no tempo livre?", options: ["Fico em casa", "Saio sempre", "Trabalho"], correct: 0 },
-            { q: "Por que você está aqui?", options: ["Procuro alguém", "Curiosidade", "Tédio"], correct: 0 }
-        ];
-        let quizIdx = 0;
-        let quizScore = 0;
-        
-        function renderQuiz() {
-            const q = quizQuestions[quizIdx];
-            const card = document.getElementById('quizCard');
-            const fill = document.getElementById('quizProgressFill');
-            const counter = document.getElementById('quizCounter');
-            if (fill) fill.style.width = ((quizIdx / quizQuestions.length) * 100) + '%';
-            if (counter) counter.textContent = (quizIdx + 1) + ' / ' + quizQuestions.length;
-            
-            let html = '<div class="quiz-question">' + q.q + '</div><div class="quiz-options">';
-            q.options.forEach((opt, i) => {
-                html += '<button class="quiz-option" data-i="' + i + '">' + opt + '</button>';
-            });
-            html += '</div>';
-            card.innerHTML = html;
-            card.style.display = 'block';
-            
-            card.querySelectorAll('.quiz-option').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    if (parseInt(btn.dataset.i) === q.correct) quizScore++;
-                    quizIdx++;
-                    if (quizIdx < quizQuestions.length) renderQuiz();
-                    else showResult();
-                });
-            });
-        }
-        
-        function showResult() {
-            const card = document.getElementById('quizCard');
-            const result = document.getElementById('quizResult');
-            card.style.display = 'none';
-            result.style.display = 'block';
-            const pct = Math.round((quizScore / quizQuestions.length) * 100);
-            document.getElementById('resultCircle').textContent = pct + '%';
-            if (pct >= 75) {
-                document.getElementById('resultTitle').textContent = 'Alta compatibilidade!';
-                document.getElementById('resultDesc').textContent = 'Parece que pensamos parecido. Que tal conversarmos?';
-            } else if (pct >= 50) {
-                document.getElementById('resultTitle').textContent = 'Moderada';
-                document.getElementById('resultDesc').textContent = 'Temos algumas diferenças, mas pode funcionar.';
-            } else {
-                document.getElementById('resultTitle').textContent = 'Baixa compatibilidade';
-                document.getElementById('resultDesc').textContent = 'Talvez não sejamos o match perfeito.';
-            }
-        }
-        renderQuiz();
         
         // ===== BIBLE =====
         const bibleVerses = {
