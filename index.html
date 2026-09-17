@@ -935,34 +935,77 @@
         </div>
     </section>
     
-    <!-- Mensagem -->
+    <!-- Carta -->
     <section class="section" id="carta">
-        <p class="section-label">Mensagem pra você</p>
-        <h2 class="section-title">Recebi uma mensagem.</h2>
-        <div class="chat-container">
-            <div class="chat-header">
-                <div class="chat-avatar">R</div>
-                <div class="chat-info">
-                    <strong>Rubens Pereira Fernandes</strong>
-                    <span class="chat-online">● online agora</span>
+        <p class="section-label">Entrega especial</p>
+        <h2 class="section-title">Alguém te entregou algo.</h2>
+        
+        <div class="pet-scene">
+            <!-- Ground -->
+            <div class="ground"></div>
+            
+            <!-- Pet walking in -->
+            <div class="pet-walk">
+                <div class="pet-body">
+                    <div class="pet-head">
+                        <div class="pet-ear left"></div>
+                        <div class="pet-ear right"></div>
+                        <div class="pet-eye left"></div>
+                        <div class="pet-eye right"></div>
+                        <div class="pet-nose"></div>
+                        <div class="pet-mouth">
+                            <div class="letter-in-mouth">
+                                <span>💌</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pet-tail"></div>
+                    <div class="pet-leg front-left"></div>
+                    <div class="pet-leg front-right"></div>
+                    <div class="pet-leg back-left"></div>
+                    <div class="pet-leg back-right"></div>
                 </div>
             </div>
-            <div class="chat-messages">
-                <div class="chat-bubble chat-received"><p>Ei, tudo bem?</p><span class="chat-time">14:32</span></div>
-                <div class="chat-bubble chat-received"><p>Vi que você chegou até aqui, e já queria te agradecer por isso.</p><span class="chat-time">14:32</span></div>
-                <div class="chat-bubble chat-received"><p>Não sei seu nome ainda. Mas sei que você procura algo real, não um perfil perfeito. Alguém verdadeiro.</p><span class="chat-time">14:33</span></div>
-                <div class="chat-bubble chat-received"><p>Eu sou o Rubens. 26 anos, Recife. Programador, trabalhador, caseiro quando quer.</p><span class="chat-time">14:33</span></div>
-                <div class="chat-bubble chat-received"><p>Não bebo, não fumo, nunca namorei. Não porque não pude, mas porque esperei a pessoa certa.</p><span class="chat-time">14:34</span></div>
-                <div class="chat-bubble chat-received"><p>Esperei alguém que quisesse caminhar junto. Servir a Deus. Construir família. Rir do nada.</p><span class="chat-time">14:34</span></div>
-                <div class="chat-bubble chat-received"><p>Se você chegou até aqui, já sabe quem eu sou. Agora falta eu saber quem você é.</p><span class="chat-time">14:35</span></div>
+            
+            <!-- Letter that gets thrown -->
+            <div class="thrown-letter">
+                <div class="letter-envelope">
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-body">
+                        <span>❤️</span>
+                    </div>
+                </div>
             </div>
-            <div class="chat-footer-msg">
-                <a href="#candidatura" class="btn btn-primary">💬 Responder</a>
+            
+            <!-- Pet throws message -->
+            <div class="pet-message" id="petMessage">
+                <p>Aqui está! 🐾</p>
+            </div>
+            
+            <!-- Actual letter content (hidden until clicked) -->
+            <div class="letter-received" id="letterReceived">
+                <div class="letter-card">
+                    <div class="letter-header">
+                        <div class="letter-avatar">R</div>
+                        <div>
+                            <p class="letter-from">Rubens Pereira Fernandes</p>
+                            <p class="letter-date">Recife, 16 de setembro de 2026</p>
+                        </div>
+                    </div>
+                    <div class="letter-body">
+                        <p>Querido(a) futuro(a) de mim,</p>
+                        <p>Se você está lendo isso, é porque algo em mim te chamou atenção.</p>
+                        <p>Eu sou o Rubens. 26 anos. Programador, trabalhador, caseiro quando quer.</p>
+                        <p>Não bebo, não fumo, nunca namorei — esperei a pessoa certa.</p>
+                        <p>Esperei alguém que quisesse caminhar junto. Servir a Deus. Construir família.</p>
+                        <p class="letter-sign">Com esperança,<br><strong>Rubens Pereira Fernandes</strong></p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
     
-    
+
     <!-- Candidatura -->
     <section class="section" id="candidatura">
         <p class="section-label">Candidatura</p>
@@ -1099,6 +1142,16 @@
                     { opacity: 0, y: 40 },
                     { opacity: 1, y: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%' } }
                 );
+            });
+        }
+        
+
+        // ===== PET LETTER =====
+        const thrownLetter = document.querySelector('.thrown-letter');
+        const letterReceived = document.getElementById('letterReceived');
+        if (thrownLetter) {
+            thrownLetter.addEventListener('click', () => {
+                if (letterReceived) letterReceived.classList.add('show');
             });
         }
         
