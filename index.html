@@ -3,379 +3,664 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rubens — Perfil</title>
-    <meta name="description" content="Rubens, 26 anos, Recife.">
+    <title>Rubens — 26 anos, Recife</title>
+    <meta name="theme-color" content="#000000">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --bg: #050505;
-            --bg-2: #0a0a0a;
-            --bg-3: #111111;
-            --border: #1a1a1a;
-            --text: #ffffff;
-            --text-2: #a1a1a6;
-            --text-3: #6e6e73;
+            --bg: #080808;
+            --bg-2: #0f0f0f;
+            --bg-3: #161616;
+            --border: #1f1f1f;
+            --text: #fafafa;
+            --text-2: #8a8a8a;
+            --text-3: #5a5a5a;
+            --accent: #e8a87c;
             --gold: #d4af37;
+            --gradient: linear-gradient(135deg, #e8a87c 0%, #d4af37 100%);
         }
         
         html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-
-        /* TERMS */
-        .terms { position: fixed; inset: 0; background: var(--bg); z-index: 999999; display: flex; align-items: center; justify-content: center; padding: 1rem; }
-        .terms.hidden { display: none !important; }
-        .terms-box { max-width: 500px; width: 100%; background: var(--bg-2); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; }
-        .terms h2 { font-size: 1.5rem; margin-bottom: 1rem; }
-        .terms p { color: var(--text-2); font-size: 0.9rem; margin-bottom: 0.75rem; }
-        .terms-btn { width: 100%; margin-top: 1.5rem; }
-
-        /* NAV */
-        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; padding: 1rem 2rem; }
-        .nav.scrolled { background: rgba(5,5,5,0.9); }
-        .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-        .nav a { color: var(--text); text-decoration: none; }
-        .nav-links { display: flex; gap: 2rem; list-style: none; }
-        .nav-links a { color: var(--text-2); font-size: 0.9rem; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* ===== NAV ===== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.25rem 2rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(0px);
+        }
+        
+        .nav.scrolled {
+            background: rgba(8,8,8,0.85);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0.9rem 2rem;
+        }
+        
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: var(--text);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--text-2);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 400;
+            transition: color 0.3s;
+            letter-spacing: 0.01em;
+        }
+        
         .nav-links a:hover { color: var(--text); }
-
-        /* HERO */
-        .hero { position: relative; overflow: hidden; }
-        .hero-video { position: absolute; inset: 0; z-index: 0; }
-        .hero-video video { width: 100%; height: 100%; object-fit: cover; opacity: 0.3; }
-        .hero-overlay { position: absolute; inset: 0; background: rgba(5,5,5,0.6); z-index: 1; }
-        .hero-inner { position: relative; z-index: 2; }
-        .hero { min-height: 100vh; display: flex; align-items: center; padding: 6rem 2rem 2rem; }
-        .hero-inner { display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: center; max-width: 1000px; margin: 0 auto; position: relative; z-index: 2; }
-        .hero img { width: 250px; height: 320px; object-fit: cover; border-radius: 16px; border: 1px solid var(--border); }
-        .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 4rem); font-weight: 600; margin-bottom: 1rem; }
-        .hero p { color: var(--text-2); font-size: 1.1rem; max-width: 480px; margin-bottom: 1.5rem; }
-        .hero-meta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
-        .hero-meta span { padding: 0.4rem 0.8rem; background: var(--bg-2); border: 1px solid var(--border); border-radius: 100px; font-size: 0.85rem; color: var(--text-2); }
-        .btn { display: inline-block; padding: 0.85rem 2rem; background: var(--text); color: var(--bg); text-decoration: none; border-radius: 100px; font-weight: 500; border: none; cursor: pointer; }
-
-        /* SECTIONS */
-        .section { padding: 7rem 2rem; max-width: 1000px; margin: 0 auto; }
-        .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-3); margin-bottom: 1rem; }
-        .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 600; margin-bottom: 2rem; }
-
         
-
-        /* BUSCO */
-        .busco-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2rem; }
-        .busco-item { padding: 1.5rem; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; }
-        .busco-item h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
-        .busco-item p { color: var(--text-2); font-size: 0.9rem; line-height: 1.5; }
-
+        .nav-links .active a { color: var(--text); }
         
-/* HABILIDADES */
-.hab-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2rem; }
-.hab-bloco { padding: 1.5rem; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; transition: all 0.3s; }
-.hab-bloco:hover { border-color: var(--gold); transform: translateY(-2px); }
-.hab-bloco h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
-.hab-bloco p { color: var(--text-2); font-size: 0.9rem; line-height: 1.5; }
-
-@media (max-width: 768px) {
-    .hab-container { grid-template-columns: repeat(2, 1fr); }
-}
-
-        /* BIBLE */
-        .bible { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: #1a1612; border-radius: 12px; overflow: hidden; min-height: 350px; }
-        .bible-page { background: #f5f0e0; color: #1a1612; padding: 1.75rem; font-family: Georgia, serif; }
-        .bible-page h3 { color: #8b5a2b; margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid rgba(139,90,43,0.2); font-size: 1.1rem; }
-        .bible-verse { margin-bottom: 1rem; }
-        .bible-verse .ref { font-size: 0.65rem; font-weight: 700; color: #8b5a2b; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.25rem; }
-        .bible-verse .text { font-size: 0.85rem; line-height: 1.6; font-style: italic; color: #333; }
-        .bible-nav { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: var(--bg-3); }
-        .bible-nav button { padding: 0.4rem 0.8rem; background: var(--bg-2); border: 1px solid var(--border); color: var(--text); border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
-        .bible-nav button:disabled { opacity: 0.3; cursor: not-allowed; }
-        .bible-topics { display: flex; overflow-x: auto; gap: 0.3rem; padding: 0.6rem; background: var(--bg-2); scrollbar-width: none; }
-        .bible-topics button { padding: 0.3rem 0.7rem; background: transparent; border: 1px solid var(--border); color: var(--text-2); border-radius: 100px; cursor: pointer; white-space: nowrap; font-size: 0.75rem; }
-        .bible-topics button.active { background: var(--gold); color: #000; border-color: transparent; }
-
-        /* FORM */
-        .form { background: var(--bg-2); border: 1px solid var(--border); border-radius: 16px; padding: 1.75rem; max-width: 550px; margin: 0 auto; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; font-size: 0.7rem; color: var(--text-2); margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.04em; }
-        .form-group input, .form-group textarea { width: 100%; padding: 0.65rem 0.85rem; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: inherit; font-size: 0.85rem; }
-        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--gold); }
-        .form-group textarea { resize: vertical; min-height: 60px; }
-        .form .btn { width: 100%; margin-top: 0.5rem; text-align: center; }
-
-        /* MOBILE */
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(232,168,124,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .hero-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 5rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .hero-photo {
+            position: relative;
+        }
+        
+        .photo-frame {
+            width: 280px;
+            height: 380px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+        }
+        
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .photo-frame:hover img { transform: scale(1.05); }
+        
+        .photo-glow {
+            position: absolute;
+            inset: -2px;
+            border-radius: 22px;
+            background: var(--gradient);
+            opacity: 0.3;
+            filter: blur(15px);
+            z-index: -1;
+        }
+        
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.75rem, 6vw, 4.5rem);
+            font-weight: 500;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.25rem;
+        }
+        
+        .hero-content h1 span {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-2);
+            max-width: 480px;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+        
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .meta-tag {
+            padding: 0.45rem 1rem;
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--text-2);
+            transition: all 0.3s;
+        }
+        
+        .meta-tag:hover {
+            border-color: var(--accent);
+            color: var(--text);
+            transform: translateY(-2px);
+        }
+        
+        .hero-cta { display: flex; gap: 1rem; }
+        
+        .btn {
+            padding: 0.9rem 2rem;
+            border-radius: 100px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: var(--text);
+            color: var(--bg);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255,255,255,0.15);
+        }
+        
+        .btn-ghost {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-ghost:hover { background: var(--bg-2); border-color: var(--text-3); }
+        
+        /* ===== SECTIONS ===== */
+        .section {
+            padding: 10rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            margin-bottom: 4rem;
+        }
+        
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-3);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 500;
+            letter-spacing: -0.02em;
+        }
+        
+        .section-desc {
+            color: var(--text-2);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin-top: 1rem;
+            font-weight: 300;
+        }
+        
+        /* ===== BUSCO ===== */
+        .busco-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .busco-card {
+            background: var(--bg-2);
+            padding: 2.5rem;
+            transition: background 0.3s;
+        }
+        
+        .busco-card:hover { background: var(--bg-3); }
+        
+        .busco-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .busco-card p {
+            color: var(--text-2);
+            font-size: 0.95rem;
+        }
+        
+        /* ===== HABILIDADES ===== */
+        .hab-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .hab-card {
+            background: var(--bg-2);
+            padding: 2.5rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hab-card:hover { background: var(--bg-3); }
+        
+        .hab-card .icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hab-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .hab-card p {
+            color: var(--text-2);
+            font-size: 0.9rem;
+        }
+        
+        .hab-card .number {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            color: var(--border);
+            line-height: 1;
+        }
+        
+        /* ===== ANTES/DEPOIS ===== */
+        .antes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .antes-card {
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .antes-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+        
+        .antes-card .emoji { font-size: 2.5rem; margin-bottom: 1rem; }
+        .antes-card h4 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .antes-card p { color: var(--text-2); font-size: 0.85rem; }
+        
+        /* ===== FORM ===== */
+        .form-section { max-width: 600px; margin: 0 auto; }
+        
+        .form-box {
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3rem;
+        }
+        
+        .form-group { margin-bottom: 1.5rem; }
+        
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-2);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .form-box .btn { width: 100%; text-align: center; justify-content: center; margin-top: 1rem; }
+        
+        /* ===== FOOTER ===== */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: var(--text-3);
+            font-size: 0.85rem;
+        }
+        
+        /* ===== SCROLL ANIMATIONS ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* ===== MOBILE ===== */
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .hero-inner { grid-template-columns: 1fr; text-align: center; }
-            .hero p { margin: 0 auto 1.5rem; }
+            .hero-grid { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
+            .photo-frame { width: 200px; height: 270px; margin: 0 auto; }
+            .hero-subtitle { margin: 0 auto 2rem; }
             .hero-meta { justify-content: center; }
-            .bible { grid-template-columns: 1fr; min-height: auto; }
+            .hero-cta { justify-content: center; }
+            .section { padding: 6rem 1.5rem; }
+            .busco-grid, .hab-grid { grid-template-columns: 1fr; }
             .form-row { grid-template-columns: 1fr; }
-            .busco-container { grid-template-columns: 1fr; }
-            .section { padding: 4rem 1rem; }
+            .form-box { padding: 2rem; }
         }
     </style>
 </head>
 <body>
-    <!-- TERMS -->
-    <div class="terms" id="terms">
-        <div class="terms-box">
-            <h2>Termo de Sigilo</h2>
-            <p>Este é um perfil pessoal. Toda informação aqui é confidencial.</p>
-            <p>Você concorda em manter sigilo sobre tudo que ver, sem compartilhar ou expor.</p>
-            <p>Respeito mútuo é essencial, independente do resultado.</p>
-            <button class="btn terms-btn" id="acceptTerms">Li e aceito</button>
-        </div>
-    </div>
-
-    <!-- NAV -->
-    <nav class="nav">
+    <nav class="nav" id="nav">
         <div class="nav-inner">
-            <a href="#hero" style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:600;">Rubens</a>
+            <a href="#" class="nav-logo">Rubens</a>
             <ul class="nav-links">
-                <li><a href="#hero">Sobre</a></li>
-                <li><a href="#busco">O que eu procuro</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#busco">Procuro</a></li>
                 <li><a href="#habilidades">Habilidades</a></li>
-                <li><a href="#biblia">Bíblia</a></li>
-                <li><a href="#candidatura">Candidatura</a></li>
+                <li><a href="#nao-gosto">Não curto</a></li>
+                <li><a href="#candidatura">Contato</a></li>
             </ul>
         </div>
     </nav>
-
-    <!-- HERO -->
-    <section class="hero" id="hero">
-    <div class="hero-video"><video autoplay muted loop playsinline><source src="video-bg.mp4" type="video/mp4"></video></div>
-    <div class="hero-overlay"></div>
-        <div class="hero-inner">
-            <img src="img/eu-novo.jpg" alt="Rubens">
-            <div>
-                <h1>Rubens Pereira Fernandes</h1>
-                <p>26 anos, Recife. Procurando alguém pra vida.</p>
-                <div class="hero-meta">
-                    <span>26 anos</span>
-                    <span>171cm</span>
-                    <span>69kg</span>
+    
+    <section class="hero" id="sobre">
+        <div class="hero-grid">
+            <div class="hero-photo reveal">
+                <div class="photo-frame">
+                    <img src="img/eu-novo.jpg" alt="Rubens">
                 </div>
-                <a href="#candidatura" class="btn">Me escolhe</a>
+                <div class="photo-glow"></div>
+            </div>
+            <div class="hero-content reveal">
+                <h1>Eu sou o <span>Rubens</span></h1>
+                <p class="hero-subtitle">26 anos, Recife. Programador, trabalhador, caseiro. Tô aqui procurando alguém que queira construir algo real.</p>
+                <div class="hero-meta">
+                    <span class="meta-tag">26 anos</span>
+                    <span class="meta-tag">171cm</span>
+                    <span class="meta-tag">69kg</span>
+                    <span class="meta-tag">♉ Touro</span>
+                </div>
+                <div class="hero-cta">
+                    <a href="#candidatura" class="btn btn-primary">Me escolhe</a>
+                    <a href="#habilidades" class="btn btn-ghost">Ver mais</a>
+                </div>
             </div>
         </div>
     </section>
-
-    <!-- O QUE BUSCO -->
+    
     <section class="section" id="busco">
-        <p class="section-label">O que eu procuro</p>
-        <h2 class="section-title">A pessoa certa.</h2>
-        <div class="busco-container">
-            <div class="busco-item">
-                <h3>Fiel</h3>
-                <p>Quem escolhe de verdade. Sem joguinho.</p>
+        <div class="section-header reveal">
+            <p class="section-label">O que procuro</p>
+            <h2 class="section-title">A pessoa certa.</h2>
+        </div>
+        <div class="busco-grid reveal">
+            <div class="busco-card">
+                <h3>Leal</h3>
+                <p>Quem escolhe de verdade. Sem jogo, sem mentira.</p>
             </div>
-            <div class="busco-item">
+            <div class="busco-card">
                 <h3>Pra casa</h3>
-                <p>Ficar em casa é meu negócio. Café, filme, conversa. Não curto festa.</p>
+                <p>Ficar em casa é meu negócio. Café, filme, conversa.</p>
             </div>
-            <div class="busco-item">
+            <div class="busco-card">
                 <h3>De Deus</h3>
                 <p>Servir a Deus junto. Fé é base de tudo.</p>
             </div>
-            <div class="busco-item">
+            <div class="busco-card">
                 <h3>De verdade</h3>
-                <p>Sem máscara. Quem eu sou tá aqui pra quem gostar.</p>
+                <p>Sem máscara. Quem eu sou tá aqui.</p>
             </div>
         </div>
     </section>
-
-    <!-- O QUE NÃO GOSTO -->
-    <section class="section" id="nao-gosto" style="padding: 3rem 2rem;">
-        <p class="section-label">O que eu não curto</p>
-        <div class="busco-container">
-            <div class="busco-item">
-                <h3>🚫 Não bebo</h3>
-                <p>Nunca gostei. Não é pra mim.</p>
+    
+    <section class="section" id="habilidades">
+        <div class="section-header reveal">
+            <p class="section-label">Habilidades</p>
+            <h2 class="section-title">Tudo o que eu sei fazer.</h2>
+            <p class="section-desc">E o que eu não sei, aprendo.</p>
+        </div>
+        <div class="hab-grid reveal">
+            <div class="hab-card">
+                <span class="number">01</span>
+                <div class="icon">🍳</div>
+                <h3>Cozinha</h3>
+                <p>Bolos, sorvetes, doces, cuscuz, macarrão, carnes, feijão, lasanha, pão.</p>
             </div>
-            <div class="busco-item">
-                <h3>🚫 Não fumo</h3>
-                <p>Nem nunca fumei. Não combina comigo.</p>
+            <div class="hab-card">
+                <span class="number">02</span>
+                <div class="icon">🏠</div>
+                <h3>Casa</h3>
+                <p>Arrumo tudo, lavo prato. Só falta aprender lavar roupa.</p>
             </div>
-            <div class="busco-item">
-                <h3>🎉 Não curto festas</h3>
+            <div class="hab-card">
+                <span class="number">03</span>
+                <div class="icon">🔧</div>
+                <h3>Consertos</h3>
+                <p>Qualquer eletrodoméstico. Encanamento. Se não sei, aprendo.</p>
+            </div>
+            <div class="hab-card">
+                <span class="number">04</span>
+                <div class="icon">🌿</div>
+                <h3>Plantas</h3>
+                <p>Amo cuidar. Horta, vasos, jardim.</p>
+            </div>
+            <div class="hab-card">
+                <span class="number">05</span>
+                <div class="icon">☕</div>
+                <h3>Bebidas</h3>
+                <p>Chás e café. Faço com carinho.</p>
+            </div>
+            <div class="hab-card">
+                <span class="number">06</span>
+                <div class="icon">💋</div>
+                <h3>Cuidado</h3>
+                <p>Massagem, carinho, presença.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" id="nao-gosto">
+        <div class="section-header reveal">
+            <p class="section-label">O que não curto</p>
+            <h2 class="section-title">Pra combinar a gente.</h2>
+        </div>
+        <div class="antes-grid reveal">
+            <div class="antes-card">
+                <div class="emoji">🚫</div>
+                <h4>Não bebo</h4>
+                <p>Nunca gostou. Não é pra mim.</p>
+            </div>
+            <div class="antes-card">
+                <div class="emoji">🚭</div>
+                <h4>Não fumo</h4>
+                <p>Nem nunca fumei.</p>
+            </div>
+            <div class="antes-card">
+                <div class="emoji">🎉</div>
+                <h4>Sem festas</h4>
                 <p>Praia? Sim. Casa? Sempre. Festas, não.</p>
             </div>
-            <div class="busco-item">
-                <h3>🤝 Sem joguinhos</h3>
+            <div class="antes-card">
+                <div class="emoji">🎭</div>
+                <h4>Sem máscara</h4>
                 <p>Se não for de verdade, não perde seu tempo.</p>
             </div>
         </div>
     </section>
     
-    <!-- MINHAS HABILIDADES -->
-    <section class="section" id="habilidades">
-        <p class="section-label">Minhas Habilidades</p>
-        <h2 class="section-title">Tudo o que eu sei fazer.</h2>
-        <p class="section-desc">O que eu não sei, aprendo.</p>
-        <div class="hab-container">
-            <div class="hab-bloco">
-                <h3>🍳 Cozinha</h3>
-                <p>Bolos, sorvetes, doces, cuscuz, macarrão, carnes, feijão, lasanha, pão, cachorro-quente, soja texturizada, ovo, arroz. Cuido do básico e muito mais.</p>
+    <section class="section form-section" id="candidatura">
+        <div class="section-header reveal">
+            <p class="section-label">Candidatura</p>
+            <h2 class="section-title">Você me escolhe?</h2>
+            <p class="section-desc">Preencha com sinceridade. Se atender as expectativas, eu entro em contato.</p>
+        </div>
+        <div class="form-box reveal">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input type="text" id="fNome" placeholder="Seu nome">
+                </div>
+                <div class="form-group">
+                    <label>Idade</label>
+                    <input type="number" id="fIdade" placeholder="25">
+                </div>
             </div>
-            <div class="hab-bloco">
-                <h3>🏠 Casa</h3>
-                <p>Arrumo a casa, lavo prato, cuido de tudo. Só não sei lavar roupa ainda, mas aprendo rápido.</p>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Cidade</label>
+                    <input type="text" id="fCidade" placeholder="Cidade - UF">
+                </div>
+                <div class="form-group">
+                    <label>WhatsApp</label>
+                    <input type="tel" id="fWhats" placeholder="(00) 00000-0000">
+                </div>
             </div>
-            <div class="hab-bloco">
-                <h3>🔧 Consertos</h3>
-                <p>Conserto qualquer eletrodoméstico. Se não souber, procuro até aprender. Encanação também.</p>
+            <div class="form-group">
+                <label>Por que eu?</label>
+                <textarea id="fMotivo" rows="3" placeholder="Me convence..."></textarea>
             </div>
-            <div class="hab-bloco">
-                <h3>🌿 Plantas</h3>
-                <p>Amo plantas. Cuido, rego, cuido da horta. Se você tiver planta, vai ser bem cuidada.</p>
+            <div class="form-group">
+                <label>O que busca?</label>
+                <textarea id="fBusca" rows="3" placeholder="Fala pra eu ver..."></textarea>
             </div>
-            <div class="hab-bloco">
-                <h3>☕ Bebidas</h3>
-                <p>Amo chás e café. Faço um café digno. Se tiver um chá bom, eu preparo com carinho.</p>
-            </div>
-            <div class="hab-bloco">
-                <h3>💋 Cuidado</h3>
-                <p>Sei fazer massagem, tenho carinho com quero bem. Amo cuidar.</p>
-            </div>
+            <button class="btn btn-primary" onclick="enviarForm()">📱 Enviar pro WhatsApp</button>
         </div>
     </section>
     
-    <!-- BIBLIA -->
-    <section class="section" id="biblia">
-        <p class="section-label">Bíblia</p>
-        <h2 class="section-title">O que a Palavra diz sobre amor</h2>
-        <div class="bible">
-            <div class="bible-page" id="bibleLeft"></div>
-            <div class="bible-page" id="bibleRight"></div>
-        </div>
-        <div class="bible-nav">
-            <button id="biblePrev" onclick="biblePrev()">← Anterior</button>
-            <span id="bibleNum">1 / 1</span>
-            <button id="bibleNext" onclick="bibleNext()">Próximo →</button>
-        </div>
-        <div class="bible-topics" id="bibleTopics"></div>
-    </section>
-
-    <!-- CANDIDATURE -->
-    <section class="section" id="candidatura">
-        <p class="section-label">Candidatura</p>
-        <h2 class="section-title">Você me escolhe?</h2>
-        <div class="form">
-            <div class="form-row">
-                <div class="form-group"><label>Nome</label><input type="text" id="fNome" placeholder="Seu nome"></div>
-                <div class="form-group"><label>Idade</label><input type="number" id="fIdade" placeholder="25"></div>
-            </div>
-            <div class="form-row">
-                <div class="form-group"><label>Cidade</label><input type="text" id="fCidade" placeholder="Cidade - UF"></div>
-                <div class="form-group"><label>WhatsApp</label><input type="tel" id="fWhats" placeholder="(00) 00000-0000"></div>
-            </div>
-            <div class="form-group"><label>Por que eu?</label><textarea id="fMotivo" rows="3" placeholder="Me convence..."></textarea></div>
-            <div class="form-group"><label>O que busca?</label><textarea id="fBusca" rows="3" placeholder="Fala pra eu ver..."></textarea></div>
-            <button class="btn" onclick="sendForm()">Enviar pro WhatsApp</button>
-        </div>
-    </section>
-
+    <footer class="footer">
+        <p>© 2026 Rubens Pereira Fernandes. Feito com propósito.</p>
+    </footer>
+    
     <script>
-        // TERMS
-        document.getElementById('acceptTerms').onclick = function() {
-            document.getElementById('terms').classList.add('hidden');
-            localStorage.setItem('accepted', '1');
-        };
-        if (localStorage.getItem('accepted') === '1') {
-            document.getElementById('terms').classList.add('hidden');
-        }
-
-        // NAV
-        window.onscroll = function() {
-            document.querySelector('.nav').classList.toggle('scrolled', window.scrollY > 50);
-        };
-
+        // Scroll reveal
+        var reveals = document.querySelectorAll('.reveal');
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting) e.target.classList.add('visible');
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
         
-        // BIBLE
-        var bibleData = {
-            amor: [
-                { ref: "1 Coríntios 13:4-8", text: "O amor é paciente, o amor é bondoso. Não inveja, não se vangloria, não se orgulha. O amor jamais acaba." },
-                { ref: "1 João 4:18-19", text: "No amor não existe medo; antes, o perfeito amor lança fora o medo." },
-                { ref: "Cantares 8:6-7", text: "O amor é forte como a morte. As muitas águas não podem apagar o amor." },
-                { ref: "Romanos 8:38-39", text: "Nem a morte, nem a vida poderá separar-nos do amor de Deus." }
-            ],
-            casamento: [
-                { ref: "Gênesis 2:24", text: "Deixará o homem seu pai e sua mãe, e se unirá à sua mulher, e serão dois numa só carne." },
-                { ref: "Marcos 10:9", text: "O que Deus ajuntou, não o separe o homem." },
-                { ref: "1 Pedro 3:7", text: "Convivei com vossas mulheres com entendimento, dando honra à mulher." },
-                { ref: "Colossenses 3:14", text: "Revesti-vos de amor, que é o vínculo da perfeição." }
-            ],
-            familia: [
-                { ref: "Josué 24:15", text: "Eu e a minha casa serviremos ao Senhor." },
-                { ref: "Salmo 127:3", text: "Os filhos são herança do Senhor." },
-                { ref: "Provérbios 22:6", text: "Ensina a criança no caminho em que deve andar." },
-                { ref: "Salmo 128:3", text: "Tua mulher será como videira frutífera." }
-            ],
-            fe: [
-                { ref: "Hebreus 11:1", text: "A fé é a certeza de coisas que se esperam." },
-                { ref: "Filipenses 4:13", text: "Tudo posso naquele que me fortalece." },
-                { ref: "Isaías 41:10", text: "Não temas, porque eu sou contigo." },
-                { ref: "Jeremias 29:11", text: "Pensamentos de paz e não de mal." }
-            ],
-            perdao: [
-                { ref: "Colossenses 3:13", text: "Suportando-vos e perdoando-vos, assim como Cristo vos perdoou." },
-                { ref: "Efésios 4:32", text: "Sede benignos, compassivos, perdoando-vos uns aos outros." },
-                { ref: "Mateus 6:14", text: "Se perdoardes, vosso Pai vos perdoará." },
-                { ref: "Mateus 18:22", text: "Não até sete, mas até setenta vezes sete." }
-            ],
-            esperanca: [
-                { ref: "Romanos 15:13", text: "O Deus de esperança vos encha de todo o gozo." },
-                { ref: "Salmo 42:11", text: "Espera em Deus, pois ainda o louvarei." },
-                { ref: "Isaías 40:31", text: "Os que esperam no Senhor renovarão as forças." },
-                { ref: "Hebreus 10:23", text: "Retenhamos firme a confissão da esperança." }
-            ]
-        };
-        var bibleTopics = Object.keys(bibleData);
-        var bibleTopic = 'amor', biblePage = 0, biblePerPage = 2;
+        reveals.forEach(function(el) { observer.observe(el); });
         
-        function bibleRender() {
-            var verses = bibleData[bibleTopic];
-            var totalP = Math.ceil(verses.length / biblePerPage);
-            if (biblePage >= totalP) biblePage = 0;
-            var left = verses.slice(biblePage * biblePerPage, biblePage * biblePerPage + biblePerPage);
-            var right = verses.slice((biblePage + 1) * biblePerPage, (biblePage + 1) * biblePerPage + biblePerPage);
-            
-            function renderVerses(arr) {
-                var h = '';
-                arr.forEach(function(v) { h += '<div class="bible-verse"><div class="ref">' + v.ref + '</div><div class="text">"' + v.text + '"</div></div>'; });
-                return h || '<p style="color:#888;font-style:italic">Fim do capítulo.</p>';
-            }
-            
-            document.getElementById('bibleLeft').innerHTML = '<h3>' + bibleTopic.charAt(0).toUpperCase() + bibleTopic.slice(1) + '</h3>' + renderVerses(left);
-            document.getElementById('bibleRight').innerHTML = right.length ? '<h3>Continuação</h3>' + renderVerses(right) : '';
-            document.getElementById('bibleNum').textContent = (biblePage + 1) + ' / ' + totalP;
-            document.getElementById('biblePrev').disabled = biblePage === 0;
-            document.getElementById('bibleNext').disabled = biblePage >= totalP - 1;
-        }
-        function biblePrev() { biblePage--; bibleRender(); }
-        function bibleNext() { biblePage++; bibleRender(); }
-        
-        // Render topics
-        bibleTopics.forEach(function(t) {
-            var b = document.createElement('button');
-            b.textContent = t.charAt(0).toUpperCase() + t.slice(1);
-            if (t === bibleTopic) b.className = 'active';
-            b.onclick = function() {
-                bibleTopic = t; biblePage = 0; bibleRender();
-                document.querySelectorAll('#bibleTopics button').forEach(function(x) { x.className = ''; });
-                b.className = 'active';
-            };
-            document.getElementById('bibleTopics').appendChild(b);
+        // Nav scroll
+        window.addEventListener('scroll', function() {
+            document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
         });
-        bibleRender();
-
-        // FORM
-        function sendForm() {
-            var msg = 'Candidatura\n\nNome: ' + (document.getElementById('fNome').value || '-') + '\nIdade: ' + (document.getElementById('fIdade').value || '-') + '\nCidade: ' + (document.getElementById('fCidade').value || '-') + '\nWhatsApp: ' + (document.getElementById('fWhats').value || '-') + '\n\nMotivo:\n' + (document.getElementById('fMotivo').value || '-') + '\n\nBusca:\n' + (document.getElementById('fBusca').value || '-');
+        
+        // Form
+        function enviarForm() {
+            var msg = '💌 Candidatura\n\nNome: ' + (document.getElementById('fNome').value || '-') + '\nIdade: ' + (document.getElementById('fIdade').value || '-') + '\nCidade: ' + (document.getElementById('fCidade').value || '-') + '\nWhatsApp: ' + (document.getElementById('fWhats').value || '-') + '\n\nMotivo:\n' + (document.getElementById('fMotivo').value || '-') + '\n\nBusca:\n' + (document.getElementById('fBusca').value || '-');
             window.open('https://wa.me/5581989501999?text=' + encodeURIComponent(msg), '_blank');
         }
     </script>
