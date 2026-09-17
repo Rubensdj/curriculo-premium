@@ -65,6 +65,19 @@
         .busco-item h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
         .busco-item p { color: var(--text-2); font-size: 0.9rem; line-height: 1.5; }
 
+        
+/* SKILLS */
+.skills-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+.skill-card { padding: 1.25rem; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; text-align: center; transition: all 0.3s; }
+.skill-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+.skill-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+.skill-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem; }
+.skill-card p { color: var(--text-2); font-size: 0.8rem; }
+
+@media (max-width: 768px) {
+    .skills-container { grid-template-columns: repeat(2, 1fr); }
+}
+
         /* BIBLE */
         .bible { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: #1a1612; border-radius: 12px; overflow: hidden; min-height: 350px; }
         .bible-page { background: #f5f0e0; color: #1a1612; padding: 1.75rem; font-family: Georgia, serif; }
@@ -121,6 +134,7 @@
             <ul class="nav-links">
                 <li><a href="#hero">Sobre</a></li>
                 <li><a href="#busco">O que busco</a></li>
+                <li><a href="#habilidades">Skills</a></li>
                 <li><a href="#biblia">Bíblia</a></li>
                 <li><a href="#candidatura">Candidatura</a></li>
             </ul>
@@ -170,6 +184,44 @@
         </div>
     </section>
 
+    <!-- HABILIDADES -->
+    <section class="section" id="habilidades">
+        <p class="section-label">Habilidades</p>
+        <h2 class="section-title">O que eu sei fazer.</h2>
+        <div class="skills-container">
+            <div class="skill-card">
+                <div class="skill-icon">🐍</div>
+                <h3>Python</h3>
+                <p>Automação, scripts, APIs</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">🐳</div>
+                <h3>Docker</h3>
+                <p>Containers, deploy</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">⚡</div>
+                <h3>FastAPI</h3>
+                <p>APIs rápidas e documentadas</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">🐧</div>
+                <h3>Linux</h3>
+                <p>Servidor, terminal</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">📦</div>
+                <h3>Git</h3>
+                <p>Versionamento</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">🗄️</div>
+                <h3>SQL</h3>
+                <p>Banco de dados</p>
+            </div>
+        </div>
+    </section>
+    
     <!-- BIBLIA -->
     <section class="section" id="biblia">
         <p class="section-label">Bíblia</p>
