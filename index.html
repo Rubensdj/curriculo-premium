@@ -66,16 +66,15 @@
         .busco-item p { color: var(--text-2); font-size: 0.9rem; line-height: 1.5; }
 
         
-/* SKILLS */
-.skills-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
-.skill-card { padding: 1.25rem; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; text-align: center; transition: all 0.3s; }
-.skill-card:hover { border-color: var(--gold); transform: translateY(-3px); }
-.skill-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-.skill-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem; }
-.skill-card p { color: var(--text-2); font-size: 0.8rem; }
+/* HABILIDADES */
+.hab-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2rem; }
+.hab-bloco { padding: 1.5rem; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; transition: all 0.3s; }
+.hab-bloco:hover { border-color: var(--gold); transform: translateY(-2px); }
+.hab-bloco h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.hab-bloco p { color: var(--text-2); font-size: 0.9rem; line-height: 1.5; }
 
 @media (max-width: 768px) {
-    .skills-container { grid-template-columns: repeat(2, 1fr); }
+    .hab-container { grid-template-columns: repeat(2, 1fr); }
 }
 
         /* BIBLE */
@@ -184,40 +183,35 @@
         </div>
     </section>
 
-    <!-- HABILIDADES -->
+    <!-- MINHAS HABILIDADES -->
     <section class="section" id="habilidades">
-        <p class="section-label">Habilidades</p>
-        <h2 class="section-title">O que eu sei fazer.</h2>
-        <div class="skills-container">
-            <div class="skill-card">
-                <div class="skill-icon">🐍</div>
-                <h3>Python</h3>
-                <p>Automação, scripts, APIs</p>
+        <p class="section-label">Minhas Habilidades</p>
+        <h2 class="section-title">Tudo o que eu sei fazer.</h2>
+        <p class="section-desc">E o que eu não sei, eu aprendo.</p>
+        <div class="hab-container">
+            <div class="hab-bloco">
+                <h3>🍳 Cozinha</h3>
+                <p>Bolos, sorvetes, cuscuz, macarrão, carnes, feijão, lasanha, pão, cachorro-quente, soja texturizada, ovo, arroz. Cuido do básico e muito mais.</p>
             </div>
-            <div class="skill-card">
-                <div class="skill-icon">🐳</div>
-                <h3>Docker</h3>
-                <p>Containers, deploy</p>
+            <div class="hab-bloco">
+                <h3>🏠 Casa</h3>
+                <p>Arrumo a casa, lavo prato, cuido de tudo. Só não sei lavar roupa ainda, mas aprendo rápido.</p>
             </div>
-            <div class="skill-card">
-                <div class="skill-icon">⚡</div>
-                <h3>FastAPI</h3>
-                <p>APIs rápidas e documentadas</p>
+            <div class="hab-bloco">
+                <h3>🔧 Consertos</h3>
+                <p>Conserto qualquer eletrodoméstico. Se não souber, procuro até aprender. Encanação também.</p>
             </div>
-            <div class="skill-card">
-                <div class="skill-icon">🐧</div>
-                <h3>Linux</h3>
-                <p>Servidor, terminal</p>
+            <div class="hab-bloco">
+                <h3>🌿 Plantas</h3>
+                <p>Amo plantas. Cuido, rego, cuido da horta. Se você tiver planta, vai ser bem cuidada.</p>
             </div>
-            <div class="skill-card">
-                <div class="skill-icon">📦</div>
-                <h3>Git</h3>
-                <p>Versionamento</p>
+            <div class="hab-bloco">
+                <h3>☕ Bebidas</h3>
+                <p>Amo chás e café. Faço um café digno. Se tiver um chá bom, eu preparo com carinho.</p>
             </div>
-            <div class="skill-card">
-                <div class="skill-icon">🗄️</div>
-                <h3>SQL</h3>
-                <p>Banco de dados</p>
+            <div class="hab-bloco">
+                <h3>💋 Cuidado</h3>
+                <p>Sei fazer massagem, tenho carinho com quero bem. Amo cuidar.</p>
             </div>
         </div>
     </section>
