@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contrato de Relacionamento — Rubens Pereira Fernandes</title>
     <meta name="theme-color" content="#f6f7f9">
-    <meta name="description" content="Contrato de relacionamento entre Rubens e você. Fundamentado em Deus, lealdade e crescimento compartilhado.">
+    <meta name="description" content="Contrato de relacionamento sério entre Rubens e você. Fundamentado em Deus, lealdade e propósito.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,462 +16,480 @@
 
     <style>
         :root {
-            --bg: #f6f7f9;
-            --bg-card: #ffffff;
-            --text: #1a1a1a;
-            --text-2: #4b5563;
-            --text-3: #6b7280;
-            --accent: #7c2d3a;
-            --accent-light: #a8445a;
+            --bg: #f6f7f9; --bg-card: #ffffff; --text: #1a1a1a;
+            --text-2: #4b5563; --text-3: #6b7280;
+            --accent: #7c2d3a; --accent-light: #9b4150;
             --border: rgba(124, 45, 58, 0.12);
-            --shadow: 0 4px 6px -1px rgba(0,0,0,0.04), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --shadow: 0 1px 3px rgba(0,0,0,0.03), 0 2px 4px -1px rgba(0,0,0,0.02);
             --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.06), 0 4px 6px -2px rgba(0,0,0,0.03);
-            --radius: 14px;
-            --radius-lg: 20px;
+            --radius: 14px; --radius-lg: 20px;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            overflow-x: hidden;
-            
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            background: var(--bg); color: var(--text); overflow-x: hidden;
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
         }
-
-        @media (prefers-reduced-motion: reduce) {
-            * { transition: none !important; animation: none !important; }
-        }
-
+        @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
         ::selection { background: var(--accent); color: #fff; }
 
         /* ===== LOADER ===== */
         .loader-screen {
-            position: fixed; inset: 0; background: var(--bg);
-            z-index: 100000; display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            opacity: 1; transition: opacity 0.8s ease;
+            position: fixed; inset: 0; background: var(--bg); z-index: 99999;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 1; transition: opacity 0.5s ease;
         }
         .loader-screen.hidden { opacity: 0; pointer-events: none; }
-        .loader-text {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(1.4rem, 3vw, 1.8rem);
-            font-weight: 400; font-style: italic;
-            color: var(--accent); letter-spacing: 0.1em;
-            margin-bottom: 2rem;
-        }
-        
-        
 
         /* ===== NAVIGATION ===== */
         .nav {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-            padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center;
-            backdrop-filter: blur(20px); background: rgba(246, 247, 249, 0.7);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 1.2rem 3rem; display: flex; justify-content: center;
+            backdrop-filter: blur(20px); background: rgba(246, 247, 249, 0.8);
             border-bottom: 1px solid var(--border);
         }
-        .nav-brand { font-family: 'Playfair Display', italic, serif; font-size: 1.4rem; color: var(--text); text-decoration: none; }
-        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-        .nav-links a {
-            color: var(--text-2); text-decoration: none; font-size: 0.72rem;
-            text-transform: uppercase; letter-spacing: 0.12em; font-weight: 500;
-            transition: color 0.2s ease; position: relative;
+        .nav a {
+            font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 400; font-style: italic;
+            color: var(--text); text-decoration: none; letter-spacing: -0.01em;
         }
-        .nav-links a::after { content: ''; position: absolute; bottom: -0.3rem; left: 0; width: 0; height: 1px; background: var(--accent); transition: width 0.2s ease; }
-        .nav-links a:hover { color: var(--text); }
-        .nav-links a:hover::after { width: 100%; }
-        .menu-icon { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
-        .menu-icon span { width: 24px; height: 1.5px; background: var(--text); transition: all 0.3s; }
+        .nav a .hl { color: var(--accent); }
+        .page-label {
+            position: absolute; top: 1.2rem; right: 3rem;
+            font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em;
+            color: var(--text-3);
+        }
+        @media (max-width: 768px) { .nav { padding: 1rem 1.5rem; } .page-label { right: 1.5rem; } }
 
-        /* ===== CONTRATO CONTAINER ===== */
-        .contrato-container {
-            max-width: 900px; margin: 0 auto; padding: 6rem 2rem 4rem;
+        /* ===== DOCUMENTO ===== */
+        .doc {
+            max-width: 960px; margin: 0 auto; padding: 5rem 2rem 6rem;
         }
-        .contrato-header {
-            text-align: center; margin-bottom: 2.5rem;
+        .doc-header {
+            text-align: center; margin-bottom: 3rem; padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
         }
-        .contrato-header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 400;
-            letter-spacing: -0.01em; margin-bottom: 0.5rem;
+        .doc-num {
+            font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em;
+            color: var(--text-3); margin-bottom: 0.6rem;
         }
-        .contrato-header h1 .hl { color: var(--accent); font-style: italic; }
-        .contrato-header .sub { color: var(--text-2); font-size: 0.85rem; font-weight: 300; }
+        .doc-title {
+            font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.4rem);
+            font-weight: 400; letter-spacing: -0.015em; margin-bottom: 0.4rem;
+        }
+        .doc-title .hl { color: var(--accent); font-style: italic; }
+        .doc-sub {
+            font-size: 0.8rem; color: var(--text-2); font-weight: 300; font-style: italic;
+        }
 
-        .lead {
-            text-align: center; color: var(--text-2); font-size: 0.83rem;
-            font-weight: 300; line-height: 1.6; max-width: 720px;
-            margin: 0 auto 2rem;
+        /* ===== PREAMBULO ===== */
+        .preambulo {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow);
+            margin-bottom: 2.5rem;
         }
-        .lead strong { color: var(--text); }
+        .preambulo p {
+            font-size: 0.86rem; line-height: 1.7; color: var(--text-2); font-weight: 300;
+            text-align: justify; text-justify: inter-word;
+        }
+        .preambulo .highlight {
+            color: var(--accent); font-weight: 500; font-style: italic;
+        }
+        .preambulo .sub-p {
+            margin-top: 1.2rem; font-size: 0.83rem; color: var(--text-2);
+        }
 
-        /* ===== TERMOS DESTACADOS ===== */
-        .termos-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow);
-            padding: 2rem; margin-bottom: 2.5rem;
+        /* ===== TERMOS ===== */
+        .termos-block {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); padding: 2.2rem; box-shadow: var(--shadow);
+            margin-bottom: 2.5rem;
         }
-        .termos-section h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.15rem; color: var(--accent);
-            text-align: center; margin-bottom: 1.5rem; letter-spacing: 0.03em;
+        .termos-block h3 {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--accent);
+            text-align: center; margin-bottom: 1.8rem; letter-spacing: 0.03em;
         }
-        .termos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 0.9rem;
+        .termo-list { list-style: none; }
+        .termo-list li {
+            display: flex; gap: 0.9rem; padding: 0.7rem 0;
+            border-bottom: 1px solid rgba(124,45,58,0.05); font-size: 0.84rem; line-height: 1.5;
         }
-        .termo-card {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-left: 3px solid var(--accent);
-            border-radius: 12px; padding: 1rem;
-            transition: all 0.3s ease; cursor: pointer;
+        .termo-list li:last-child { border-bottom: none; }
+        .termo-list .num {
+            font-family: 'Playfair Display', serif; font-weight: 700; color: var(--accent);
+            font-size: 1.05rem; min-width: 32px;
         }
-        .termo-card:hover {
-            border-left-color: var(--accent-light);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.04);
-        }
-        .termo-num {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem; font-weight: 700; color: var(--accent);
-            margin-bottom: 0.3rem;
-        }
-        .termo-text {
-            font-size: 0.8rem; line-height: 1.5; color: var(--text-2); font-weight: 300;
-        }
-        .termo-text strong { color: var(--text); }
+        .termo-list .txt { color: var(--text-2); }
+        .termo-list .txt strong { color: var(--text); }
 
         /* ===== CLÁUSULAS ===== */
         .clausula {
-            margin-bottom: 1.6rem;
-            padding: 1.4rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-left: 3px solid var(--accent);
-            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.8rem; padding: 1.6rem 2rem;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0;
+            box-shadow: var(--shadow);
         }
-        .clausula h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 0.95rem; font-weight: 500;
-            margin-bottom: 0.8rem;
-            color: var(--accent); letter-spacing: 0.02em;
+        .clausula:hover { border-left-color: var(--accent-light); transform: translateX(2px); box-shadow: var(--shadow-lg); transition: all 0.2s ease; }
+        .clausula-num {
+            font-family: 'Playfair Display', serif; font-size: 0.85rem; color: var(--accent);
+            font-weight: 700; letter-spacing: 0.06em; margin-bottom: 0.6rem;
         }
-        .clausula ol { padding-left: 1.3rem; margin-top: 0.5rem; }
-        .clausula li {
-            margin-bottom: 0.35rem; font-size: 0.82rem;
-            line-height: 1.6; color: var(--text-2);
+        .clausula h4 {
+            font-family: 'Playfair Display', serif; font-size: 0.92rem; color: var(--text);
+            font-weight: 600; margin-bottom: 1rem; letter-spacing: -0.005em;
         }
         .clausula p {
-            font-size: 0.83rem; line-height: 1.6; color: var(--text-2);
-            font-weight: 300; margin-top: 0.5rem;
+            font-size: 0.83px; line-height: 1.7; color: var(--text-2); font-weight: 300;
+            text-align: justify; text-justify: inter-word; margin-bottom: 0.7rem;
+        }
+        .clausula ol { padding-left: 1.4rem; margin-top: 0.5rem; }
+        .clausula li {
+            margin-bottom: 0.3rem; font-size: 0.83rem; line-height: 1.6; color: var(--text-2);
+            text-align: justify;
         }
 
         /* ===== ANEXO ===== */
         .anexo {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: var(--bg);
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
+            margin-top: 2.5rem; padding: 2rem; background: var(--bg);
+            border: 1px solid var(--border); border-radius: var(--radius);
         }
         .anexo h4 {
-            margin-bottom: 0.8rem; color: var(--accent);
-            font-family: 'Playfair Display', serif; font-size: 1rem;
-            text-align: center;
+            margin-bottom: 1rem; color: var(--accent); font-family: 'Playfair Display', serif;
+            font-size: 0.95rem; text-align: center; letter-spacing: 0.03em;
         }
-        .anexo ul { padding-left: 1.2rem; }
-        .anexo li {
-            margin-bottom: 0.3rem; font-size: 0.82rem; color: var(--text-2);
-            line-height: 1.6;
-        }
-
-        /* ===== ASSINATURAS ===== */
-        .assinatura {
-            margin-top: 2.2rem; padding-top: 1.8rem;
-            border-top: 1px solid var(--border);
+        .anexo-grid {
             display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
         }
-        .campo-assinatura { text-align: center; }
-        .campo-assinatura .linha {
-            border-bottom: 1px solid var(--text-3);
-            margin: 0 auto 0.6rem; height: 36px; width: 80%;
+        .anexo li {
+            font-size: 0.82px; line-height: 1.6; color: var(--text-2);
+            padding: 0.2rem 0;
         }
-        .campo-assinatura p { font-size: 0.75rem; color: var(--text-3); }
+        .anexo li strong { color: var(--text); }
 
-        .data-local {
-            text-align: center; margin-top: 1.5rem;
-            font-size: 0.8rem; color: var(--text-3); letter-spacing: 0.03em;
+        /* ===== ASSINATURAS ===== */
+        .assinatura { margin-top: 3rem; padding-top: 2.5rem; border-top: 1px solid var(--border); }
+        .campo-assinatura {
+            text-align: center; margin-bottom: 2.5rem; padding: 1.5rem;
+            background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
         }
+        .campo-assinatura .linha-nome {
+            border-bottom: 1px solid var(--text-3); margin: 0 auto 0.6rem;
+            height: 32px; width: 85%;
+        }
+        .campo-assinatura .linha-cpf {
+            border-bottom: 1px dashed var(--text-3); margin: 0 auto 0.6rem;
+            height: 24px; width: 55%;
+        }
+        .campo-assinatura .linha-data {
+            border-bottom: 1px dashed var(--text-3); margin: 0 auto 0.4rem;
+            height: 22px; width: 25%;
+        }
+        .campo-assinatura p { font-size: 0.72px; color: var(--text-3); }
+        .campo-assinatura .role { font-weight: 600; color: var(--text); font-size: 0.82px; }
+
+        .testemunha {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;
+        }
+        .testemunha .campo { text-align: center; padding: 1.2rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); }
+        .testemunha .campo .linha {
+            border-bottom: 1px solid var(--text-3); margin: 0 auto 0.4rem; height: 28px; width: 90%;
+        }
+        .testemunha .campo .role { font-size: 0.72px; color: var(--text-3); }
+        .data-local { text-align: center; margin-top: 2rem; font-size: 0.8px; color: var(--text-3); letter-spacing: 0.03em; }
 
         /* ===== ACTIONS ===== */
-        .actions-bottom { text-align: center; margin-top: 1.8rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .actions-bottom { text-align: center; margin-top: 2.5rem; }
         .btn {
             display: inline-flex; align-items: center; gap: 0.5rem;
-            padding: 0.65rem 1.6rem; border-radius: 60px; font-size: 0.8rem;
+            padding: 0.7rem 2rem; border-radius: 60px; font-size: 0.8px;
             font-weight: 500; text-decoration: none; letter-spacing: 0.02em;
             transition: all 0.2s ease; font-family: inherit; border: none; cursor: pointer;
         }
         .btn-primary { background: var(--accent); color: #fff; }
-        .btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124, 45, 58, 0.25); }
+        .btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,45,58,0.25); }
         .btn-ghost {
             background: transparent; color: var(--text);
             border: 1px solid var(--border);
         }
-        .btn-ghost:hover {
-            border-color: var(--accent);
-            background: rgba(124, 45, 58, 0.03);
-        }
+        .btn-ghost:hover { border-color: var(--accent); background: rgba(124,45,58,0.03); }
 
         /* ===== FOOTER ===== */
-        .footer {
-            padding: 2rem 3rem; text-align: center;
-            border-top: 1px solid var(--border);
-            color: var(--text-3); font-size: 0.72rem;
-        }
+        .footer { padding: 2rem 3rem; text-align: center; border-top: 1px solid var(--border); color: var(--text-3); font-size: 0.7px; }
         .footer a { color: var(--text-2); text-decoration: none; }
         .footer a:hover { color: var(--accent); }
 
         @media (max-width: 768px) {
-            .contrato-container { padding: 4rem 1rem 2rem; }
+            .doc { padding: 4rem 1rem 4rem; }
             .nav { padding: 1rem 1.5rem; }
-            .nav-links { display: none; }
-            .menu-icon { display: flex; }
-            .termos-grid { grid-template-columns: 1fr; }
-            .assinatura { grid-template-columns: 1fr; }
-            .actions-bottom { flex-direction: column; }
-            .btn { width: 100%; }
+            .clausula { padding: 1.2rem 1.4rem; }
+            .anexo-grid { grid-template-columns: 1fr; }
+            .testemunha { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
+
+    <!-- ===== LOADER ===== -->
     <div class="loader-screen" id="loader">
-        <div class="loader-text">CONTRATO</div>
+        <span class="loader-text">CONTRATO</span>
     </div>
 
-        
+    <!-- ===== NAV ===== -->
     <nav class="nav">
-        <a href="index.html" class="nav-brand">Rubens</a>
-        <ul class="nav-links">
-            <li><a href="index.html#sobre">Sobre</a></li>
-            <li><a href="index.html#habilidades">Habilidades</a></li>
-            <li><a href="index.html#contato">Contato</a></li>
-        </ul>
-        <div class="menu-icon" id="menuIcon">
-            <span></span><span></span><span></span>
-        </div>
+        <span class="page-label">Documento Único</span>
+        <a href="index.html">Rubens <span class="hl">· Contrato</span></a>
     </nav>
 
-    <main class="contrato-container">
-        <div class="contrato-header">
-            <h1>CONTRATO DE RELACIONAMENTO</h1>
-            <p class="sub">Termos a serem vividos, não apenas assinados</p>
+    <!-- ===== DOCUMENTO ===== -->
+    <main class="doc">
+
+        <!-- HEADER -->
+        <div class="doc-header">
+            <p class="doc-num">Contrato 001 · 2026</p>
+            <h1 class="doc-title">CONTRATO DE <span class="hl">RELACIONAMENTO</span></h1>
+            <p class="doc-sub">Fundamentado em Deus, lealdade e propósito compartilhado</p>
         </div>
 
-        <p class="lead">
-            Pelo presente instrumento, as partes abaixo qualificadas celebram o presente <strong>Contrato de Relacionamento</strong>, regido pelas cláusulas e condições estabelecidas:
-        </p>
-
-        <!-- TERMOS DESTACADOS -->
-        <div class="termos-section" id="termos">
-            <h3>TERMOS A SER DISCUTIDO</h3>
-            <div class="termos-grid">
-                <div class="termo-card">
-                    <div class="termo-num">1</div>
-                    <div class="termo-text">Nunca iremos dormir brigados. Sempre resolvemos antes de apagar a luz.</div>
-                </div>
-                <div class="termo-card">
-                    <div class="termo-num">2</div>
-                    <div class="termo-text">Não seremos suscetíveis. Falamos com calma, sem exagerar no que sentimos.</div>
-                </div>
-                <div class="termo-card">
-                    <div class="termo-num">3</div>
-                    <div class="termo-text"><strong>Nunca gritar alto um com o outro.</strong> A voz é pra servir, não pra ferir.</div>
-                </div>
-                <div class="termo-card">
-                    <div class="termo-num">4</div>
-                    <div class="termo-text">Se um passar por momentos difíceis, o outro estará do lado — apoiando, sem julgamento.</div>
-                </div>
-                <div class="termo-card">
-                    <div class="termo-num">5</div>
-                    <div class="termo-text">Sempre concordaremos em públicos. A unidade é nossa força.</div>
-                </div>
-                <div class="termo-card">
-                    <div class="termo-num">6</div>
-                    <div class="termo-text"><strong>Diremos “eu te amo”</strong> um para o outro, mesmo brigado. O amor não dorme.</div>
-                </div>
-                <div class="termo-card">
-                    <div class="termo-num">7</div>
-                    <div class="termo-text"><strong>Deus sempre será o centro e a base</strong> deste relacionamento. Sem Ele, nada é possível.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- CLÁUSULAS -->
-        <div class="clausula" id="c1">
-            <h3>CLÁUSULA 1ª — DAS PARTES</h3>
+        <!-- PREAMBULO -->
+        <div class="preambulo">
             <p>
-                <strong>CONTRATANTE:</strong> Rubens Pereira Fernandes, 26 anos, Recife/PE, doravante denominado "EU".<br>
-                <strong>CONTRATADA:</strong> A pessoa que aceitar este contrato, doravante denominada "VOCÊ".
+                Pelo presente instrumento, as partes abaixo qualificadas celebram o presente
+                <span class="highlight">Contrato de Relacionamento</span>, regido pelas cláusulas e condições estabelecidas,
+                com o objeto de instituição de um vínculo afetivo sério, comprometido e duradouro,
+                visando a construção conjunta de uma vida compartilhada sob os princípios da
+                <span class="highlight">fidelidade</span>, <span class="highlight">respeito mútuo</span>, <span class="highlight">comunicação honesta</span> e
+                <span class="highlight">fé em Deus</span> como base inegociável.
+            </p>
+            <p class="sub-p">
+                Reconhecendo que amor verdadeiro se constrói todos os dias — com escolhas conscientes,
+                cuidado constante e o compromisso de crescer juntos —, as partes fixam este contrato
+                como referência viva, não como documento morto.
             </p>
         </div>
 
-        <div class="clausula" id="c2">
-            <h3>CLÁUSULA 2ª — DO OBJETO</h3>
-            <p>O presente contrato estabelece as bases de um relacionamento sério, comprometido e duradouro, fundamentado no respeito mútuo, na lealdade e no propósito de construir uma família sob a proteção de Deus.</p>
+        <!-- TERMOS FUNDAMENTAIS -->
+        <div class="termos-block">
+            <h3>TERMOS FUNDAMENTAIS</h3>
+            <ul class="termo-list">
+                <li><span class="num">1.</span><span class="txt"><strong>Nunca iremos dormir brigados.</strong> Sempre resolvemos antes de apagar a luz. Se o dia ainda não acalma, combinamos: "resolvemos de manhã".</span></li>
+                <li><span class="num">2.</span><span class="txt"><strong>Não seremos suscetíveis.</strong> Falamos com calma, sem exagerar no que sentimos. Emoção forte não é isca para briga.</span></li>
+                <li><span class="num">3.</span><span class="txt"><strong>Nunca gritar alto um com o outro.</strong> A voz serve para chamar, acalmar, amar — nunca para ferir.</span></li>
+                <li><span class="num">4.</span><span class="txt"><strong>Se um passar por momentos difíceis, o outro estará do lado.</strong> Apoiamos sem julgamento, ouvimos sem minimizar.</span></li>
+                <li><span class="num">5.</span><span class="txt"><strong>Sempre concordaremos em públicos.</strong> A unidade é nossa força. Fora dela, a gente se perde.</span></li>
+                <li><span class="num">6.</span><span class="txt"><strong>Diremos "eu te amo" um para o outro, mesmo brigado.</strong> O amor não dorme. Mesmo na tristeza, o afeto se confirma.</span></li>
+                <li><span class="num">7.</span><span class="txt"><strong>Deus sempre será o centro e a base</strong> deste relacionamento. Sem Ele, nada é possível.</span></li>
+            </ul>
         </div>
 
-        <div class="clausula" id="c3">
-            <h3>CLÁUSULA 3ª — DOS DEVERES DO "EU"</h3>
+        <!-- CLÁUSULAS -->
+
+        <div class="clausula">
+            <p class="clausula-num">CLÁUSULA 1ª — DAS PARTES</p>
+            <h4>Identificação e qualificação das partes contratantes.</h4>
+            <p>
+                <strong>CONTRATANTE:</strong> Rubens Pereira Fernandes, 26 anos, nascido em 19 de maio de 2000,
+                Touro, natural e residente em Recife, Pernambuco, estudante de Enfermologia pela
+                Fundação de Ensino a Distância de Pernambuco (FAVENI), solteiro, filho de
+                comerciantes, criado com os valores da família, trabalho honesto e fé.
+            </p>
+            <p>
+                <strong>CONTRATADA:</strong> A pessoa que, ao ler este documento, reconhece os termos aqui estabelecidos
+                e concorda em vivificá-los. Qualificada com base no nome, contato e documento de identificação
+                fornecidos na assinatura abaixo.
+            </p>
+        </div>
+
+        <div class="clausula">
+            <p class="clausula-num">CLÁUSULA 2ª — DO OBJETO</p>
+            <h4>Finalidade do vínculo e das obrigações decorrentes.</h4>
+            <p>
+                O presente contrato estabelece as bases de um relacionamento sério, comprometido e duradouro,
+                cujo objeto é a construção de uma união entre homem e mulher, com vistas à
+                <strong>convivência harmônica, crescimento pessoal mútuo e, se Deus quiser, formação de família</strong>.
+                As partes reconhecem que um relacionamento saudável exige regras claras, limites respeitados
+                e comunicação constante.
+            </p>
+        </div>
+
+        <div class="clausula">
+            <p class="clausula-num">CLÁUSULA 3ª — DOS DEVERES MUTUOS</p>
+            <h4>Obrigações de fidelidade, cuidado e respeito compartilhado.</h4>
             <ol>
-                <li>Ser fiel em pensamentos, palavras e ações.</li>
-                <li>Cuidar de VOCÊ com carinho, atenção e respeito.</li>
-                <li>Proteger e prover, dentro das minhas possibilidades.</li>
-                <li>Servir a Deus junto com VOCÊ, sendo líder espiritual do lar.</li>
-                <li>Cozinhar, arrumar a casa e dividir as tarefas do lar.</li>
-                <li>Ser presente, ouvir e dar atenção ao que VOCÊ sente.</li>
-                <li>Nunca levantar a voz nem a mão.</li>
-                <li>Ser transparente, sem segredos nem mentiras.</li>
+                <li>Ambas as partes se comprometem à exclusividade — <strong>fidelidade em pensamentos, palavras e ações</strong>.</li>
+                <li>A <strong>comunicação honesta</strong> é obrigação de ambas: dizer o que sente, sem artifícios.</li>
+                <li>A <strong>presença física e emocional</strong>: não sumir sem avisar, não se fechar sem tentar abrir.</li>
+                <li>A <strong>respeita a individualidade</strong> da outra: espaço, amizades, sonhos. Nada de posse, tudo de escolha.</li>
+                <li>A <strong>divisão justa das tarefas domésticas</strong>: cozinhar, arrumar, limpar — ninguém é dono do trabalho.</li>
+                <li>A <strong>fidelidade financeira</strong>: gastar com responsabilidade, planejar juntos, nem que seja devagar.</li>
+                <li>A <strong>resolução de conflitos sem violência</strong>: não levantar a voz, não dizer crueldade, não silenciar.</li>
             </ol>
         </div>
 
-        <div class="clausula" id="c4">
-            <h3>CLÁUSULA 4ª — DOS DEVERES DO "VOCÊ"</h3>
+        <div class="clausula">
+            <p class="clausula-num">CLÁUSULA 4ª — DAS REGRAS DE CONVIVÊNCIA</p>
+            <h4>Diretrizes práticas para o dia a dia do relacionamento.</h4>
+            <p>As regras abaixo orientam o convívio diário e devem ser revistas periodicamente por ambas as partes:</p>
             <ol>
-                <li>Ser fiel em pensamentos, palavras e ações.</li>
-                <li>Respeitar e honrar nossa relação.</li>
-                <li>Ser parceira, nos bons e maus momentos.</li>
-                <li>Servir a Deus junto comigo.</li>
-                <li>Dividir as tarefas do lar comigo.</li>
-                <li>Me respeitar como homem e líder do lar.</li>
-                <li>Me dar espaço quando eu precisar.</li>
+                <li><strong>Respeito ao tempo um do outro:</strong> não se atropassar, nem se exigir demais. Vida real tem imprevistos.</li>
+                <li><strong>Decisões em pares:</strong> questões que afetam os dois — dinheiro, casa, planos — decidem-se juntos, sem maioria.</li>
+                <li><strong>Conversa antes do julgamento:</strong> se algo incomodar, fala primeiro. Não carregue rancor em silêncio.</li>
+                <li><strong>Intimidade sob consentimento:</strong> o corpo e o afeto são livres, nunca forçados. "Não" é sempre uma resposta válida.</li>
+                <li><strong>Lidar com o ambiente familiar:</strong> respeitar os dois laços familiares, sem dominar ou anular.</li>
             </ol>
         </div>
 
-        <div class="clausula" id="c5">
-            <h3>CLÁUSULA 5ª — DAS VEDAÇÕES</h3>
+        <div class="clausula">
+            <p class="clausula-num">CLÁUSULA 5ª — DAS VEDAÇÕES E LIMITES</p>
+            <h4>Proibições expressas — o que não será tolerado.</h4>
             <p>É expressamente vedado a ambas as partes:</p>
             <ol>
-                <li>Traição, de qualquer natureza.</li>
-                <li>Mentiras ou omissões relevantes.</li>
-                <li>Agressão física ou verbal.</li>
-                <li>Ciúmes doentiosos ou controle excessivo.</li>
-                <li>Compartilhar intimidades terceiros.</li>
-                <li>Desrespeitar a família da outra parte.</li>
+                <li><strong>Traição</strong>, de qualquer natureza — emoional, física, financeira ou espiritual.</li>
+                <li><strong>Mentiras ou omissões relevantes</strong> sobre passado, presente ou intenções.</li>
+                <li><strong>Agressão física ou verbal</strong> — palavra ou ação. Zero tolerância.</li>
+                <li><strong>Ciúmes doentiosos</strong> ou controle excessivo — não se ama por posse, se ama por escolha.</li>
+                <li><strong>Compartilhar intimidades terceiros</strong> — o que vive entre nós fica entre nós.</li>
+                <li><strong>Desrespeitar a família</strong> da outra parte — ela é parte da história.</li>
+                <li><strong>Gastos descontrolados</strong> ou investimentos unilaterais sem conversa.</li>
+                <li><strong>Isolamento</strong> — um não puxa o outro para fugir do mundo. O relacionamento não é prisão.</li>
             </ol>
         </div>
 
-        <div class="clausula" id="c6">
-            <h3>CLÁUSULA 6ª — DA VIGÊNCIA</h3>
-            <p>Este contrato entra em vigor na data da aceitação e vigorará por prazo indeterminado, podendo ser rescindido apenas por mútuo acordo ou por violação grave de qualquer cláusula.</p>
+        <div class="clausula">
+            <p class="clausula-num">CLÁUSULA 6ª — DA VIGÊNCIA E REVISÃO</p>
+            <h4>Duração, renovações e atualizações do contrato.</h4>
+            <p>
+                Este contrato entra em vigor na data da assinatura e vigorará por <strong>prazo indeterminado</strong>,
+                podendo ser revisado a cada <strong>seis meses</strong> por mútuo acordo. A revisão será um momento
+                de avaliação — o que funcionou, o que precisa melhorar, o que mudou. O contrato cresce com a gente.
+            </p>
         </div>
 
-        <div class="clausula" id="c7">
-            <h3>CLÁUSULA 7ª — DA RESCISÃO</h3>
-            <p>Em caso de rescisão, ambas as partes se comprometem a:</p>
+        <div class="clausula">
+            <p class="clausula-num">CLÁUSULA 7ª — DA RESCISÃO</p>
+            <h4>Condições e procedimentos para o fim do vínculo.</h4>
+            <p>Em caso de necessidade de rescisão:</p>
             <ol>
-                <li>Conversar com maturidade antes de qualquer decisão.</li>
-                <li>Buscar reconciliação se houver possibilidade.</li>
-                <li>Se não houver jeito, se despedir com respeito.</li>
-                <li>Manter sigilo sobre tudo que viveu.</li>
+                <li><strong>Conversa antes de qualquer decisão</strong> — jamais de surpresa, de texto ou de silêncio.</li>
+                <li><strong>Buscar reconciliação</strong> — se houver espaço, um tentativa clara com apoio externo (terapeuta).</li>
+                <li><strong>Respeito total no despedida</strong> — palavras gentis, tempo de ajuste, nada de ofensas.</li>
+                <li><strong>Divisão pacata dos bens</strong> — como nasceu, cada um leva. Nada de disputa.</li>
+                <li><strong>Confidencialidade pós-relacionamento</strong> — não se fala mal, não se expõe.</li>
             </ol>
         </div>
 
-        <div class="clausula" id="c8">
-            <h3>CLÁUSULA 8ª — DISPOSIÇÕES GERAIS</h3>
+        <div class="clausula">
+            <p class="clausula-num">CLÁUSULA 8ª — DAS DISPOSIÇÕES FINAIS</p>
+            <h4>Últimas disposições e força do contrato.</h4>
             <ol>
-                <li>Este contrato pode ser revisado a qualquer momento, por mútuo acordo.</li>
-                <li>Ambos se comprometem a crescer juntos, como homem e mulher.</li>
-                <li>A fé em Deus é a base inegociável deste relacionamento.</li>
-                <li>Filhos, se vierem, serão bem-vindos e criados com amor.</li>
+                <li>A <strong>fé em Deus</strong> é a base inegociável — a oração, a gratidão e a esperança não são negociáveis.</li>
+                <li>Este contrato <strong>supersedes quaisquer entendimentos verbais</strong> entre as partes.</li>
+                <li>Qualquer <strong>alteração</strong> deve ser feita por escrito e assinada por ambas as partes.</li>
+                <li>Se <strong>qualquer cláusula for julgada inválida</strong>, as demais continuam em pleno vigor.</li>
+                <li>Este contrato <strong>tem validade moral imediata</strong>, independente de assinatura formal.</li>
             </ol>
         </div>
 
         <!-- ANEXO -->
         <div class="anexo">
-            <h4>ANEXO — INFORMAÇÕES DO CONTRATANTE</h4>
-            <ul>
-                <li><strong>Nome completo:</strong> Rubens Pereira Fernandes</li>
-                <li><strong>Idade:</strong> 26 anos (19/05/2000)</li>
-                <li><strong>Signo:</strong> Touro</li>
-                <li><strong>Altura:</strong> 171cm | <strong>Peso:</strong> 69kg</li>
-                <li><strong>Cidade:</strong> Recife, PE</li>
-                <li><strong>Vida:</strong> Solteiro, estudante de Enfermagem</li>
-                <li><strong>Paixões:</strong> Cozinhar, cuidar de plantas, consertar, massagem, tocar violão</li>
-                <li><strong>Vícios:</strong> Nenhum. Não bebo, não fumo.</li>
-                <li><strong>Status:</strong> Disponível. Procurando alguém pra dividir a vida.</li>
-            </ul>
+            <h4>ANEXO ÚNICO — FICHA DE QUALIFICAÇÃO DO CONTRATANTE</h4>
+            <div class="anexo-grid">
+                <div>
+                    <p><strong>Nome completo:</strong> Rubens Pereira Fernandes</p>
+                    <p><strong>Nascimento:</strong> 19 de maio de 2000 (26 anos)</p>
+                    <p><strong>Signo:</strong> Touro</p>
+                    <p><strong>Altura:</strong> 171 cm — <strong>Peso:</strong> 69 kg</p>
+                    <p><strong>Cidade:</strong> Recife, Pernambuco</p>
+                    <p><strong>Estudo:</strong> Enfermologia — FAVENI</p>
+                    <p><strong>Status civil:</strong> Solteiro</p>
+                </div>
+                <div>
+                    <p><strong>Vida:</strong> Solteiro, estudante de Enfermologia</p>
+                    <p><strong>Paixões:</strong> Cozinhar, cuidar de plantas, consertar, massagem, tocar violão</p>
+                    <p><strong>Vícios:</strong> Nenhum — não bebo, não fumo</p>
+                    <p><strong>Crença:</strong> Cristão — Deus no centro de tudo</p>
+                    <p><strong>Objetivo:</strong> Construir uma vida com alguém com quem dividir valores</p>
+                    <p><strong>CPF:</strong> 000.000.000-00</p>
+                    <p><strong>WhatsApp:</strong> (81) 9 00000-0000</p>
+                </div>
+            </div>
         </div>
 
         <!-- ASSINATURAS -->
         <div class="assinatura">
+
             <div class="campo-assinatura">
-                <div class="linha"></div>
-                <p><strong>Rubens Pereira Fernandes</strong></p>
-                <p>CPF: ***___.___-__</p>
+                <div class="linha-nome"></div>
+                <p class="role">CONTRATANTE</p>
+                <p>Rubens Pereira Fernandes</p>
+                <div class="linha-cpf"></div>
+                <p>CPF</p>
+                <div class="linha-data"></div>
+                <p>Data da assinatura</p>
             </div>
+
             <div class="campo-assinatura">
-                <div class="linha"></div>
-                <p><strong>CONTRATADA</strong></p>
-                <p>Nome: _____________________</p>
+                <div class="linha-nome"></div>
+                <p class="role">CONTRATADA</p>
+                <p>Nome completo da contratada</p>
+                <div class="linha-cpf"></div>
+                <p>CPF</p>
+                <div class="linha-data"></div>
+                <p>Data da assinatura</p>
+            </div>
+
+            <!-- TESTEMUNHAS -->
+            <div class="testemunha">
+                <div class="campo">
+                    <div class="linha"></div>
+                    <p class="role">Testemunha 1</p>
+                </div>
+                <div class="campo">
+                    <div class="linha"></div>
+                    <p class="role">Testemunha 2</p>
+                </div>
+            </div>
+
+            <div class="data-local">
+                Recife, <span id="dataAtual"></span>
             </div>
         </div>
 
-        <div class="data-local">
-            Recife, <span id="dataAtual"></span>
-        </div>
-
+        <!-- ACTIONS -->
         <div class="actions-bottom">
             <a href="index.html" class="btn btn-ghost">← Voltar ao perfil</a>
             <button class="btn btn-primary" onclick="window.print()">Imprimir contrato</button>
         </div>
+
     </main>
 
+    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <a href="https://github.com/Rubensdj/curriculo-premium" target="_blank">curriculo-premium</a>
         <span>&copy; 2026 Rubens Pereira Fernandes · Recife, PE</span>
     </footer>
 
     <script>
-
-
-
-        // --- Loader ---
+        // Loader
         const loaderEl = document.getElementById('loader');
-        setTimeout(() => { loaderEl.style.display = 'none'; }, 300);
-
-        // GSAP
-        gsap.registerPlugin(ScrollTrigger);
-        gsap.fromTo('.contrato-header', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.3 });
-        gsap.fromTo('.termos-section', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.5 });
-        gsap.utils.toArray('.clausula').forEach((cl, i) => {
-            gsap.fromTo(cl,
-                { opacity: 0, x: -20 },
-                { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out',
-                  scrollTrigger: { trigger: cl, start: 'top 88%', delay: i * 0.1 } }
-            );
-        });
-        gsap.fromTo('.anexo', { opacity: 0, y: 20 }, {
-            opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
-            scrollTrigger: { trigger: '.anexo', start: 'top 88%' }
-        });
+        setTimeout(() => { loaderEl.style.display = 'none'; }, 400);
 
         // Date
         document.getElementById('dataAtual').textContent =
             new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
 
-        // Mobile Menu
-        document.getElementById('menuIcon').addEventListener('click', () => {
-            const links = document.querySelector('.nav-links');
-            links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+        // GSAP
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.fromTo('.doc-header', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.3 });
+        gsap.fromTo('.preambulo', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.5 });
+        gsap.fromTo('.termos-block', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.6, scrollTrigger: { trigger: '.termos-block', start: 'top 90%' } });
+        gsap.utils.toArray('.clausula').forEach((cl, i) => {
+            gsap.fromTo(cl, { opacity: 0, x: -15 }, {
+                opacity: 1, x: 0, duration: 0.5, ease: 'power3.out',
+                scrollTrigger: { trigger: cl, start: 'top 90%', delay: i * 0.08 }
+            });
         });
+        gsap.fromTo('.anexo', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', scrollTrigger: { trigger: '.anexo', start: 'top 90%' } });
+        gsap.fromTo('.assinatura', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', scrollTrigger: { trigger: '.assinatura', start: 'top 90%' } });
     </script>
 </body>
 </html>
