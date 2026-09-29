@@ -10,13 +10,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
-        /* ===== Design System — Light, Grounded, Ultra-Realistic ===== */
+        /* ===== Theme System ===== */
         :root {
             --bg:          #f6f7f9;
             --bg-card:     #ffffff;
@@ -32,6 +31,30 @@
             --radius-lg:   20px;
         }
 
+        [data-theme="dark"] {
+            --bg:          #121216;
+            --bg-card:     #1c1c22;
+            --text:        #e4e4e7;
+            --text-2:      #a1a1aa;
+            --text-3:      #71717a;
+            --border:      rgba(124, 45, 58, 0.25);
+            --shadow:      0 1px 3px rgba(0,0,0,0.15);
+            --shadow-lg:   0 10px 25px -5px rgba(0,0,0,0.35);
+        }
+
+        [data-theme="burgundy"] {
+            --bg:          #0f060e;
+            --bg-card:     #1a0f16;
+            --text:        #f3e9ee;
+            --text-2:      #d4b4c0;
+            --text-3:      #a68a95;
+            --accent:      #ff4d6d;
+            --accent-light:#ff6f8a;
+            --border:      rgba(255, 77, 109, 0.25);
+            --shadow:      0 1px 3px rgba(255, 77, 109, 0.15);
+            --shadow-lg:   0 10px 25px -5px rgba(255, 77, 109, 0.30);
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
@@ -41,415 +64,276 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            transition: background 0.3s ease, color 0.3s ease;
         }
         ::selection { background: var(--accent); color: #fff; }
-
-        /* ===== Loader — minimal fade ===== */
-        .loader-screen {
-            position: fixed;
-            inset: 0;
-            background: var(--bg);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 1;
-            transition: opacity 0.5s ease;
-        }
-        .loader-screen.hidden { opacity: 0; pointer-events: none; }
-        .loader-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: 400;
-            font-style: italic;
-            color: var(--accent);
-        }
 
         /* ===== Journal Header ===== */
         .journal-header {
             text-align: center; padding: 0.6rem 1.5rem;
             border-bottom: 1px solid var(--border); margin-bottom: 0;
+            transition: border-color 0.3s ease;
         }
         .journal-header .line1 { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-3); margin-bottom: 0.1rem; }
         .journal-header .line2 { font-size: 0.62rem; color: var(--text-3); font-style: italic; margin-bottom: 0.3rem; }
         .journal-header .line3 { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); font-weight: 700; }
 
-        /* ===== Navigation — clean, streamlined ===== */
+        /* ===== Loader ===== */
+        .loader-screen {
+            position: fixed; inset: 0; background: var(--bg); z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 1; transition: opacity 0.5s ease;
+        }
+        .loader-screen.hidden { opacity: 0; pointer-events: none; }
+        .loader-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem; font-weight: 400; font-style: italic;
+            color: var(--accent);
+        }
+
+        /* ===== Navigation ===== */
         .nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            padding: 1.5rem 3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(246, 247, 249, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
+            position: fixed; top: 0; left: 0; right: 0;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 3rem; z-index: 100;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        [data-theme="dark"] .nav, [data-theme="burgundy"] .nav {
+            background: rgba(0,0,0,0.3);
         }
         .page-label {
-            position: absolute; top: 1.2rem; right: 3rem;
-            font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em;
+            font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em;
             color: var(--text-3);
         }
         .nav-brand {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            font-weight: 700;
-            font-style: italic;
-            color: var(--text);
-            text-decoration: none;
-            letter-spacing: -0.01em;
+            font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700;
+            color: var(--text); text-decoration: none;
         }
-        .nav-center {
-            display: flex;
-            gap: 2rem;
-        }
+        .nav-brand .hl { color: var(--accent); }
+        .nav-center { display: flex; gap: 2rem; }
         .nav-center a {
-            color: var(--text-2);
-            text-decoration: none;
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
+            font-size: 0.85rem; color: var(--text-2); text-decoration: none;
             transition: color 0.2s ease;
         }
-        .nav-center a:hover { color: var(--text); }
-        .nav-actions {
-            display: flex;
-            gap: 0.8rem;
-        }
+        .nav-center a:hover { color: var(--accent); }
+        .nav-actions { display: flex; align-items: center; gap: 1rem; }
         .nav-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.55rem 1.2rem;
-            border-radius: 60px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-decoration: none;
-            letter-spacing: 0.02em;
-            transition: all 0.2s ease;
-            border: 1px solid var(--border);
-            font-family: inherit;
+            font-size: 0.8rem; padding: 0.5rem 1.3rem; border-radius: 60px;
+            text-decoration: none; font-family: inherit; font-weight: 500;
+            border: 1px solid var(--border); background: var(--accent); color: #fff;
+            cursor: pointer; transition: all 0.2s ease;
         }
-        .nav-btn-ghost {
-            color: var(--text);
-            background: transparent;
+        .nav-btn:hover { background: var(--accent-light); transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+        .theme-toggle {
+            display: flex; align-items: center; gap: 0.3rem;
+            cursor: pointer; font-size: 0.78rem; color: var(--text-3);
+            padding: 0.4rem 0.8rem; border-radius: 8px; background: var(--bg-card);
+            border: 1px solid var(--border); transition: all 0.2s ease;
         }
-        .nav-btn-ghost:hover {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
+        .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+        .menu-icon { display: none; cursor: pointer; flex-direction: column; gap: 3px; }
+        .menu-icon span { width: 22px; height: 2px; background: var(--text); border-radius: 2px; }
+
+        #themeNotice {
+            position: fixed; bottom: 80px; right: 20px;
+            background: var(--accent); color: #fff; padding: 0.5rem 1rem;
+            border-radius: 8px; font-size: 0.8rem; z-index: 1000;
+            opacity: 0; transition: opacity 0.3s; pointer-events: none;
         }
-        .nav-btn-accent {
-            color: #fff;
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-        .nav-btn-accent:hover {
-            background: var(--accent-light);
-            border-color: var(--accent-light);
-        }
-        .menu-icon { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 0.5rem; }
-        .menu-icon span { width: 22px; height: 1.5px; background: var(--text); transition: all 0.3s; }
 
         /* ===== Hero ===== */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 6rem 6vw 4rem;
-        }
-        .hero-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 4rem;
-            align-items: start;
-        }
+        .hero { padding: 5rem 6vw 2rem; max-width: 1100px; margin: 0 auto; }
+        .hero-container { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
         .hero-text h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2.4rem, 6vw, 4rem);
-            font-weight: 400;
-            line-height: 1.08;
-            letter-spacing: -0.02em;
-            margin-bottom: 1.2rem;
+            font-family: 'Inter', sans-serif; font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 700; line-height: 1.1;
         }
-        .hero-text h1 .hl { color: var(--accent); font-style: italic; font-weight: 700; }
+        .hero-text .hl { position: relative; color: var(--accent); }
+        .hero-text .hl::after {
+            content: ''; position: absolute; bottom: -3px; left: 0; right: 0;
+            height: 2px; background: var(--accent); opacity: 0.5;
+        }
         .hero-subtitle {
-            font-size: 1.05rem;
-            color: var(--text-2);
-            line-height: 1.7;
-            font-weight: 300;
-            max-width: 500px;
-            margin-bottom: 2rem;
+            font-size: 1.05rem; color: var(--text-2); margin: 1rem 0 1.5rem;
+            font-weight: 300; line-height: 1.6;
         }
-        .hero-meta {
-            display: flex;
-            gap: 1.5rem;
-            font-size: 0.82rem;
-            color: var(--text-3);
-            flex-wrap: wrap;
+        .hero-meta { display: flex; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap; }
+        .hero-meta span {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            font-size: 0.85rem; color: var(--text-3); font-weight: 300;
         }
-        .hero-meta span { display: flex; align-items: center; gap: 0.4rem; }
-        .photo-frame {
-            position: relative;
-            width: 100%;
+
+        .personalize { margin-top: 1.5rem; max-width: 420px; }
+        .personalize label {
+            display: block; font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--text-3); margin-bottom: 0.5rem;
         }
+        .personalize input {
+            width: 100%; padding: 0.7rem 1rem; border-radius: 12px;
+            border: 1px solid var(--border); background: var(--bg); color: var(--text);
+            font-family: inherit; font-size: 0.88rem; transition: all 0.2s ease;
+        }
+        .personalize input:focus {
+            outline: none; border-color: var(--accent); background: var(--bg-card);
+            box-shadow: 0 0 0 3px rgba(124, 45, 58, 0.08);
+        }
+
+        .photo-frame { position: relative; width: 100%; }
         .photo-frame::after {
-            content: '';
-            position: absolute;
-            inset: -3px;
+            content: ''; position: absolute; inset: -4px;
             border-radius: var(--radius-lg);
             background: linear-gradient(135deg, var(--accent), var(--accent-light));
-            z-index: -1;
-            filter: blur(10px);
-            opacity: 0.1;
+            z-index: -1; filter: blur(12px); opacity: 0.12;
             transform: scale(1.05);
         }
         .photo-card {
-            width: 100%;
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-            aspect-ratio: 4/5;
-            border: 1px solid var(--border);
+            width: 100%; border-radius: var(--radius-lg);
+            overflow: hidden; box-shadow: var(--shadow-lg);
+            aspect-ratio: 4/5; border: 1px solid var(--border);
         }
-        .photo-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: top;
-            display: block;
-        }
+        .photo-card img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
 
         /* ===== Sections ===== */
-        .section {
-            padding: 5rem 6vw;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        .section-header {
-            text-align: center;
-            margin-bottom: 2.5rem;
-        }
+        .section { padding: 5rem 6vw; max-width: 1100px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 2.5rem; }
         .section-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--text-3);
-            margin-bottom: 0.4rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.6rem;
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em;
+            color: var(--text-3); margin-bottom: 0.4rem; display: inline-flex;
+            align-items: center; gap: 0.6rem;
         }
-        .section-label::before,
-        .section-label::after {
-            content: '';
-            width: 12px;
-            height: 1px;
-            background: var(--accent);
+        .section-label::before, .section-label::after {
+            content: ''; width: 12px; height: 1px; background: var(--accent);
         }
         .section-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1.5rem, 3.5vw, 2.1rem);
-            font-weight: 400;
-            font-style: italic;
-            line-height: 1.3;
-            letter-spacing: -0.015em;
-            max-width: 720px;
-            margin: 0 auto;
+            font-size: clamp(1.4rem, 3vw, 1.9rem);
+            font-weight: 400; font-style: italic;
+            line-height: 1.3; letter-spacing: -0.01em;
+            max-width: 720px; margin: 0 auto;
         }
-        .section-body {
-            max-width: 720px;
-            margin: 0 auto;
-            text-align: center;
-        }
+        .section-body { max-width: 720px; margin: 0 auto; text-align: center; }
         .section-body p {
-            font-size: 1rem;
-            color: var(--text-2);
-            font-weight: 300;
+            font-size: 1.02rem; color: var(--text-2); font-weight: 300;
             line-height: 1.7;
         }
 
-        /* ===== Cards ===== */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.8rem;
-            margin-top: 2rem;
+        /* ===== Interest Tags ===== */
+        .interest-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem; margin: 1.5rem auto; max-width: 600px; }
+        .interest-tag {
+            padding: 0.5rem 1.1rem; font-size: 0.82rem; border-radius: 50px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            color: var(--text-2); cursor: pointer; font-weight: 300;
+            transition: all 0.2s ease;
         }
+        .interest-tag:hover { background: var(--accent); color: #fff; transform: translateY(-1px); }
+        .interest-tag.active { background: var(--accent); color: #fff; font-weight: 600; }
+
+        /* ===== Skill Cards ===== */
         .skill-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-            gap: 1.8rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 1.5rem;
         }
-        .card, .skill-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-left: 3px solid var(--accent);
-            border-radius: var(--radius);
-            padding: 1.8rem;
-            box-shadow: var(--shadow);
-            text-align: center;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        .skill-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 1.6rem 1rem;
+            box-shadow: var(--shadow); text-align: center; cursor: pointer;
+            transition: all 0.3s ease;
         }
-        .card:hover, .skill-card:hover {
+        .skill-card:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+        .skill-card.active { border-top: 3px solid var(--accent); }
+        .skill-icon { width: 38px; height: 38px; margin: 0 auto 0.8rem; opacity: 0.8; }
+        .skill-card h4 { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.4rem; }
+        .skill-card p { color: var(--text-2); font-size: 0.82rem; line-height: 1.5; font-weight: 300; }
+
+        /* ===== Clickable Cards ===== */
+        .card-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem; margin-top: 2rem;
+        }
+        .card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-left: 3px solid var(--accent); border-radius: var(--radius);
+            padding: 1.8rem; box-shadow: var(--shadow); text-align: center;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06); border-left-width: 5px;
         }
-        .card-icon, .skill-icon {
-            width: 42px;
-            height: 42px;
-            margin: 0 auto 1rem;
-            opacity: 0.75;
+        .card.active { transform: translateY(-4px); box-shadow: 0 25px 50px -5px rgba(124, 45, 58, 0.12); }
+        .card-icon { width: 42px; height: 42px; margin: 0 auto 1rem; opacity: 0.75; }
+        .card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+        .card p { color: var(--text-2); font-size: 0.88rem; line-height: 1.6; font-weight: 300; }
+        .card-reveal {
+            max-height: 0; overflow: hidden; opacity: 0;
+            transition: all 0.4s ease; margin-top: 0;
         }
-        .card h3, .skill-card h4 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 0.5rem;
-        }
-        .card h3 { font-size: 1.1rem; }
-        .skill-card h4 { font-size: 1.05rem; }
-        .card p, .skill-card p {
-            color: var(--text-2);
-            font-size: 0.88rem;
-            line-height: 1.6;
-            font-weight: 300;
-        }
+        .card.active .card-reveal { max-height: 200px; opacity: 1; margin-top: 1rem; }
 
         /* ===== Termos ===== */
         .termos-container { max-width: 900px; margin: 0 auto; }
         .termos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.2rem;
-            margin-top: 2rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1rem; margin-top: 1.5rem;
         }
         .termo-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-left: 4px solid var(--accent);
-            border-radius: var(--radius);
-            padding: 1.3rem;
-            box-shadow: var(--shadow);
-            transition: all 0.2s ease;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-left: 3px solid var(--accent); border-radius: var(--radius);
+            padding: 1.2rem; box-shadow: var(--shadow); cursor: pointer;
+            transition: all 0.3s ease;
         }
         .termo-card:hover {
-            border-left-width: 6px;
-            transform: translateX(3px);
+            transform: translateX(4px); border-left-width: 6px;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.05);
         }
-        .termo-num {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 0.4rem;
+        .termo-card.selected {
+            border-left-color: var(--accent-light);
         }
-        .termo-text {
-            font-size: 0.85rem;
-            line-height: 1.5;
-            color: var(--text-2);
-            font-weight: 300;
-        }
+        .termo-num { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--accent); margin-bottom: 0.3rem; display: inline-block; }
+        .termo-text { font-size: 0.82rem; line-height: 1.5; color: var(--text-2); font-weight: 300; }
+        .termo-text strong { color: var(--text); }
+        .termo-card.selected .termo-text,
+        .termo-card.selected .termo-text strong { color: #fff; }
 
         /* ===== Form ===== */
         .form-container {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 2.5rem;
-            box-shadow: var(--shadow-lg);
-            max-width: 600px;
-            margin: 0 auto;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); padding: 2.5rem;
+            box-shadow: var(--shadow-lg); max-width: 600px; margin: 0 auto;
         }
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
         .form-group { margin-bottom: 1.2rem; }
         .form-group.full { grid-column: 1 / -1; }
         .form-group label {
-            display: block;
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-3);
-            margin-bottom: 0.4rem;
+            display: block; font-size: 0.72rem; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--text-3); margin-bottom: 0.4rem;
         }
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.7rem 1rem;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 0.88rem;
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 0.7rem 1rem; border-radius: 10px;
+            border: 1px solid var(--border); background: var(--bg);
+            color: var(--text); font-family: inherit; font-size: 0.88rem;
             transition: all 0.2s ease;
         }
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: #fff;
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(124, 45, 58, 0.08);
         }
         .form-group textarea { resize: vertical; min-height: 70px; }
         .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 2rem;
-            border-radius: 60px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            text-decoration: none;
-            letter-spacing: 0.02em;
-            transition: all 0.2s ease;
-            font-family: inherit;
-            border: none;
-            cursor: pointer;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.75rem 2rem; border-radius: 60px; font-size: 0.85rem;
+            font-weight: 500; text-decoration: none; letter-spacing: 0.02em;
+            transition: all 0.2s ease; font-family: inherit; border: none; cursor: pointer;
         }
-        .btn-primary {
-            background: var(--accent);
-            color: #fff;
-            border: 1px solid var(--accent);
-        }
-        .btn-primary:hover {
-            background: var(--accent-light);
-            border-color: var(--accent-light);
-            transform: translateY(-1px);
-        }
-        .form-footer {
-            margin-top: 1.5rem;
-            color: var(--text-3);
-            font-size: 0.75rem;
-            text-align: center;
-        }
+        .btn-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+        .btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(124, 45, 58, 0.25); }
+        .form-footer { margin-top: 1.5rem; color: var(--text-3); font-size: 0.75rem; text-align: center; }
 
         /* ===== Footer ===== */
-        .footer {
-            padding: 2.5rem 3rem;
-            text-align: center;
-            border-top: 1px solid var(--border);
-            color: var(--text-3);
-            font-size: 0.78rem;
-        }
-        .footer a {
-            color: var(--accent);
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
+        .footer { padding: 2.5rem 3rem; text-align: center; border-top: 1px solid var(--border); color: var(--text-3); font-size: 0.78rem; }
+        .footer a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
         .footer a:hover { opacity: 0.7; }
 
         @media (max-width: 768px) {
@@ -458,8 +342,7 @@
             .nav-center { display: none; }
             .menu-icon { display: flex; }
             .hero { padding: 4rem 2rem 2rem; }
-            .hero-container { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
-            .hero-meta { justify-content: center; }
+            .hero-container { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
             .section { padding: 3.5rem 2rem; }
             .form-grid { grid-template-columns: 1fr; }
             .form-container { padding: 1.8rem; }
@@ -471,6 +354,11 @@
     <!-- ===== Loader ===== -->
     <div class="loader-screen" id="loader">
         <span class="loader-text">Rubens</span>
+    </div>
+
+    <!-- ===== Theme Notice ===== -->
+    <div id="themeNotice">
+        Tema salvo: <span id="themeNoticeText"></span>
     </div>
 
     <!-- ===== Journal Header ===== -->
@@ -491,7 +379,10 @@
             <a href="#contato">Contato</a>
         </div>
         <div class="nav-actions">
-            <a href="contrato.html" class="nav-btn nav-btn-accent">Contrato</a>
+            <a href="contrato.html" class="nav-btn">Contrato</a>
+            <div class="theme-toggle" id="themeToggle">
+                <i data-feather="moon" width="14" height="14"></i> Tema
+            </div>
         </div>
         <div class="menu-icon" id="menuIcon">
             <span></span><span></span><span></span>
@@ -507,13 +398,18 @@
                     <h1>Olá, eu sou o <span class="hl">Rubens.</span><br>
                         26 anos. <span class="hl">Recife.</span>
                     </h1>
-                    <p class="hero-subtitle">
-                        26 anos, Recife. Gosto de cozinhar, consertar, cuidar. Deus no centro.
+                    <p class="hero-subtitle" id="greeting">
+                        Cozinha, conserta, cuida de plantas. Deus no centro.
                     </p>
                     <div class="hero-meta">
                         <span><i data-feather="sun" width="14" height="14"></i> Touro</span>
                         <span><i data-feather="activity" width="14" height="14"></i> 171 cm · 69 kg</span>
                         <span><i data-feather="coffee" width="14" height="14"></i> Não bebo, não fumo</span>
+                    </div>
+
+                    <div class="personalize">
+                        <label>Seu nome (pra eu te cumprimentar direito):</label>
+                        <input type="text" id="visitorName" placeholder="Digite seu nome..." autocomplete="off">
                     </div>
                 </div>
 
@@ -525,7 +421,55 @@
             </div>
         </section>
 
-        <!-- ===== SOBRE MIM (intro + cards) ===== -->
+        <!-- ===== INTEREST TAGS + SKILLS ===== -->
+        <section class="section" id="habilidades">
+            <div class="section-header">
+                <p class="section-label">Habilidades</p>
+                <h2 class="section-title">Coisas que me dão prazer — feitas com as mãos.</h2>
+                <div class="interest-tags">
+                    <span class="interest-tag active" data-filter="all">Tudo</span>
+                    <span class="interest-tag" data-filter="cooking">Cozinha</span>
+                    <span class="interest-tag" data-filter="tech">Tecnologia</span>
+                    <span class="interest-tag" data-filter="plants">Plantas</span>
+                    <span class="interest-tag" data-filter="massage">Massagem</span>
+                    <span class="interest-tag" data-filter="music">Música</span>
+                </div>
+            </div>
+            <div class="skill-grid">
+                <div class="skill-card" data-category="cooking">
+                    <i data-feather="coffee" class="skill-icon"></i>
+                    <h4>Cozinha</h4>
+                    <p>Bolos, sorvetes, cuscuz, carnes, feijão, lasanha, pão caseiro.</p>
+                </div>
+                <div class="skill-card" data-category="tech">
+                    <i data-feather="tool" class="skill-icon"></i>
+                    <h4>Consertos</h4>
+                    <p>Eletrodomésticos, encanamento. Se não sei, aprendo rápido.</p>
+                </div>
+                <div class="skill-card" data-category="tech">
+                    <i data-feather="globe" class="skill-icon"></i>
+                    <h4>Tecnologia</h4>
+                    <p>Trabalho com tecnologia. Conserto, programo, automatizo.</p>
+                </div>
+                <div class="skill-card" data-category="plants">
+                    <i data-feather="leaf" class="skill-icon"></i>
+                    <h4>Plantas & Jardim</h4>
+                    <p>Amo cuidar de plantas. Horta, vasos, jardinagem. É minha terapia.</p>
+                </div>
+                <div class="skill-card" data-category="massage">
+                    <i data-feather="droplet" class="skill-icon"></i>
+                    <h4>Massagem</h4>
+                    <p>Carinho com as mãos. Para quem gosta de toque sem pressa.</p>
+                </div>
+                <div class="skill-card" data-category="music">
+                    <i data-feather="music" class="skill-icon"></i>
+                    <h4>Música</h4>
+                    <p>Violão no pé, playlist de fundo. Música que acalma, não que agita.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SOBRE MIM ===== -->
         <section class="section" id="sobre-mim">
             <div class="section-header">
                 <p class="section-label">Quem eu sou de verdade</p>
@@ -536,64 +480,22 @@
             </div>
             <div class="card-grid">
                 <div class="card">
-                    <i data-feather="music" class="card-icon"></i>
-                    <h3>Música</h3>
-                    <p>Violão no pé, playlist de fundo. Música que acalma, não que agita.</p>
-                </div>
-                <div class="card">
-                    <i data-feather="sun" class="card-icon"></i>
-                    <h3>Rotina leve</h3>
-                    <p>Sem pressa, sem stress. Gosto de acordar cedo e respirar direito.</p>
-                </div>
-                <div class="card">
                     <i data-feather="heart" class="card-icon"></i>
                     <h3>Relacionamento</h3>
                     <p>Acredito em construir devagar. Com Deus no centro.</p>
+                    <div class="card-reveal">Priorizo confiança, comunicação direta e ausência de joguinho. Sei que nada é perfeito, mas a intenção de faire certo dá um baita diferença.</div>
                 </div>
                 <div class="card">
                     <i data-feather="book-open" class="card-icon"></i>
                     <h3>Leitura</h3>
                     <p>Gosto de ler. Um bom livro na mesa de cabeceiro bate qualquer tela.</p>
+                    <div class="card-reveal">Ultimamente: Sartre, Caio Fernando Abreu e textos de filósofos brasileiros. Gosto de pensar enquanto leio.</div>
                 </div>
-            </div>
-        </section>
-
-        <!-- ===== HABILIDADES ===== -->
-        <section class="section" id="habilidades">
-            <div class="section-header">
-                <p class="section-label">Habilidades</p>
-                <h2 class="section-title">Coisas que me dão prazer — feitas com as mãos.</h2>
-            </div>
-            <div class="skill-grid">
-                <div class="skill-card">
-                    <i data-feather="coffee" class="skill-icon"></i>
-                    <h4>Cozinha</h4>
-                    <p>Bolos, sorvetes, cuscuz, carnes, feijão, lasanha, pão caseiro.</p>
-                </div>
-                <div class="skill-card">
-                    <i data-feather="tool" class="skill-icon"></i>
-                    <h4>Consertos</h4>
-                    <p>Eletrodomésticos, encanamento. Se não sei, aprendo rápido.</p>
-                </div>
-                <div class="skill-card">
-                    <i data-feather="leaf" class="skill-icon"></i>
-                    <h4>Plantas & Jardim</h4>
-                    <p>Amo cuidar de plantas. Horta, vasos, jardinagem. É minha terapia.</p>
-                </div>
-                <div class="skill-card">
-                    <i data-feather="droplet" class="skill-icon"></i>
-                    <h4>Chá & Café</h4>
-                    <p>Preparo com carinho. É ritual, não só bebida.</p>
-                </div>
-                <div class="skill-card">
-                    <i data-feather="softball" class="skill-icon"></i>
-                    <h4>Massagem</h4>
-                    <p>Carinho com as mãos. Para quem gosta de toque sem pressa.</p>
-                </div>
-                <div class="skill-card">
-                    <i data-feather="globe" class="skill-icon"></i>
-                    <h4>Tecnologia</h4>
-                    <p>Trabalho com tecnologia. Conserto, programo, automatizo. Gosto de entender como as coisas funcionam.</p>
+                <div class="card">
+                    <i data-feather="sun" class="card-icon"></i>
+                    <h3>Rotina</h3>
+                    <p>Sem pressa, sem stress. Gosto de acordar cedo e respirar direito.</p>
+                    <div class="card-reveal">Café da manhã sem pressa, café da tarde, jantar leve. Se a gente combina, a gente cumpre. Ainda não sou daqueles que adia tudo pro amanhã.</div>
                 </div>
             </div>
         </section>
@@ -604,38 +506,40 @@
                 <p class="section-label">Termos a ser discutido</p>
                 <h2 class="section-title">Regra de ouro do coração: nada de dramas desnecessários.</h2>
             </div>
+            <p style="text-align:center;color:var(--text-2);font-size:0.9rem;margin-bottom:1.5rem;max-width:720px;margin-left:auto;margin-right:auto;">Clique nos termos que mais combinam com você. São as mesmas regras do <a href="contrato.html" style="color:var(--accent);">contrato</a> — mas aqui você escolhe quais vão marcar.</p>
             <div class="termos-container">
                 <div class="termos-grid">
-                    <div class="termo-card">
-                        <div class="termo-num">1</div>
-                        <div class="termo-text">Nunca iremos dormir brigados. Sempre resolvemos antes de apagar a luz.</div>
+                    <div class="termo-card" data-termo="1">
+                        <div class="termo-num">1.</div>
+                        <div class="termo-text"><strong>Nunca iremos dormir brigados.</strong> Sempre resolvemos antes de apagar a luz. Se o dia ainda não acalma, combinamos: "resolvemos de manhã".</div>
                     </div>
-                    <div class="termo-card">
-                        <div class="termo-num">2</div>
-                        <div class="termo-text">Não seremos suscetíveis. Falamos com calma, sem exagerar no que sentimos.</div>
+                    <div class="termo-card" data-termo="2">
+                        <div class="termo-num">2.</div>
+                        <div class="termo-text"><strong>Não seremos suscetíveis.</strong> Falamos com calma, sem exagerar no que sentimos. Emoção forte não é isca para briga.</div>
                     </div>
-                    <div class="termo-card">
-                        <div class="termo-num">3</div>
-                        <div class="termo-text"><strong>Nunca gritar alto um com o outro.</strong> A voz é pra servir, não pra ferir.</div>
+                    <div class="termo-card" data-termo="3">
+                        <div class="termo-num">3.</div>
+                        <div class="termo-text"><strong>Nunca gritar alto um com o outro.</strong> A voz serve para chamar, acalmar, amar — nunca para ferir.</div>
                     </div>
-                    <div class="termo-card">
-                        <div class="termo-num">4</div>
-                        <div class="termo-text">Se um passar por momentos difíceis, o outro estará do lado — apoiando, sem julgamento.</div>
+                    <div class="termo-card" data-termo="4">
+                        <div class="termo-num">4.</div>
+                        <div class="termo-text"><strong>Se um passar por momentos difíceis, o outro estará do lado.</strong> Apoiamos sem julgamento, ouvimos sem minimizar.</div>
                     </div>
-                    <div class="termo-card">
-                        <div class="termo-num">5</div>
-                        <div class="termo-text">Sempre concordaremos em públicos. A unidade é nossa força.</div>
+                    <div class="termo-card" data-termo="5">
+                        <div class="termo-num">5.</div>
+                        <div class="termo-text"><strong>Sempre concordaremos em públicos.</strong> A unidade é nossa força. Fora dela, a gente se perde.</div>
                     </div>
-                    <div class="termo-card">
-                        <div class="termo-num">6</div>
-                        <div class="termo-text">Diremos "eu te amo" um para o outro, mesmo brigado. O amor não dorme.</div>
+                    <div class="termo-card" data-termo="6">
+                        <div class="termo-num">6.</div>
+                        <div class="termo-text"><strong>Diremos "eu te amo" um para o outro, mesmo brigado.</strong> O amor não dorme. Mesmo na tristeza, o afeto se confirma.</div>
                     </div>
-                    <div class="termo-card">
-                        <div class="termo-num">7</div>
+                    <div class="termo-card" data-termo="7">
+                        <div class="termo-num">7.</div>
                         <div class="termo-text"><strong>Deus sempre será o centro e a base</strong> deste relacionamento. Sem Ele, nada é possível.</div>
                     </div>
                 </div>
             </div>
+            <p id="votoResult" style="text-align:center;margin-top:1.5rem;font-size:0.85rem;color:var(--text-2);"></p>
         </section>
 
         <!-- ===== CONTATO ===== -->
@@ -691,11 +595,12 @@
     <script>
         feather.replace({ 'aria-hidden': 'true' });
 
+        const root = document.documentElement;
+
         // --- Loader ---
-        const loader = document.getElementById('loader');
         setTimeout(() => {
-            loader.classList.add('hidden');
-        }, 700);
+            document.getElementById('loader').classList.add('hidden');
+        }, 600);
 
         // --- Mobile Menu ---
         document.getElementById('menuIcon').addEventListener('click', () => {
@@ -703,29 +608,96 @@
             links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
         });
 
-        // --- GSAP Entrance ---
-        gsap.fromTo('.hero-text h1', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
-        gsap.fromTo('.hero-text .hero-subtitle', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.2 });
-        gsap.fromTo('.hero-text .hero-meta', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', delay: 0.3 });
-        gsap.fromTo('.photo-frame', { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out', delay: 0.1 });
+        // --- Theme Toggle ---
+        const themes = ['light', 'dark', 'burgundy'];
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        root.setAttribute('data-theme', savedTheme);
 
-        gsap.registerPlugin(ScrollTrigger);
-        gsap.utils.toArray('.card').forEach((card, i) => {
-            gsap.fromTo(card, { opacity: 0, y: 15 }, {
-                opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
-                scrollTrigger: { trigger: card, start: 'top 85%', delay: i * 0.06 }
+        const themeIcons = { light: 'moon', dark: 'sun', burgundy: 'heart' };
+        function updateToggleIcon() {
+            const icon = document.querySelector('#themeToggle i');
+            const theme = root.getAttribute('data-theme') || 'light';
+            icon.setAttribute('data-feather', themeIcons[theme]);
+            feather.replace({ 'aria-hidden': 'true' });
+        }
+
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const current = root.getAttribute('data-theme') || 'light';
+            const idx = themes.indexOf(current);
+            const next = themes[(idx + 1) % themes.length];
+            root.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+
+            const notice = document.getElementById('themeNotice');
+            const noticeText = document.getElementById('themeNoticeText');
+            noticeText.textContent = next.charAt(0).toUpperCase() + next.slice(1);
+            notice.style.opacity = '1';
+            setTimeout(() => { notice.style.opacity = '0'; }, 1500);
+
+            updateToggleIcon();
+        });
+
+        updateToggleIcon();
+
+        // --- Visitor Personalization ---
+        const visitorInput = document.getElementById('visitorName');
+        const greetingEl = document.getElementById('greeting');
+
+        visitorInput.addEventListener('input', () => {
+            if (visitorInput.value.trim()) {
+                greetingEl.textContent = `Oi, ${visitorInput.value.trim()}! Aqui é o Rubens. Cozinha, conserta, cuida de plantas. Deus no centro.`;
+            } else {
+                greetingEl.textContent = 'Cozinha, conserta, cuida de plantas. Deus no centro.';
+            }
+        });
+
+        // --- Interest Tag Filtering ---
+        const tags = document.querySelectorAll('.interest-tag');
+        const skillCards = document.querySelectorAll('.skill-card');
+
+        tags.forEach(tag => {
+            tag.addEventListener('click', () => {
+                tags.forEach(t => t.classList.remove('active'));
+                tag.classList.add('active');
+                const filter = tag.dataset.filter;
+                skillCards.forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
             });
         });
-        gsap.utils.toArray('.skill-card').forEach((card, i) => {
-            gsap.fromTo(card, { opacity: 0, scale: 0.96 }, {
-                opacity: 1, scale: 1, duration: 0.5, ease: 'power3.out',
-                scrollTrigger: { trigger: card, start: 'top 85%', delay: i * 0.05 }
+
+        // --- Clickable Cards (expand on click) ---
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('active');
             });
         });
-        gsap.utils.toArray('.termo-card').forEach((card, i) => {
-            gsap.fromTo(card, { opacity: 0, y: 10 }, {
-                opacity: 1, y: 0, duration: 0.5, ease: 'power3.out',
-                scrollTrigger: { trigger: card, start: 'top 85%', delay: i * 0.05 }
+
+        // --- Termo Voting ---
+        const termoCards = document.querySelectorAll('.termo-card');
+        const selected = new Set();
+        const resultEl = document.getElementById('votoResult');
+
+        termoCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const num = card.dataset.termo;
+                if (selected.has(num)) {
+                    selected.delete(num);
+                    card.classList.remove('selected');
+                } else {
+                    selected.add(num);
+                    card.classList.add('selected');
+                }
+                if (selected.size === 0) {
+                    resultEl.textContent = '';
+                } else {
+                    const arr = Array.from(selected).sort();
+                    resultEl.textContent = `Você concorda com os termos: ${arr.join(', ')}.`;
+                }
             });
         });
 
@@ -736,6 +708,37 @@
             const msg = `Candidatura\n\nNome: ${vals[0]}\nIdade: ${vals[1]}\nCidade: ${vals[2]}\nWhatsApp: ${vals[3]}\n\nPor que eu?\n${vals[4]}\n\nO que procura?\n${vals[5]}`;
             window.open('https://wa.me/5581989501999?text=' + encodeURIComponent(msg), '_blank');
         }
+
+        // --- GSAP Entrance ---
+        gsap.fromTo('.hero-text h1', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
+        gsap.fromTo('.hero-text .hero-subtitle', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.2 });
+        gsap.fromTo('.hero-text .hero-meta', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', delay: 0.3 });
+        gsap.fromTo('.personalize', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', delay: 0.4 });
+        gsap.fromTo('.photo-frame', { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out', delay: 0.1 });
+
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.utils.toArray('.skill-card').forEach((card, i) => {
+            gsap.fromTo(card, { opacity: 0, y: 15 }, {
+                opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
+                scrollTrigger: { trigger: card, start: 'top 85%', delay: i * 0.06 }
+            });
+        });
+        gsap.utils.toArray('.card').forEach((card, i) => {
+            gsap.fromTo(card, { opacity: 0, y: 15 }, {
+                opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
+                scrollTrigger: { trigger: card, start: 'top 85%', delay: i * 0.06 }
+            });
+        });
+        gsap.utils.toArray('.termo-card').forEach((card, i) => {
+            gsap.fromTo(card, { opacity: 0, x: -10 }, {
+                opacity: 1, x: 0, duration: 0.5, ease: 'power3.out',
+                scrollTrigger: { trigger: card, start: 'top 85%', delay: i * 0.04 }
+            });
+        });
+        gsap.fromTo('.form-container', { opacity: 0, y: 15 }, {
+            opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
+            scrollTrigger: { trigger: '.form-container', start: 'top 85%' }
+        });
     </script>
 </body>
 </html>
