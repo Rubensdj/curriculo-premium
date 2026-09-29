@@ -27,8 +27,10 @@
             --border:      rgba(124, 45, 58, 0.12);
             --shadow:      0 1px 3px rgba(0,0,0,0.03);
             --shadow-lg:   0 10px 25px -5px rgba(0,0,0,0.06);
+            --shadow-xl:   0 20px 50px -10px rgba(124, 45, 58, 0.08);
             --radius:      14px;
             --radius-lg:   20px;
+            --radius-xl:   28px;
         }
 
         [data-theme="dark"] {
@@ -56,7 +58,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg);
@@ -64,15 +66,57 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            transition: background 0.3s ease, color 0.3s ease;
+            transition: background 0.4s ease, color 0.4s ease;
+            position: relative;
         }
-        ::selection { background: var(--accent); color: #fff; }
+        body::before {
+            content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(124, 45, 58, 0.02) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 30%, rgba(124, 45, 58, 0.015) 0%, transparent 50%);
+            opacity: 0.8;
+            transition: opacity 0.4s ease;
+        }
+        [data-theme="dark"] body::before { opacity: 0.6; }
+        [data-theme="burgundy"] body::before { opacity: 0.5; }
+
+        .dot-pattern {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(var(--border) 1px, transparent 1px);
+            background-size: 40px 40px; pointer-events: none; z-index: 0;
+            opacity: 0.3; transition: opacity 0.4s ease;
+        }
+        [data-theme="dark"] .dot-pattern { opacity: 0.15; }
+        [data-theme="burgundy"] .dot-pattern { opacity: 0.1; }
+
+        .floating-elements {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; overflow: hidden;
+        }
+        .float-el {
+            position: absolute; border-radius: 50%; background: var(--accent);
+            opacity: 0.05; filter: blur(1px); animation: float 20s infinite ease-in-out;
+        }
+        .float-el:nth-child(1) { width: 60px; height: 60px; top: 20%; left: 10%; animation-delay: 0s; }
+        .float-el:nth-child(2) { width: 40px; height: 40px; top: 60%; left: 85%; animation-delay: -5s; }
+        .float-el:nth-child(3) { width: 80px; height: 80px; top: 80%; left: 20%; animation-delay: -10s; }
+        .float-el:nth-child(4) { width: 30px; height: 30px; top: 30%; left: 75%; animation-delay: -15s; }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.05; }
+            25% { transform: translate(20px, -15px) scale(1.1); opacity: 0.07; }
+            50% { transform: translate(-10px, 20px) scale(0.95); opacity: 0.04; }
+            75% { transform: translate(15px, 10px) scale(1.05); opacity: 0.06; }
+        }
+
+        .scroll-progress {
+            position: fixed; top: 0; left: 0; height: 3px; background: var(--accent);
+            transform-origin: 0% 100%; z-index: 1000; transform: scaleX(0);
+        }
 
         /* ===== Journal Header ===== */
         .journal-header {
-            text-align: center; padding: 0.6rem 1.5rem;
+            text-align: center; padding: 0.6rem 1.5rem 0.4rem;
             border-bottom: 1px solid var(--border); margin-bottom: 0;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.3s ease; position: relative; z-index: 10;
         }
         .journal-header .line1 { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-3); margin-bottom: 0.1rem; }
         .journal-header .line2 { font-size: 0.62rem; color: var(--text-3); font-style: italic; margin-bottom: 0.3rem; }
@@ -82,7 +126,7 @@
         .loader-screen {
             position: fixed; inset: 0; background: var(--bg); z-index: 9999;
             display: flex; align-items: center; justify-content: center;
-            opacity: 1; transition: opacity 0.5s ease;
+            opacity: 1; transition: opacity: 0.5s ease;
         }
         .loader-screen.hidden { opacity: 0; pointer-events: none; }
         .loader-text {
@@ -115,24 +159,37 @@
         .nav-center { display: flex; gap: 2rem; }
         .nav-center a {
             font-size: 0.85rem; color: var(--text-2); text-decoration: none;
-            transition: color 0.2s ease;
+            transition: color 0.2s ease; position: relative;
         }
         .nav-center a:hover { color: var(--accent); }
+        .nav-center a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+            height: 1px; background: var(--accent); transform: scaleX(0);
+            transition: transform 0.2s ease;
+        }
+        .nav-center a:hover::after { transform: scaleX(1); }
         .nav-actions { display: flex; align-items: center; gap: 1rem; }
         .nav-btn {
             font-size: 0.8rem; padding: 0.5rem 1.3rem; border-radius: 60px;
             text-decoration: none; font-family: inherit; font-weight: 500;
             border: 1px solid var(--border); background: var(--accent); color: #fff;
-            cursor: pointer; transition: all 0.2s ease;
+            cursor: pointer; transition: all 0.2s ease; display: inline-flex;
+            align-items: center; gap: 0.4rem;
         }
         .nav-btn:hover { background: var(--accent-light); transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+
         .theme-toggle {
-            display: flex; align-items: center; gap: 0.3rem;
+            display: flex; align-items: center; gap: 0.4rem;
             cursor: pointer; font-size: 0.78rem; color: var(--text-3);
-            padding: 0.4rem 0.8rem; border-radius: 8px; background: var(--bg-card);
+            padding: 0.4rem 0.85rem; border-radius: 8px; background: var(--bg-card);
             border: 1px solid var(--border); transition: all 0.2s ease;
         }
         .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+        .theme-dots { display: flex; gap: 3px; }
+        .theme-dot { width: 6px; height: 6px; border-radius: 50%; }
+        .theme-dot:nth-child(1) { background: #f6f7f9; border: 1px solid var(--border); }
+        .theme-dot:nth-child(2) { background: #1a1a1a; }
+        .theme-dot:nth-child(3) { background: var(--accent); }
         .menu-icon { display: none; cursor: pointer; flex-direction: column; gap: 3px; }
         .menu-icon span { width: 22px; height: 2px; background: var(--text); border-radius: 2px; }
 
@@ -143,8 +200,38 @@
             opacity: 0; transition: opacity 0.3s; pointer-events: none;
         }
 
+        #scrollTop {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: var(--accent); color: #fff; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
+            z-index: 1000; box-shadow: 0 4px 12px rgba(124, 45, 58, 0.25);
+            transform: translateY(20px);
+        }
+        #scrollTop.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+
+        .page-indicator {
+            position: fixed; right: 20px; top: 50%; transform: translateY(-50%);
+            display: none; flex-direction: column; gap: 0.8rem; z-index: 100;
+        }
+        .page-indicator .dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--border); cursor: pointer;
+            transition: all 0.3s ease; position: relative;
+        }
+        .page-indicator .dot.active, .page-indicator .dot:hover {
+            background: var(--accent); width: 10px; height: 10px;
+        }
+        .page-indicator .dot::after {
+            content: attr(data-label); position: absolute; right: -80px; top: 0;
+            font-size: 0.72rem; color: var(--text-3); white-space: nowrap;
+            opacity: 0; transition: opacity 0.2s ease;
+        }
+        .page-indicator .dot:hover::after { opacity: 1; }
+
         /* ===== Hero ===== */
-        .hero { padding: 5rem 6vw 2rem; max-width: 1100px; margin: 0 auto; }
+        .hero { padding: 5rem 6vw 3rem; max-width: 1200px; margin: 0 auto; }
         .hero-container { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
         .hero-text h1 {
             font-family: 'Inter', sans-serif; font-size: clamp(2rem, 4vw, 2.8rem);
@@ -157,17 +244,21 @@
         }
         .hero-subtitle {
             font-size: 1.05rem; color: var(--text-2); margin: 1rem 0 1.5rem;
-            font-weight: 300; line-height: 1.6;
+            font-weight: 300; line-height: 1.7;
         }
-        .hero-meta { display: flex; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap; }
-        .hero-meta span {
+        .hero-meta { display: flex; gap: 1.5rem; margin-top: 1.2rem; flex-wrap: wrap; }
+        .stat-badge {
             display: inline-flex; align-items: center; gap: 0.4rem;
-            font-size: 0.85rem; color: var(--text-3); font-weight: 300;
+            padding: 0.3rem 0.8rem; border-radius: 30px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            font-weight: 500; font-size: 0.82rem; color: var(--text-2);
         }
+        .stat-badge .num { color: var(--accent); font-weight: 700; }
+        .stat-badge .icon { opacity: 0.6; }
 
         .personalize { margin-top: 1.5rem; max-width: 420px; }
         .personalize label {
-            display: block; font-size: 0.75rem; text-transform: uppercase;
+            display: block; font-size: 0.72rem; text-transform: uppercase;
             letter-spacing: 0.08em; color: var(--text-3); margin-bottom: 0.5rem;
         }
         .personalize input {
@@ -180,31 +271,55 @@
             box-shadow: 0 0 0 3px rgba(124, 45, 58, 0.08);
         }
 
+        .scroll-down {
+            display: none; position: absolute; bottom: 2rem; left: 0; right: 0;
+            margin: 0 auto; width: 32px; height: 50px; border: 1px solid var(--border);
+            border-radius: 30px; justify-content: center; cursor: pointer;
+            opacity: 0.5;
+        }
+        .scroll-down::before {
+            content: ''; display: block; width: 6px; height: 6px;
+            border-radius: 50%; background: var(--accent);
+            margin-top: 8px; animation: scroll 2s infinite;
+        }
+        @keyframes scroll {
+            0% { opacity: 0; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(12px); }
+            100% { opacity: 0; transform: translateY(16px); }
+        }
+
         .photo-frame { position: relative; width: 100%; }
-        .photo-frame::after {
-            content: ''; position: absolute; inset: -4px;
-            border-radius: var(--radius-lg);
+        .photo-frame::before {
+            content: ''; position: absolute; inset: -8px;
+            border-radius: var(--radius-xl);
             background: linear-gradient(135deg, var(--accent), var(--accent-light));
-            z-index: -1; filter: blur(12px); opacity: 0.12;
-            transform: scale(1.05);
+            z-index: -1; filter: blur(20px); opacity: 0.15;
+            transform: scale(1.03);
+        }
+        .photo-frame::after {
+            content: ''; position: absolute; top: -4px; right: -4px;
+            width: 24px; height: 24px; border-radius: 50%;
+            background: var(--accent); opacity: 0.6; z-index: 1;
+            box-shadow: 0 0 0 4px var(--bg-card);
         }
         .photo-card {
             width: 100%; border-radius: var(--radius-lg);
-            overflow: hidden; box-shadow: var(--shadow-lg);
-            aspect-ratio: 4/5; border: 1px solid var(--border);
+            overflow: hidden; box-shadow: var(--shadow-xl);
+            aspect-ratio: 3/4; border: 1px solid var(--border);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
         .photo-card img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
 
         /* ===== Sections ===== */
-        .section { padding: 5rem 6vw; max-width: 1100px; margin: 0 auto; }
+        .section { padding: 5rem 6vw; max-width: 1200px; margin: 0 auto; position: relative; }
         .section-header { text-align: center; margin-bottom: 2.5rem; }
         .section-label {
             font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em;
-            color: var(--text-3); margin-bottom: 0.4rem; display: inline-flex;
-            align-items: center; gap: 0.6rem;
+            color: var(--text-3); margin-bottom: 0.6rem; display: inline-block;
         }
-        .section-label::before, .section-label::after {
-            content: ''; width: 12px; height: 1px; background: var(--accent);
+        .section-divider {
+            width: 40px; height: 1px; background: var(--accent);
+            display: block; margin: 0.4rem auto; opacity: 0.4;
         }
         .section-title {
             font-family: 'Playfair Display', serif;
@@ -218,9 +333,14 @@
             font-size: 1.02rem; color: var(--text-2); font-weight: 300;
             line-height: 1.7;
         }
+        .drop-cap::first-letter {
+            float: left; font-family: 'Playfair Display', serif; font-size: 3.5rem;
+            font-weight: 700; color: var(--accent); line-height: 0.9;
+            margin: 0.1rem 0.15rem 0 0; opacity: 0.8;
+        }
 
         /* ===== Interest Tags ===== */
-        .interest-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem; margin: 1.5rem auto; max-width: 600px; }
+        .interest-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem; margin: 1.5rm auto; max-width: 620px; }
         .interest-tag {
             padding: 0.5rem 1.1rem; font-size: 0.82rem; border-radius: 50px;
             background: var(--bg-card); border: 1px solid var(--border);
@@ -239,12 +359,24 @@
             background: var(--bg-card); border: 1px solid var(--border);
             border-radius: var(--radius); padding: 1.6rem 1rem;
             box-shadow: var(--shadow); text-align: center; cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s ease; position: relative; overflow: hidden;
         }
-        .skill-card:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+        .skill-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(124, 45, 58, 0.03) 0%, transparent 50%);
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .skill-card:hover::before { opacity: 1; }
+        .skill-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
         .skill-card.active { border-top: 3px solid var(--accent); }
-        .skill-icon { width: 38px; height: 38px; margin: 0 auto 0.8rem; opacity: 0.8; }
-        .skill-card h4 { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.4rem; }
+        .skill-icon { width: 42px; height: 42px; margin: 0 auto 1rem; opacity: 0.8; }
+        .skill-card h4 {
+            font-family: 'Playfair Display', serif; font-size: 0.95rem;
+            font-weight: 600; color: var(--text); margin-bottom: 0.4rem;
+        }
         .skill-card p { color: var(--text-2); font-size: 0.82rem; line-height: 1.5; font-weight: 300; }
 
         /* ===== Clickable Cards ===== */
@@ -256,54 +388,106 @@
             background: var(--bg-card); border: 1px solid var(--border);
             border-left: 3px solid var(--accent); border-radius: var(--radius);
             padding: 1.8rem; box-shadow: var(--shadow); text-align: center;
-            cursor: pointer; transition: all 0.3s ease;
+            cursor: pointer; transition: all 0.4s ease; position: relative; overflow: hidden;
         }
+        .card::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(124, 45, 58, 0.02) 0%, transparent 50%);
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .card:hover::before { opacity: 1; }
         .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.06); border-left-width: 5px;
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 25px 50px -10px rgba(0,0,0,0.08);
+            border-left-width: 6px;
         }
-        .card.active { transform: translateY(-4px); box-shadow: 0 25px 50px -5px rgba(124, 45, 58, 0.12); }
-        .card-icon { width: 42px; height: 42px; margin: 0 auto 1rem; opacity: 0.75; }
-        .card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+        .card.active {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 30px 60px -15px rgba(124, 45, 58, 0.15);
+        }
+        .card-icon { width: 46px; height: 46px; margin: 0 auto 1rem; opacity: 0.8; }
+        .card h3 {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem;
+            font-weight: 600; color: var(--text); margin-bottom: 0.5rem;
+        }
         .card p { color: var(--text-2); font-size: 0.88rem; line-height: 1.6; font-weight: 300; }
         .card-reveal {
             max-height: 0; overflow: hidden; opacity: 0;
             transition: all 0.4s ease; margin-top: 0;
         }
-        .card.active .card-reveal { max-height: 200px; opacity: 1; margin-top: 1rem; }
+        .card.active .card-reveal { max-height: 220px; opacity: 1; margin-top: 1rem; }
+        .signature {
+            font-family: 'Playfair Display', serif; font-style: italic;
+            font-size: 1.1rem; color: var(--accent); opacity: 0.5;
+            text-align: center; margin-top: 3rem;
+        }
 
         /* ===== Termos ===== */
-        .termos-container { max-width: 900px; margin: 0 auto; }
+        .termos-container { max-width: 960px; margin: 0 auto; }
+        .termos-intro {
+            text-align: center; font-size: 0.92rem; color: var(--text-2);
+            margin-bottom: 1.5rem; max-width: 720px; margin-left: auto; margin-right: auto;
+            line-height: 1.6;
+        }
+        .termos-intro a { color: var(--accent); text-decoration: none; font-weight: 500; }
+        .termos-intro a::after {
+            content: ''; display: block; height: 1px; background: var(--accent);
+            transform: scaleX(0); transition: transform 0.2s ease;
+        }
+        .termos-intro a:hover::after { transform: scaleX(1); }
         .termos-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1rem; margin-top: 1.5rem;
         }
         .termo-card {
             background: var(--bg-card); border: 1px solid var(--border);
             border-left: 3px solid var(--accent); border-radius: var(--radius);
             padding: 1.2rem; box-shadow: var(--shadow); cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s ease; position: relative; overflow: hidden;
         }
+        .termo-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(124, 45, 58, 0.03) 0%, transparent 50%);
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .termo-card:hover::before { opacity: 1; }
         .termo-card:hover {
-            transform: translateX(4px); border-left-width: 6px;
-            box-shadow: 0 12px 25px rgba(0,0,0,0.05);
+            transform: translateX(6px); border-left-width: 7px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
         }
         .termo-card.selected {
             border-left-color: var(--accent-light);
+            background: linear-gradient(135deg, rgba(124, 45, 58, 0.05) 0%, var(--bg-card) 100%);
         }
-        .termo-num { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--accent); margin-bottom: 0.3rem; display: inline-block; }
+        .termo-num {
+            font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700;
+            color: var(--accent); margin-bottom: 0.3rem; display: inline-block;
+        }
         .termo-text { font-size: 0.82rem; line-height: 1.5; color: var(--text-2); font-weight: 300; }
         .termo-text strong { color: var(--text); }
         .termo-card.selected .termo-text,
         .termo-card.selected .termo-text strong { color: #fff; }
+        .voto-badge {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 20px; height: 20px; border-radius: 50%;
+            background: var(--accent); color: #fff; font-size: 0.7rem;
+            margin-left: 0.5rem; opacity: 0; transition: opacity 0.3s ease;
+            vertical-align: middle;
+        }
+        .termo-card.selected .voto-badge { opacity: 1; }
 
         /* ===== Form ===== */
         .form-container {
             background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: var(--radius-lg); padding: 2.5rem;
-            box-shadow: var(--shadow-lg); max-width: 600px; margin: 0 auto;
+            border-radius: var(--radius-xl); padding: 2.8rem;
+            box-shadow: var(--shadow-xl); max-width: 640px; margin: 0 auto;
+            position: relative; overflow: hidden;
         }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .form-container::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+        }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1rem; }
         .form-group { margin-bottom: 1.2rem; }
         .form-group.full { grid-column: 1 / -1; }
         .form-group label {
@@ -327,29 +511,67 @@
             font-weight: 500; text-decoration: none; letter-spacing: 0.02em;
             transition: all 0.2s ease; font-family: inherit; border: none; cursor: pointer;
         }
-        .btn-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
-        .btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(124, 45, 58, 0.25); }
+        .btn-primary {
+            background: var(--accent); color: #fff;
+            border: 1px solid var(--accent);
+            box-shadow: 0 4px 12px rgba(124, 45, 58, 0.2);
+        }
+        .btn-primary:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(124, 45, 58, 0.3);
+        }
         .form-footer { margin-top: 1.5rem; color: var(--text-3); font-size: 0.75rem; text-align: center; }
 
         /* ===== Footer ===== */
-        .footer { padding: 2.5rem 3rem; text-align: center; border-top: 1px solid var(--border); color: var(--text-3); font-size: 0.78rem; }
+        .footer {
+            padding: 3rem 3rem 8rem; text-align: center;
+            border-top: 1px solid var(--border); color: var(--text-3);
+            font-size: 0.82rem; position: relative;
+        }
         .footer a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
         .footer a:hover { opacity: 0.7; }
+        .footer-grid {
+            display: flex; justify-content: space-between; align-items: center;
+            max-width: 1200px; margin: 0 auto; flex-wrap: wrap; gap: 1rem;
+        }
+        .footer-copy { font-weight: 300; }
+        .footer-links { display: flex; gap: 1.5rem; }
+        .footer-links a { font-size: 0.78rem; }
+
+        @media (max-width: 1024px) {
+            .hero-container { grid-template-columns: 1fr; }
+            .hero { padding: 4rem 4vw 3rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .page-indicator { display: none; }
+        }
 
         @media (max-width: 768px) {
             .page-label { right: 1.5rem; font-size: 0.6rem; }
             .nav { padding: 1rem 1.5rem; }
             .nav-center { display: none; }
             .menu-icon { display: flex; }
-            .hero { padding: 4rem 2rem 2rem; }
-            .hero-container { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
-            .section { padding: 3.5rem 2rem; }
-            .form-grid { grid-template-columns: 1fr; }
-            .form-container { padding: 1.8rem; }
+            .hero { padding: 3.5rem 2rem 2rem; }
+            .section { padding: 3rem 2rem; }
+            .form-container { padding: 2rem; }
+        }
+
+        @media (min-width: 768px) {
+            .scroll-down { display: flex; }
         }
     </style>
 </head>
 <body>
+
+    <!-- ===== Background Elements ===== -->
+    <div class="dot-pattern"></div>
+    <div class="floating-elements" id="floatingElements">
+        <div class="float-el"></div>
+        <div class="float-el"></div>
+        <div class="float-el"></div>
+        <div class="float-el"></div>
+    </div>
+    <div class="scroll-progress" id="scrollProgress"></div>
 
     <!-- ===== Loader ===== -->
     <div class="loader-screen" id="loader">
@@ -359,6 +581,20 @@
     <!-- ===== Theme Notice ===== -->
     <div id="themeNotice">
         Tema salvo: <span id="themeNoticeText"></span>
+    </div>
+
+    <!-- ===== Back to Top ===== -->
+    <button id="scrollTop">
+        <i data-feather="arrow-up" width="20" height="20"></i>
+    </button>
+
+    <!-- ===== Sticky Page Indicator (desktop) ===== -->
+    <div class="page-indicator" id="pageIndicator">
+        <div class="dot active" data-label="Início" onclick="scrollToSection('sobre')"></div>
+        <div class="dot" data-label="Habilidades" onclick="scrollToSection('habilidades')"></div>
+        <div class="dot" data-label="Sobre mim" onclick="scrollToSection('sobre-mim')"></div>
+        <div class="dot" data-label="Termos" onclick="scrollToSection('termos')"></div>
+        <div class="dot" data-label="Contato" onclick="scrollToSection('contato')"></div>
     </div>
 
     <!-- ===== Journal Header ===== -->
@@ -375,13 +611,21 @@
         <div class="nav-center">
             <a href="#sobre">Sobre</a>
             <a href="#habilidades">Habilidades</a>
+            <a href="#sobre-mim">Sobre mim</a>
             <a href="#termos">Termos</a>
             <a href="#contato">Contato</a>
         </div>
         <div class="nav-actions">
-            <a href="contrato.html" class="nav-btn">Contrato</a>
+            <a href="contrato.html" class="nav-btn">
+                <i data-feather="file-text" width="14" height="14"></i> Contrato
+            </a>
             <div class="theme-toggle" id="themeToggle">
-                <i data-feather="moon" width="14" height="14"></i> Tema
+                <div class="theme-dots">
+                    <span class="theme-dot"></span>
+                    <span class="theme-dot"></span>
+                    <span class="theme-dot"></span>
+                </div>
+                <span>Tema</span>
             </div>
         </div>
         <div class="menu-icon" id="menuIcon">
@@ -395,16 +639,16 @@
         <section class="hero" id="sobre">
             <div class="hero-container">
                 <div class="hero-text">
-                    <h1>Olá, eu sou o <span class="hl">Rubens.</span><br>
+                    <h1>Oi. Eu sou o <span class="hl">Rubens.</span><br>
                         26 anos. <span class="hl">Recife.</span>
                     </h1>
                     <p class="hero-subtitle" id="greeting">
-                        Cozinha, conserta, cuida de plantas. Deus no centro.
+                        Cozinha, conserta, cuida de plantas. Deus no centro. Gosto de acordar cedo, tomar um café e deixar o dia fluir sem pressa.
                     </p>
                     <div class="hero-meta">
-                        <span><i data-feather="sun" width="14" height="14"></i> Touro</span>
-                        <span><i data-feather="activity" width="14" height="14"></i> 171 cm · 69 kg</span>
-                        <span><i data-feather="coffee" width="14" height="14"></i> Não bebo, não fumo</span>
+                        <span class="stat-badge"><i data-feather="sun" width="14" height="14" class="icon"></i> <span class="num">Touro</span></span>
+                        <span class="stat-badge"><i data-feather="activity" width="14" height="14" class="icon"></i> <span class="num">171 cm · 69 kg</span></span>
+                        <span class="stat-badge"><i data-feather="coffee" width="14" height="14" class="icon"></i> <span class="num">Não bebo, não fumo</span></span>
                     </div>
 
                     <div class="personalize">
@@ -419,52 +663,54 @@
                     </div>
                 </div>
             </div>
+            <div class="scroll-down" onclick="document.getElementById('habilidades').scrollIntoView({behavior:'smooth'})"></div>
         </section>
 
         <!-- ===== INTEREST TAGS + SKILLS ===== -->
         <section class="section" id="habilidades">
             <div class="section-header">
                 <p class="section-label">Habilidades</p>
+                <div class="section-divider"></div>
                 <h2 class="section-title">Coisas que me dão prazer — feitas com as mãos.</h2>
-                <div class="interest-tags">
-                    <span class="interest-tag active" data-filter="all">Tudo</span>
-                    <span class="interest-tag" data-filter="cooking">Cozinha</span>
-                    <span class="interest-tag" data-filter="tech">Tecnologia</span>
-                    <span class="interest-tag" data-filter="plants">Plantas</span>
-                    <span class="interest-tag" data-filter="massage">Massagem</span>
-                    <span class="interest-tag" data-filter="music">Música</span>
-                </div>
+            </div>
+            <div class="interest-tags">
+                <span class="interest-tag active" data-filter="all">Tudo</span>
+                <span class="interest-tag" data-filter="cooking">Cozinha</span>
+                <span class="interest-tag" data-filter="tech">Tecnologia</span>
+                <span class="interest-tag" data-filter="plants">Plantas</span>
+                <span class="interest-tag" data-filter="massage">Massagem</span>
+                <span class="interest-tag" data-filter="music">Música</span>
             </div>
             <div class="skill-grid">
-                <div class="skill-card" data-category="cooking">
+                <div class="skill-card" data-category="cooking" onclick="toggleActive(this)">
                     <i data-feather="coffee" class="skill-icon"></i>
                     <h4>Cozinha</h4>
                     <p>Bolos, sorvetes, cuscuz, carnes, feijão, lasanha, pão caseiro.</p>
                 </div>
-                <div class="skill-card" data-category="tech">
+                <div class="skill-card" data-category="tech" onclick="toggleActive(this)">
                     <i data-feather="tool" class="skill-icon"></i>
                     <h4>Consertos</h4>
                     <p>Eletrodomésticos, encanamento. Se não sei, aprendo rápido.</p>
                 </div>
-                <div class="skill-card" data-category="tech">
+                <div class="skill-card" data-category="tech" onclick="toggleActive(this)">
                     <i data-feather="globe" class="skill-icon"></i>
                     <h4>Tecnologia</h4>
                     <p>Trabalho com tecnologia. Conserto, programo, automatizo.</p>
                 </div>
-                <div class="skill-card" data-category="plants">
+                <div class="skill-card" data-category="plants" onclick="toggleActive(this)">
                     <i data-feather="leaf" class="skill-icon"></i>
                     <h4>Plantas & Jardim</h4>
                     <p>Amo cuidar de plantas. Horta, vasos, jardinagem. É minha terapia.</p>
                 </div>
-                <div class="skill-card" data-category="massage">
+                <div class="skill-card" data-category="massage" onclick="toggleActive(this)">
                     <i data-feather="droplet" class="skill-icon"></i>
                     <h4>Massagem</h4>
                     <p>Carinho com as mãos. Para quem gosta de toque sem pressa.</p>
                 </div>
-                <div class="skill-card" data-category="music">
+                <div class="skill-card" data-category="music" onclick="toggleActive(this)">
                     <i data-feather="music" class="skill-icon"></i>
                     <h4>Música</h4>
-                    <p>Violão no pé, playlist de fundo. Música que acalma, não que agita.</p>
+                    <p>Toque violão nos tempos livres, playlist de fundo. Música que acalma, não que agita.</p>
                 </div>
             </div>
         </section>
@@ -473,17 +719,18 @@
         <section class="section" id="sobre-mim">
             <div class="section-header">
                 <p class="section-label">Quem eu sou de verdade</p>
+                <div class="section-divider"></div>
                 <h2 class="section-title">Cuidar é parte de quem eu sou.</h2>
             </div>
             <div class="section-body">
-                <p>Trabalho com tecnologia, mas meu tempo livre é pra cozinhar, consertar, cuidar de plantas. Acredito em construir devagar — Deus no centro. O que procuro é alguém com quem dividir isso tudo.</p>
+                <p class="drop-cap">Trabalho com tecnologia, mas meu tempo livre é pra cozinhar, consertar, cuidar de plantas — Deus no centro. O que procuro é alguém com quem dividir essas coisas simples que dão mais sentido.</p>
             </div>
             <div class="card-grid">
                 <div class="card">
                     <i data-feather="heart" class="card-icon"></i>
                     <h3>Relacionamento</h3>
                     <p>Acredito em construir devagar. Com Deus no centro.</p>
-                    <div class="card-reveal">Priorizo confiança, comunicação direta e ausência de joguinho. Sei que nada é perfeito, mas a intenção de faire certo dá um baita diferença.</div>
+                    <div class="card-reveal">Priorizo confiança, comunicação direta e ausência de joguinho. Sei que nada é perfeito, mas a intenção de fazer certo dá um baita diferença.</div>
                 </div>
                 <div class="card">
                     <i data-feather="book-open" class="card-icon"></i>
@@ -494,48 +741,59 @@
                 <div class="card">
                     <i data-feather="sun" class="card-icon"></i>
                     <h3>Rotina</h3>
-                    <p>Sem pressa, sem stress. Gosto de acordar cedo e respirar direito.</p>
-                    <div class="card-reveal">Café da manhã sem pressa, café da tarde, jantar leve. Se a gente combina, a gente cumpre. Ainda não sou daqueles que adia tudo pro amanhã.</div>
+                    <p>Sem pressa, sem estresse. Gosto de acordar cedo e respirar direito.</p>
+                    <div class="card-reveal">Café da manhã sem pressa, café da tarde, jantar leve. Se a gente combina, a gente cumpre.</div>
                 </div>
             </div>
+            <div class="signature">Rubens</div>
         </section>
 
         <!-- ===== TERMOS ===== -->
         <section class="section" id="termos">
             <div class="section-header">
                 <p class="section-label">Termos a ser discutido</p>
+                <div class="section-divider"></div>
                 <h2 class="section-title">Regra de ouro do coração: nada de dramas desnecessários.</h2>
             </div>
-            <p style="text-align:center;color:var(--text-2);font-size:0.9rem;margin-bottom:1.5rem;max-width:720px;margin-left:auto;margin-right:auto;">Clique nos termos que mais combinam com você. São as mesmas regras do <a href="contrato.html" style="color:var(--accent);">contrato</a> — mas aqui você escolhe quais vão marcar.</p>
+            <p class="termos-intro">
+                Clique nos termos que mais combinam com você. São as mesmas regras do <a href="contrato.html">contrato</a> — mas aqui você escolhe quais vão marcar.
+            </p>
             <div class="termos-container">
                 <div class="termos-grid">
                     <div class="termo-card" data-termo="1">
                         <div class="termo-num">1.</div>
                         <div class="termo-text"><strong>Nunca iremos dormir brigados.</strong> Sempre resolvemos antes de apagar a luz. Se o dia ainda não acalma, combinamos: "resolvemos de manhã".</div>
+                        <span class="voto-badge"><i data-feather="check" width="12" height="12"></i></span>
                     </div>
                     <div class="termo-card" data-termo="2">
                         <div class="termo-num">2.</div>
                         <div class="termo-text"><strong>Não seremos suscetíveis.</strong> Falamos com calma, sem exagerar no que sentimos. Emoção forte não é isca para briga.</div>
+                        <span class="voto-badge"><i data-feather="check" width="12" height="12"></i></span>
                     </div>
                     <div class="termo-card" data-termo="3">
                         <div class="termo-num">3.</div>
-                        <div class="termo-text"><strong>Nunca gritar alto um com o outro.</strong> A voz serve para chamar, acalmar, amar — nunca para ferir.</div>
+                        <div class="termo-text"><strong>Nunca gritaremos alto um com o outro.</strong> A voz serve para chamar, acalmar, amar — nunca para ferir.</div>
+                        <span class="voto-badge"><i data-feather="check" width="12" height="12"></i></span>
                     </div>
                     <div class="termo-card" data-termo="4">
                         <div class="termo-num">4.</div>
                         <div class="termo-text"><strong>Se um passar por momentos difíceis, o outro estará do lado.</strong> Apoiamos sem julgamento, ouvimos sem minimizar.</div>
+                        <span class="voto-badge"><i data-feather="check" width="12" height="12"></i></span>
                     </div>
                     <div class="termo-card" data-termo="5">
                         <div class="termo-num">5.</div>
                         <div class="termo-text"><strong>Sempre concordaremos em públicos.</strong> A unidade é nossa força. Fora dela, a gente se perde.</div>
+                        <span class="voto-badge"><i data-feather="check" width="12" height="12"></i></span>
                     </div>
                     <div class="termo-card" data-termo="6">
                         <div class="termo-num">6.</div>
                         <div class="termo-text"><strong>Diremos "eu te amo" um para o outro, mesmo brigado.</strong> O amor não dorme. Mesmo na tristeza, o afeto se confirma.</div>
+                        <span class="voto-badge"><i data-feather="check" width="12" height="12"></i></span>
                     </div>
                     <div class="termo-card" data-termo="7">
                         <div class="termo-num">7.</div>
                         <div class="termo-text"><strong>Deus sempre será o centro e a base</strong> deste relacionamento. Sem Ele, nada é possível.</div>
+                        <span class="voto-badge"><i data-feather="check" width="12" height="12"></i></span>
                     </div>
                 </div>
             </div>
@@ -546,6 +804,7 @@
         <section class="section" id="contato">
             <div class="section-header">
                 <p class="section-label">Conversa</p>
+                <div class="section-divider"></div>
                 <h2 class="section-title">Você me escolhe?</h2>
             </div>
             <div class="form-container">
@@ -576,7 +835,7 @@
                     </div>
                 </div>
                 <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="enviarForm()">
-                    Enviar pro WhatsApp
+                    <i data-feather="send" width="14" height="14"></i> Enviar pro WhatsApp
                 </button>
                 <div class="form-footer">
                     Suas informações são confidenciais. Nada sai sem seu consentimento.
@@ -588,19 +847,25 @@
 
     <!-- ===== Footer ===== -->
     <footer class="footer">
-        <a href="https://github.com/Rubensdj/curriculo-premium" target="_blank">curriculo-premium</a> ·
-        <span>&copy; 2026 Rubens Pereira Fernandes · Recife, PE</span>
+        <div class="footer-grid">
+            <div class="footer-copy">
+                <a href="https://github.com/Rubensdj/curriculo-premium" target="_blank">curriculo-premium</a> ·
+                <span>&copy; 2026 Rubens Pereira Fernandes · Recife, PE</span>
+            </div>
+            <div class="footer-links">
+                <a href="contrato.html">Contrato</a>
+            </div>
+        </div>
     </footer>
 
     <script>
         feather.replace({ 'aria-hidden': 'true' });
-
         const root = document.documentElement;
 
         // --- Loader ---
         setTimeout(() => {
             document.getElementById('loader').classList.add('hidden');
-        }, 600);
+        }, 800);
 
         // --- Mobile Menu ---
         document.getElementById('menuIcon').addEventListener('click', () => {
@@ -633,71 +898,52 @@
             noticeText.textContent = next.charAt(0).toUpperCase() + next.slice(1);
             notice.style.opacity = '1';
             setTimeout(() => { notice.style.opacity = '0'; }, 1500);
-
             updateToggleIcon();
         });
-
         updateToggleIcon();
 
         // --- Visitor Personalization ---
         const visitorInput = document.getElementById('visitorName');
         const greetingEl = document.getElementById('greeting');
-
         visitorInput.addEventListener('input', () => {
             if (visitorInput.value.trim()) {
                 greetingEl.textContent = `Oi, ${visitorInput.value.trim()}! Aqui é o Rubens. Cozinha, conserta, cuida de plantas. Deus no centro.`;
             } else {
-                greetingEl.textContent = 'Cozinha, conserta, cuida de plantas. Deus no centro.';
+                greetingEl.textContent = 'Cozinha, conserta, cuida de plantas. Deus no centro. Gosto de acordar cedo, tomar um café e deixar o dia fluir sem pressa.';
             }
         });
 
         // --- Interest Tag Filtering ---
         const tags = document.querySelectorAll('.interest-tag');
         const skillCards = document.querySelectorAll('.skill-card');
-
         tags.forEach(tag => {
             tag.addEventListener('click', () => {
                 tags.forEach(t => t.classList.remove('active'));
                 tag.classList.add('active');
                 const filter = tag.dataset.filter;
                 skillCards.forEach(card => {
-                    if (filter === 'all' || card.dataset.category === filter) {
-                        card.style.display = '';
-                    } else {
-                        card.style.display = 'none';
-                    }
+                    card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
                 });
             });
         });
 
-        // --- Clickable Cards (expand on click) ---
+        // --- Clickable Cards ---
+        function toggleActive(card) { card.classList.toggle('active'); }
         document.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('click', () => {
-                card.classList.toggle('active');
-            });
+            card.addEventListener('click', () => card.classList.toggle('active'));
         });
 
         // --- Termo Voting ---
         const termoCards = document.querySelectorAll('.termo-card');
         const selected = new Set();
         const resultEl = document.getElementById('votoResult');
-
         termoCards.forEach(card => {
             card.addEventListener('click', () => {
                 const num = card.dataset.termo;
-                if (selected.has(num)) {
-                    selected.delete(num);
-                    card.classList.remove('selected');
-                } else {
-                    selected.add(num);
-                    card.classList.add('selected');
-                }
-                if (selected.size === 0) {
-                    resultEl.textContent = '';
-                } else {
-                    const arr = Array.from(selected).sort();
-                    resultEl.textContent = `Você concorda com os termos: ${arr.join(', ')}.`;
-                }
+                if (selected.has(num)) { selected.delete(num); card.classList.remove('selected'); }
+                else { selected.add(num); card.classList.add('selected'); }
+                resultEl.textContent = selected.size === 0 ? '' :
+                    `Você concorda com os termos: ${Array.from(selected).sort().join(', ')}.`;
             });
         });
 
@@ -709,35 +955,83 @@
             window.open('https://wa.me/5581989501999?text=' + encodeURIComponent(msg), '_blank');
         }
 
+        // --- Back to Top ---
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // --- Scroll Progress + Page Indicator ---
+        function scrollHandler() {
+            const scrollY = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            document.getElementById('scrollProgress').style.transform = `scaleX(${(scrollY / docHeight) * 100 / 100})`;
+            const dots = document.querySelectorAll('.page-indicator .dot');
+            const sections = ['sobre', 'habilidades', 'sobre-mim', 'termos', 'contato'];
+            dots.forEach((dot, i) => {
+                const s = document.getElementById(sections[i]);
+                if (s) {
+                    const rect = s.getBoundingClientRect();
+                    const mid = window.innerHeight / 2;
+                    dot.classList.toggle('active', rect.top < mid && rect.bottom > mid);
+                }
+            });
+        }
+        window.addEventListener('scroll', scrollHandler);
+        window.addEventListener('load', scrollHandler);
+
+        // --- Parallax ---
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            document.querySelectorAll('.float-el').forEach((el, i) => {
+                const speed = (i + 1) * 0.3;
+                el.style.transform = `translate(${x * speed * 10 - speed * 5}px, ${y * speed * 10 - speed * 5}px)`;
+            });
+        });
+
+        // --- Scroll to section ---
+        function scrollToSection(id) {
+            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+        }
+
         // --- GSAP Entrance ---
-        gsap.fromTo('.hero-text h1', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
-        gsap.fromTo('.hero-text .hero-subtitle', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.2 });
-        gsap.fromTo('.hero-text .hero-meta', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', delay: 0.3 });
-        gsap.fromTo('.personalize', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', delay: 0.4 });
-        gsap.fromTo('.photo-frame', { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out', delay: 0.1 });
+        gsap.fromTo('.hero-text h1', { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
+        gsap.fromTo('.hero-text .hero-subtitle', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: 0.25 });
+        gsap.fromTo('.hero-text .hero-meta', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.4 });
+        gsap.fromTo('.personalize', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.5 });
+        gsap.fromTo('.hero-text .scroll-down', { opacity: 0, y: 10 }, { opacity: 0.5, y: 0, duration: 0.8, ease: 'power3.out', delay: 0.7 });
+        gsap.fromTo('.photo-frame', { opacity: 0, scale: 0.95, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.9, ease: 'power3.out', delay: 0.2 });
+        gsap.fromTo('.journal-header', { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' });
+        gsap.fromTo('.nav', { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.1 });
 
         gsap.registerPlugin(ScrollTrigger);
         gsap.utils.toArray('.skill-card').forEach((card, i) => {
-            gsap.fromTo(card, { opacity: 0, y: 15 }, {
-                opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
-                scrollTrigger: { trigger: card, start: 'top 85%', delay: i * 0.06 }
+            gsap.fromTo(card, { opacity: 0, y: 20, rotation: -1 }, {
+                opacity: 1, y: 0, rotation: 0, duration: 0.7, ease: 'power3.out',
+                scrollTrigger: { trigger: card, start: 'top 88%', delay: i * 0.08 }
             });
         });
         gsap.utils.toArray('.card').forEach((card, i) => {
-            gsap.fromTo(card, { opacity: 0, y: 15 }, {
-                opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
-                scrollTrigger: { trigger: card, start: 'top 85%', delay: i * 0.06 }
+            gsap.fromTo(card, { opacity: 0, y: 20 }, {
+                opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
+                scrollTrigger: { trigger: card, start: 'top 88%', delay: i * 0.1 }
             });
         });
         gsap.utils.toArray('.termo-card').forEach((card, i) => {
-            gsap.fromTo(card, { opacity: 0, x: -10 }, {
-                opacity: 1, x: 0, duration: 0.5, ease: 'power3.out',
-                scrollTrigger: { trigger: card, start: 'top 85%', delay: i * 0.04 }
+            gsap.fromTo(card, { opacity: 0, x: -15 }, {
+                opacity: 1, x: 0, duration: 0.6, ease: 'power3.out',
+                scrollTrigger: { trigger: card, start: 'top 90%', delay: i * 0.06 }
             });
         });
-        gsap.fromTo('.form-container', { opacity: 0, y: 15 }, {
-            opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
-            scrollTrigger: { trigger: '.form-container', start: 'top 85%' }
+        gsap.fromTo('.form-container', { opacity: 0, y: 20 }, {
+            opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+            scrollTrigger: { trigger: '.form-container', start: 'top 90%' }
         });
     </script>
 </body>
