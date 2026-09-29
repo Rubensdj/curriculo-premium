@@ -61,25 +61,46 @@
         }
         @media (max-width: 768px) { .nav { padding: 1rem 1.5rem; } .page-label { right: 1.5rem; } }
 
+        /* ===== JOURNAL HEADER ===== */
+        .journal-header {
+            text-align: center; padding: 0.6rem 1.5rem;
+            border-bottom: 1px solid var(--border); margin-bottom: 1.8rem;
+        }
+        .journal-header .line1 {
+            font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em;
+            color: var(--text-3); margin-bottom: 0.1rem;
+        }
+        .journal-header .line2 {
+            font-size: 0.62rem; color: var(--text-3); font-style: italic; margin-bottom: 0.3rem;
+        }
+        .journal-header .line3 {
+            font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em;
+            color: var(--accent); font-weight: 700;
+        }
+
         /* ===== DOCUMENTO ===== */
         .doc {
             max-width: 960px; margin: 0 auto; padding: 5rem 2rem 6rem;
         }
         .doc-header {
-            text-align: center; margin-bottom: 3rem; padding-bottom: 2rem;
+            text-align: center; margin-bottom: 3rem; padding-bottom: 2.5rem;
             border-bottom: 1px solid var(--border);
         }
+        .doc-meta {
+            font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em;
+            color: var(--text-3); margin-bottom: 0.5rem;
+        }
         .doc-num {
-            font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em;
-            color: var(--text-3); margin-bottom: 0.6rem;
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em;
+            color: var(--accent); font-weight: 700; margin-bottom: 0.4rem;
         }
         .doc-title {
-            font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.4rem);
-            font-weight: 400; letter-spacing: -0.015em; margin-bottom: 0.4rem;
+            font-family: 'Playfair Display', serif; font-size: clamp(1.7rem, 4vw, 2.2rem);
+            font-weight: 400; letter-spacing: -0.015em; margin-bottom: 0.3rem;
         }
         .doc-title .hl { color: var(--accent); font-style: italic; }
         .doc-sub {
-            font-size: 0.8rem; color: var(--text-2); font-weight: 300; font-style: italic;
+            font-size: 0.78rem; color: var(--text-2); font-weight: 300; font-style: italic;
         }
 
         /* ===== PREAMBULO ===== */
@@ -139,7 +160,7 @@
             font-weight: 600; margin-bottom: 1rem; letter-spacing: -0.005em;
         }
         .clausula p {
-            font-size: 0.83px; line-height: 1.7; color: var(--text-2); font-weight: 300;
+            font-size: 0.83rem; line-height: 1.7; color: var(--text-2); font-weight: 300;
             text-align: justify; text-justify: inter-word; margin-bottom: 0.7rem;
         }
         .clausula ol { padding-left: 1.4rem; margin-top: 0.5rem; }
@@ -161,7 +182,7 @@
             display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
         }
         .anexo li {
-            font-size: 0.82px; line-height: 1.6; color: var(--text-2);
+            font-size: 0.82rem; line-height: 1.6; color: var(--text-2);
             padding: 0.2rem 0;
         }
         .anexo li strong { color: var(--text); }
@@ -184,8 +205,8 @@
             border-bottom: 1px dashed var(--text-3); margin: 0 auto 0.4rem;
             height: 22px; width: 25%;
         }
-        .campo-assinatura p { font-size: 0.72px; color: var(--text-3); }
-        .campo-assinatura .role { font-weight: 600; color: var(--text); font-size: 0.82px; }
+        .campo-assinatura p { font-size: 0.72rem; color: var(--text-3); }
+        .campo-assinatura .role { font-weight: 600; color: var(--text); font-size: 0.82rem; }
 
         .testemunha {
             display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;
@@ -194,14 +215,14 @@
         .testemunha .campo .linha {
             border-bottom: 1px solid var(--text-3); margin: 0 auto 0.4rem; height: 28px; width: 90%;
         }
-        .testemunha .campo .role { font-size: 0.72px; color: var(--text-3); }
-        .data-local { text-align: center; margin-top: 2rem; font-size: 0.8px; color: var(--text-3); letter-spacing: 0.03em; }
+        .testemunha .campo .role { font-size: 0.72rem; color: var(--text-3); }
+        .data-local { text-align: center; margin-top: 2rem; font-size: 0.8rem; color: var(--text-3); letter-spacing: 0.03em; }
 
         /* ===== ACTIONS ===== */
         .actions-bottom { text-align: center; margin-top: 2.5rem; }
         .btn {
             display: inline-flex; align-items: center; gap: 0.5rem;
-            padding: 0.7rem 2rem; border-radius: 60px; font-size: 0.8px;
+            padding: 0.7rem 2rem; border-radius: 60px; font-size: 0.8rem;
             font-weight: 500; text-decoration: none; letter-spacing: 0.02em;
             transition: all 0.2s ease; font-family: inherit; border: none; cursor: pointer;
         }
@@ -214,7 +235,7 @@
         .btn-ghost:hover { border-color: var(--accent); background: rgba(124,45,58,0.03); }
 
         /* ===== FOOTER ===== */
-        .footer { padding: 2rem 3rem; text-align: center; border-top: 1px solid var(--border); color: var(--text-3); font-size: 0.7px; }
+        .footer { padding: 2rem 3rem; text-align: center; border-top: 1px solid var(--border); color: var(--text-3); font-size: 0.7rem; }
         .footer a { color: var(--text-2); text-decoration: none; }
         .footer a:hover { color: var(--accent); }
 
@@ -236,18 +257,26 @@
 
     <!-- ===== NAV ===== -->
     <nav class="nav">
-        <span class="page-label">Documento Único</span>
+        <span class="page-label">Jornal · Direito · Vol. 1 · Nº 1</span>
         <a href="index.html">Rubens <span class="hl">· Contrato</span></a>
     </nav>
+
+    <!-- ===== JOURNAL HEADER ===== -->
+    <div class="journal-header">
+        <p class="line1">Revista de Direito, Arte e Literatura | e-ISSN: 2525-9911 | Brasília</p>
+        <p class="line2">Organização Comitê Científico · Double Blind Review pelo SEER/OJS</p>
+        <p class="line3">Documento Particular · Vol. 1 · Nº 1 · Set/2026 · p. 01-012</p>
+    </div>
 
     <!-- ===== DOCUMENTO ===== -->
     <main class="doc">
 
         <!-- HEADER -->
         <div class="doc-header">
-            <p class="doc-num">Contrato 001 · 2026</p>
+            <p class="doc-meta">Rubens Pereira Fernandes · Recife, Pernambuco · Brasil</p>
+            <p class="doc-num">CONTRATO 001/2026</p>
             <h1 class="doc-title">CONTRATO DE <span class="hl">RELACIONAMENTO</span></h1>
-            <p class="doc-sub">Fundamentado em Deus, lealdade e propósito compartilhado</p>
+            <p class="doc-sub">Cláusulas e Condições Para Uma Vida Compartilhada</p>
         </div>
 
         <!-- PREAMBULO -->
