@@ -4,322 +4,274 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo da Memória</title>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#f6f7f9">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
+        :root {
+            --bg: #f6f7f9;
+            --bg-card: #ffffff;
+            --text: #1a1a1a;
+            --text-2: #4b5563;
+            --text-3: #6b7280;
+            --accent: #7c2d3a;
+            --accent-light: #a8445a;
+            --border: rgba(124, 45, 58, 0.12);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.04), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.06);
+            --radius: 14px;
+            --radius-lg: 20px;
+        }
+
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        html { scroll-behavior: smooth; }
         body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg); color: var(--text);
+            min-height: 100vh; display: flex; flex-direction: column;
+            align-items: center; padding: 1rem; overflow-y: auto;
+             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+        ::selection { background: var(--accent); color: #fff; }
+
+        /* ===== LOADER ===== */
+        .loader-screen {
+            position: fixed; inset: 0; background: var(--bg);
+            z-index: 100000; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            opacity: 1; transition: opacity 0.8s ease;
+        }
+        .loader-screen.hidden { opacity: 0; pointer-events: none; }
+        .loader-text {
+            font-family: 'Caveat', cursive; font-size: clamp(1.2rem, 3vw, 1.6rem);
+            font-weight: 700; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 2rem;
+        }
+        
+        
+
+        /* ===== NAV ===== */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 1.5rem 3rem; display: flex; justify-content: space-between;
+            align-items: center; backdrop-filter: blur(20px);
+            background: rgba(246, 247, 249, 0.7);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-brand { font-family: 'Caveat', cursive; font-size: 1.4rem; color: var(--text); text-decoration: none; }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a {
+            color: var(--text-2); text-decoration: none; font-size: 0.72rem;
+            text-transform: uppercase; letter-spacing: 0.12em; font-weight: 500;
+            position: relative; transition: color 0.2s ease; display: inline-flex; align-items: center; gap: 0.3rem;
+        }
+        .nav-links a::after { content: ''; position: absolute; bottom: -0.3rem; left: 0; width: 0; height: 1px; background: var(--accent); transition: width 0.2s ease; }
+        .nav-links a:hover { color: var(--text); }
+        .nav-links a:hover::after { width: 100%; }
+        .menu-icon { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+        .menu-icon span { width: 24px; height: 1.5px; background: var(--text); transition: all 0.3s; }
+
+        /* ===== HEADER ===== */
+        .game-header {
+            text-align: center; margin: 3rem auto 1.5rem;
+            padding: 0 1rem;
+        }
+        .game-header h1 {
             font-family: 'Caveat', cursive;
-            background: linear-gradient(135deg, #0a0a1a 0%, #1a0a20 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            color: #fff;
-            overflow-y: auto;
+            font-size: clamp(1.8rem, 6vw, 2.8rem);
+            font-weight: 700; color: var(--accent);
+            letter-spacing: -0.01em;
         }
-        
-        .header { text-align: center; margin-bottom: 1rem; }
-        .header h1 {
-            font-size: clamp(2rem, 6vw, 3rem);
-            background: linear-gradient(135deg, #ff2d55, #d4af37);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .game-header p {
+            color: var(--text-2); font-size: 0.85rem; margin-top: 0.4rem;
         }
-        
+
+        /* ===== STATS ===== */
         .stats {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            flex-wrap: wrap;
+            display: flex; gap: 0.8rem; justify-content: center;
+            margin-bottom: 1.5rem; font-size: 0.95rem; flex-wrap: wrap;
         }
-        
         .stat {
-            background: rgba(255,255,255,0.06);
-            padding: 0.3rem 1rem;
-            border-radius: 100px;
-            font-size: 1rem;
+            background: var(--bg-card); border: 1px solid var(--border);
+            padding: 0.5rem 1.1rem; border-radius: 100px;
+            font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem;
         }
-        
+        .stat .num { color: var(--accent); font-weight: 700; }
+
+        /* ===== CARD GRID ===== */
         .grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 0.6rem;
-            max-width: 380px;
-            width: 100%;
-            perspective: 1000px;
-            padding: 1rem;
+            gap: 0.7rem; max-width: 380px; width: 100%;
+            padding: 1rem; perspective: 1000px;
         }
-        
         .card {
-            aspect-ratio: 1;
-            position: relative;
-            cursor: pointer;
+            aspect-ratio: 1; position: relative; cursor: pointer;
             transform-style: preserve-3d;
             transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
-        
         .card.flipped { transform: rotateY(180deg); }
-        
-        .card.matched {
-            animation: pop 0.4s ease;
-            filter: drop-shadow(0 4px 12px rgba(52,199,89,0.4));
-        }
-        
-        @keyframes pop {
-            0%, 100% { transform: rotateY(180deg) scale(1); }
-            50% { transform: rotateY(180deg) scale(1.12); }
-        }
-        
+        .card.matched { animation: pop 0.4s ease; }
+        @keyframes pop { 0%, 100% { transform: rotateY(180deg) scale(1); } 50% { transform: rotateY(180deg) scale(1.12); } }
         .card-face {
-            position: absolute;
-            inset: 0;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: clamp(1.4rem, 4.5vw, 2rem);
-            backface-visibility: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 8px rgba(0,0,0,0.3);
+            position: absolute; inset: 0; border-radius: var(--radius);
+            display: flex; align-items: center; justify-content: center;
+            font-size: clamp(1.3rem, 5vw, 2rem); backface-visibility: hidden;
+            border: 1px solid var(--border); box-shadow: var(--shadow);
         }
-        
         .card-front {
-            background: linear-gradient(160deg, #1e1e30 0%, #141425 50%, #0a0a15 100%);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 3px 10px rgba(0,0,0,0.4);
+            background: var(--bg-card);
+            box-shadow: var(--shadow);
         }
-        
         .card-front::after {
-            content: '?';
-            font-size: 1.3rem;
-            color: rgba(255,255,255,0.15);
-            font-weight: 700;
+            content: '?'; font-size: 1.3rem; color: var(--text-3); font-weight: 700;
         }
-        
         .card-back {
-            background: linear-gradient(160deg, #f8f8f0 0%, #e8e8d8 50%, #d8d8c8 100%);
-            transform: rotateY(180deg);
-            color: #1a1a1a;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 3px 10px rgba(0,0,0,0.4);
-            border: 1px solid rgba(0,0,0,0.1);
+            background: var(--bg-card);
+            transform: rotateY(180deg); color: var(--text);
+            box-shadow: var(--shadow); border: 1px solid var(--border);
         }
-        
         .card.matched .card-back {
-            background: linear-gradient(160deg, #d4edda 0%, #b8e0c0 50%, #a0d4a8 100%);
-            border-color: #28a745;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 4px 15px rgba(52,199,89,0.4);
+            background: #f0fdf4; border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(124,45,58,0.1);
         }
-        
-        /* Bot bully */
+
+        /* ===== BOT BULLY ===== */
         .bot-container {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 0.5rem;
-            z-index: 50;
+            position: fixed; bottom: 1.5rem; right: 1.5rem;
+            display: flex; flex-direction: column;
+            align-items: flex-end; gap: 0.5rem; z-index: 50;
         }
-        
-        .bot-avatar {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #ff2d55, #d4af37);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            animation: botBounce 2s ease-in-out infinite;
-            cursor: pointer;
-        }
-        
-        @keyframes botBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-        
         .bot-bubble {
-            background: white;
-            color: #1a1a1a;
-            padding: 0.8rem 1.2rem;
-            border-radius: 18px;
-            border-bottom-right-radius: 4px;
-            max-width: 280px;
-            font-size: 1rem;
-            line-height: 1.3;
-            opacity: 0;
-            transform: translateY(10px) scale(0.9);
-            transition: all 0.3s ease;
-            pointer-events: none;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            background: var(--bg-card); color: var(--text);
+            padding: 0.7rem 1.1rem; border-radius: 18px;
+            border-bottom-right-radius: 5px;
+            max-width: 260px; font-size: 0.88rem;
+            line-height: 1.35; opacity: 0; transform: translateY(10px) scale(0.9);
+            transition: all 0.3s ease; pointer-events: none;
+            border: 1px solid var(--border); box-shadow: var(--shadow-lg);
         }
-        
-        .bot-bubble.show {
-            opacity: 1;
-            transform: translateY(0) scale(1);
+        .bot-bubble.show { opacity: 1; transform: translateY(0) scale(1); }
+        .bot-bubble.shake { animation: shake 0.5s ease; }
+        @keyframes shake { 0%, 100% { transform: translateX(0) scale(1); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-6px) scale(1); } 20%, 40%, 60%, 80% { transform: translateX(6px) scale(1); } }
+        .bot-avatar {
+            width: 50px; height: 50px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-size: 1.5rem;
+            animation: botBounce 2s ease-in-out infinite; cursor: pointer;
+            box-shadow: 0 6px 20px rgba(124, 45, 58, 0.25);
+            border: 2px solid var(--bg-card);
         }
-        
-        .bot-bubble.shake {
-            animation: shake 0.5s ease;
-        }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-8px); }
-            40% { transform: translateX(8px); }
-            60% { transform: translateX(-4px); }
-            80% { transform: translateX(4px); }
-        }
-        
-        /* START SCREEN */
+        @keyframes botBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+        /* ===== START SCREEN ===== */
         .start-screen {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, #0a0a1a 0%, #1a0a20 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            z-index: 200;
-            padding: 2rem;
+            position: fixed; inset: 0; background: var(--bg);
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; z-index: 200; padding: 2rem;
             transition: opacity 0.8s ease;
         }
-        
-        .start-screen.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        
+        .start-screen.hidden { opacity: 0; pointer-events: none; }
         .start-content { text-align: center; }
-        
         .start-content .icon {
-            font-size: 5rem;
+            font-size: 5rem; margin-bottom: 1.2rem;
             animation: heartbeat 1.5s ease-in-out infinite;
-            margin-bottom: 1rem;
         }
-        
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-        }
-        
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
         .start-content h1 {
-            font-size: clamp(2.5rem, 8vw, 4rem);
-            background: linear-gradient(135deg, #ff2d55, #d4af37);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
+            font-family: 'Caveat', cursive; font-size: clamp(2.2rem, 8vw, 3.5rem);
+            color: var(--accent); margin-bottom: 1rem;
         }
-        
         .start-content .sub {
-            font-size: 1.2rem;
-            color: #a1a1a6;
-            margin-bottom: 0.5rem;
+            font-size: 1.1rem; color: var(--text-2); margin-bottom: 0.4rem;
         }
-        
         .start-content .regras {
-            font-size: 1rem;
-            color: #6e6e73;
-            margin-bottom: 2rem;
-            line-height: 1.5;
+            font-size: 0.95rem; color: var(--text-3);
+            margin-bottom: 2rem; line-height: 1.5;
         }
-        
         .start-content .btn-start {
-            padding: 1.2rem 3rem;
-            background: linear-gradient(135deg, #ff2d55, #d4af37);
-            color: white;
-            border: none;
-            border-radius: 100px;
-            font-size: 1.4rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            animation: pulse-btn 2s ease-in-out infinite;
-            font-family: inherit;
+            padding: 0.9rem 2.8rem;
+            background: var(--accent); color: #fff;
+            border: none; border-radius: 100px;
+            font-size: 1.2rem; font-weight: 700; cursor: pointer;
+            transition: all 0.3s ease; font-family: inherit;
+            animation: pulse-btn 2.5s ease-in-out infinite;
         }
-        
         .start-content .btn-start:hover {
-            transform: scale(1.08);
-            box-shadow: 0 10px 40px rgba(255,45,85,0.4);
+            transform: scale(1.05); box-shadow: 0 10px 30px rgba(124, 45, 58, 0.3);
         }
-        
-        @keyframes pulse-btn {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        /* Win screen */
+        @keyframes pulse-btn { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
+
+        /* ===== WIN SCREENS ===== */
         .win-screen {
-            position: fixed;
-            inset: 0;
-            background: rgba(5,5,5,0.97);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            z-index: 100;
-            padding: 2rem;
+            position: fixed; inset: 0;
+            background: var(--bg);
+            display: none; align-items: center;
+            justify-content: center; flex-direction: column;
+            z-index: 200; padding: 2rem; text-align: center;
         }
-        
         .win-screen.show { display: flex; }
-        
         .win-screen h2 {
-            font-size: clamp(2.5rem, 8vw, 4rem);
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #ff2d55, #d4af37);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-family: 'Caveat', cursive; font-size: clamp(2rem, 8vw, 3rem);
+            color: var(--accent); margin-bottom: 1rem;
         }
-        
         .win-screen p {
-            font-size: 1.2rem;
-            color: #a1a1a6;
-            text-align: center;
-            margin-bottom: 2rem;
-            max-width: 450px;
-            line-height: 1.5;
+            font-size: 1.05rem; color: var(--text-2);
+            margin-bottom: 2rem; line-height: 1.6;
         }
-        
         .win-screen button {
-            padding: 0.9rem 2.2rem;
-            background: linear-gradient(135deg, #ff2d55, #d4af37);
-            color: white;
-            border: none;
-            border-radius: 100px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin: 0.4rem;
-            font-family: inherit;
+            padding: 0.8rem 2rem; background: var(--accent);
+            color: #fff; border: none; border-radius: 100px;
+            font-size: 1.05rem; font-weight: 600; cursor: pointer;
+            margin: 0.4rem; font-family: inherit; transition: all 0.3s;
         }
-        
-        .win-screen button:hover { transform: scale(1.05); }
+        .win-screen button:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(124, 45, 58, 0.25); }
         .win-screen button.ghost {
-            background: transparent;
-            border: 1px solid #333;
-            color: #888;
+            background: transparent; border: 1px solid var(--border);
+            color: var(--text-2);
         }
-        
-        .erros { color: #ff3b30; }
-        
+        .win-screen button.ghost:hover { background: rgba(124, 45, 58, 0.04); }
+        .erros { color: var(--accent); font-weight: 700; }
+
         @media (max-width: 400px) {
             .grid { gap: 0.4rem; }
             .bot-container { bottom: 1rem; right: 1rem; }
         }
+        @media (max-width: 768px) {
+            .nav { padding: 1rem 1.5rem; }
+            .nav-links { display: none; }
+            .menu-icon { display: flex; }
+            .game-header { margin-top: 2.5rem; }
+        }
     </style>
 </head>
 <body>
-    <!-- START SCREEN -->
+    <!-- Loader -->
+    <div class="loader-screen" id="loader">
+        <div class="loader-text">INICIANDO</div>
+    </div>
+
+    <!-- Cursor -->
+        
+    <!-- Nav -->
+    <nav class="nav">
+        <a href="index.html" class="nav-brand">Rubens</a>
+        <ul class="nav-links">
+            <li><a href="index.html#sobre"><i data-feather="user"></i> Sobre</a></li>
+            <li><a href="index.html#habilidades"><i data-feather="code"></i> Habilidades</a></li>
+            <li><a href="contrato.html"><i data-feather="file-text"></i> Contrato</a></li>
+        </ul>
+        <div class="menu-icon" id="menuIcon">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- Start Screen -->
     <div class="start-screen" id="startScreen">
         <div class="start-content">
             <div class="icon">🎮</div>
@@ -327,54 +279,54 @@
             <p class="sub">Vamos ver se você é boa nisso.</p>
             <p class="regras">
                 Acha todos os pares pra ganhar.<br>
-                Se errar, o bot vai te zoar.<br>
-                E se demorar... também.
+                Erra? O bot vai te zoar.<br>
+                Demora demais também.
             </p>
             <button class="btn-start" onclick="startGame()">Começar</button>
         </div>
     </div>
-    
-    <div class="header">
+
+    <div class="game-header">
         <h1>Jogo da Memória</h1>
-        <p style="color:#6e6e73;">Acha os pares... se conseguir.</p>
+        <p>Acha os pares... se conseguir.</p>
     </div>
-    
+
     <div class="stats">
-        <div class="stat">🎯 <span id="moves">0</span></div>
+        <div class="stat">🎯 <span class="num" id="moves">0</span> jogadas</div>
         <div class="stat">❌ Erros: <span class="erros" id="erros">0</span></div>
-        <div class="stat">⏱️ <span id="timer">0:00</span></div>
+        <div class="stat">⏱️ <span class="num" id="timer">0:00</span></div>
     </div>
-    
+
     <div class="grid" id="grid"></div>
-    
+
     <!-- Bot bully -->
     <div class="bot-container">
         <div class="bot-bubble" id="botBubble"></div>
         <div class="bot-avatar" onclick="botFala()">🤖</div>
     </div>
-    
+
     <!-- Win screens -->
     <div class="win-screen" id="winScreen">
         <h2>Você ganhou!</h2>
         <p id="winMsg">Até que fim... Vamos ver a surpresa.</p>
         <button onclick="showPedido()">Ver surpresa</button>
     </div>
-    
+
     <div class="win-screen" id="pedidoScreen">
         <h2>Quer namorar comigo?</h2>
         <p>Eu fiz esse jogo pra você. Cada par era um motivo pra te querer aqui. E aí, qual vai ser?</p>
         <button onclick="aceitar()">Sim!</button>
         <button class="ghost" onclick="recusar()">Me dá tempo</button>
     </div>
-    
+
     <div class="win-screen" id="aceitouScreen">
-        <h2 style="font-size:3.5rem;">❤️</h2>
+        <div style="font-size: 3.5rem; margin-bottom: 1rem;">❤</div>
         <h2>Você disse sim!</h2>
         <p>Sou o cara mais feliz. Vamos ser felizes juntos.</p>
     </div>
 
     <script>
-        var emojis = ['❤️', '🌹', '💌', '⭐', '🌟', '💍', '🦋', '🌙'];
+        var emojis = ['❤', '🌹', '💌', '⭐', '🌟', '💍', '🦋', '🌙'];
         var cards = [];
         var flippedCards = [];
         var matchedPairs = 0;
@@ -384,26 +336,26 @@
         var timerInterval = null;
         var seconds = 0;
         var botTimeout = null;
-        
+
         var falasErrado = [
-            'Kkkkk errou! Nem pra isso serve?',
-            'Fraca. Muito fraca.',
-            'Você é horrível nisso!',
-            'Meus avós jogam melhor.',
-            'Desiste, você não consegue.',
+            'Kkkkkk errou! Nem pra isso eu te escolhi?',
+            'Fraca. Muito fraca mesmo.',
+            'Você é horrível nisso, viu?',
+            'Meus avós jogam melhor que você.',
+            'Desiste, você não vai conseguir.',
             'Seu cérebro é do tamanho de um amendoim.',
-            'Eu vi um pato jogar melhor.',
+            'Eu vi um pato jogar melhor hoje.',
             'Isso foi triste de ver.',
             'Você não nasceu pra isso.',
-            'Kkkk tenta de novo... se tiver coragem.',
-            'Ruim demais.',
-            'Você faz isso até eu dormir.',
+            'Tenta de novo... se tiver coragem.',
+            'Ruim demais. Sério.',
+            'Você faz isso até eu dormir, entende?',
             'Até minha vó cega joga melhor.',
             'Isso é uma piada, né?',
             'Tu é a vergonha da profissão.',
-            'Desiste, vai.'
+            'Desiste, vai. Para de fazer isso.'
         ];
-        
+
         var falasDemorado = [
             'Tá demorando muito... Tá difícil?',
             'Você ainda tá aí? Pensei que tinha desistido.',
@@ -412,33 +364,26 @@
             'Isso tá triste de assistir.',
             'Você não é tão inteligente quanto pensa.'
         ];
-        
+
         function shuffle(arr) {
             for (var i = arr.length - 1; i > 0; i--) {
                 var j = Math.floor(Math.random() * (i + 1));
-                var t = arr[i];
-                arr[i] = arr[j];
-                arr[j] = t;
+                var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
             }
             return arr;
         }
-        
+
         function startGame() {
             document.getElementById('startScreen').classList.add('hidden');
             init();
         }
-        
+
         function init() {
             var grid = document.getElementById('grid');
             grid.innerHTML = '';
-            cards = [];
-            flippedCards = [];
-            matchedPairs = 0;
-            moves = 0;
-            errors = 0;
-            seconds = 0;
-            gameStarted = false;
-            
+            cards = []; flippedCards = [];
+            matchedPairs = 0; moves = 0; errors = 0;
+            gameStarted = false; seconds = 0;
             if (timerInterval) clearInterval(timerInterval);
             document.getElementById('moves').textContent = '0';
             document.getElementById('erros').textContent = '0';
@@ -447,10 +392,10 @@
             document.getElementById('pedidoScreen').classList.remove('show');
             document.getElementById('aceitouScreen').classList.remove('show');
             document.getElementById('botBubble').classList.remove('show');
-            
+
             var pairs = [...emojis, ...emojis];
             shuffle(pairs);
-            
+
             pairs.forEach(function(emoji, i) {
                 var card = document.createElement('div');
                 card.className = 'card';
@@ -462,12 +407,12 @@
                 cards.push(card);
             });
         }
-        
+
         function flipCard(card) {
             if (card.classList.contains('flipped')) return;
             if (card.classList.contains('matched')) return;
             if (flippedCards.length >= 2) return;
-            
+
             if (!gameStarted) {
                 gameStarted = true;
                 timerInterval = setInterval(function() {
@@ -475,21 +420,19 @@
                     var mins = Math.floor(seconds / 60);
                     var secs = seconds % 60;
                     document.getElementById('timer').textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
-                    
-                    // Bot fala quando tá demorando
                     if (seconds === 15 || seconds === 30 || seconds === 45 || seconds === 60) {
                         botFala(falasDemorado[Math.floor(Math.random() * falasDemorado.length)]);
                     }
                 }, 1000);
             }
-            
+
             card.classList.add('flipped');
             flippedCards.push(card);
-            
+
             if (flippedCards.length === 2) {
                 moves++;
                 document.getElementById('moves').textContent = moves;
-                
+
                 if (flippedCards[0].dataset.emoji === flippedCards[1].dataset.emoji) {
                     // Acertou
                     setTimeout(function() {
@@ -497,11 +440,11 @@
                         flippedCards[1].classList.add('matched');
                         flippedCards = [];
                         matchedPairs++;
-                        
+
                         if (matchedPairs === emojis.length) {
                             clearInterval(timerInterval);
                             setTimeout(function() {
-                                document.getElementById('winMsg').textContent = 
+                                document.getElementById('winMsg').textContent =
                                     'Finalmente! Com ' + moves + ' jogadas e ' + errors + ' erros. Até que enfim.';
                                 document.getElementById('winScreen').classList.add('show');
                                 sumirBot();
@@ -512,75 +455,81 @@
                     // ERROU
                     errors++;
                     document.getElementById('erros').textContent = errors;
-                    
-                    // Bot fala zombando
                     var fala = falasErrado[Math.floor(Math.random() * falasErrado.length)];
                     botFala(fala);
-                    
+
                     // Esconde as cartas
                     setTimeout(function() {
                         flippedCards[0].classList.remove('flipped');
                         flippedCards[1].classList.remove('flipped');
                         flippedCards = [];
-                        
-                        // Embaralha as cartas que não foram encontradas
                         embaralharRestantes();
                     }, 800);
                 }
             }
         }
-        
+
         function embaralharRestantes() {
             var grid = document.getElementById('grid');
             var cardsNaoEncontradas = cards.filter(function(c) { return !c.classList.contains('matched'); });
             var emojisNaoEncontrados = cardsNaoEncontradas.map(function(c) { return c.dataset.emoji; });
-            
-            // Embaralha os emojis
             shuffle(emojisNaoEncontrados);
-            
-            // Reatribui os novos emojis às cartas
             cardsNaoEncontradas.forEach(function(card, i) {
                 var novoEmoji = emojisNaoEncontrados[i];
                 card.dataset.emoji = novoEmoji;
                 card.querySelector('.card-back').textContent = novoEmoji;
             });
         }
-        
+
         function botFala(texto) {
             var bubble = document.getElementById('botBubble');
             if (texto) bubble.textContent = texto;
             bubble.classList.add('show', 'shake');
-            
             if (botTimeout) clearTimeout(botTimeout);
             botTimeout = setTimeout(function() {
                 bubble.classList.remove('shake');
-                setTimeout(function() {
-                    bubble.classList.remove('show');
-                }, 3000);
+                setTimeout(function() { bubble.classList.remove('show'); }, 3000);
             }, 500);
         }
-        
+
         function sumirBot() {
             document.getElementById('botBubble').classList.remove('show');
             document.querySelector('.bot-avatar').style.display = 'none';
         }
-        
+
         function showPedido() {
             document.getElementById('winScreen').classList.remove('show');
             document.getElementById('pedidoScreen').classList.add('show');
         }
-        
+
         function aceitar() {
             document.getElementById('pedidoScreen').classList.remove('show');
             document.getElementById('aceitouScreen').classList.add('show');
         }
-        
+
         function recusar() {
-            alert('Tudo bem. Eu entendo. Tô aqui quando quiser. 💛');
+            alert('Tudo bem. Eu entendo. Tô aqui quando quiser. Sem pressão.');
             init();
         }
-        
+
         init();
+
+        // --- Loader ---
+        const loaderEl = document.getElementById('loader');
+        setTimeout(() => { loaderEl.style.display = 'none'; }, 300);
+
+        // ===== CURSOR =====
+
+
+
+        // ===== MOBILE MENU =====
+        document.getElementById('menuIcon').addEventListener('click', function() {
+            var links = document.querySelector('.nav-links');
+            links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // ===== FEATHER =====
+        if (typeof feather !== 'undefined') feather.replace({ 'aria-hidden': 'true' });
     </script>
 </body>
 </html>
