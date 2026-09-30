@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f6f7f9">
+    <meta name="description" content="Contrato de Relacionamento — Revista de Direito, Arte e Literatura">
+    <title>Contrato de Relacionamento — Rubens</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        :root {
+            --bg:          #f6f7f9;
+            --bg-card:     #ffffff;
+            --text:        #1a1a1a;
+            --text-2:      #4b5563;
+            --text-3:      #6b7280;
+            --accent:      #7c2d3a;
+            --accent-light:#9b4150;
+            --border:      rgba(124, 45, 58, 0.12);
+            --shadow:      0 1px 3px rgba(0,0,0,0.03);
+            --shadow-lg:   0 10px 25px -5px rgba(0,0,0,0.06);
+            --radius:      14px;
+            --radius-xl:   28px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.6;
+        }
+
+        /* ===== Custom Scrollbar ===== */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--accent), var(--accent-light));
+            border-radius: 10px;
+        }
+
+        /* ===== Nav ===== */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 3rem; z-index: 100;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+        }
+        .nav-brand {
+            font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700;
+            color: var(--text); text-decoration: none;
+        }
+        .nav-brand .hl { color: var(--accent); }
+        .nav-back {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            font-size: 0.82rem; color: var(--text-2); text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .nav-back:hover { color: var(--accent); }
+
+        /* ===== Journal Header ===== */
+        .journal-header {
+            text-align: center; padding: 0.6rem 3rem 0.4rem;
+            border-bottom: 1px solid var(--border); margin-bottom: 0;
+        }
+        .journal-header .line1 { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-3); margin-bottom: 0.1rem; }
+        .journal-header .line2 { font-size: 0.62rem; color: var(--text-3); font-style: italic; margin-bottom: 0.3rem; }
+        .journal-header .line3 { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); font-weight: 700; }
+
+        /* ===== Document ===== */
+        .doc-container {
+            max-width: 900px; margin: 0 auto; padding: 4rem 3rem 5rem;
+        }
+        .doc-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 400; font-style: italic;
+            text-align: center; text-transform: uppercase;
+            color: var(--accent); letter-spacing: 0.05em;
+            margin-bottom: 2rem; position: relative;
+        }
+        .doc-title::before, .doc-title::after {
+            content: ''; position: absolute; top: 50%; transform: translateY(-50%);
+            width: 40px; height: 1px; background: var(--accent); opacity: 0.4;
+        }
+        .doc-title::before { left: -60px; }
+        .doc-title::after { right: -60px; }
+
+        .doc-meta {
+            text-align: center; margin-bottom: 2.5rem; color: var(--text-2);
+            font-size: 0.85rem; line-height: 1.8;
+        }
+        .doc-meta span { display: block; }
+
+        /* ===== Contract Content ===== */
+        .contract {
+            font-size: 0.9rem; column-count: 1;
+        }
+        .contract h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem; text-align: center;
+            color: var(--accent); margin: 1.5rem 0 1rem;
+            font-weight: 400; font-style: italic;
+        }
+        .contract h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem; color: var(--text);
+            margin: 1.5rem 0 0.8rem; padding-bottom: 0.3rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .contract h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem; color: var(--accent);
+            margin: 1rem 0 0.5rem;
+        }
+        .contract p, .contract li {
+            margin-bottom: 0.8rem; color: var(--text-2); text-align: justify;
+        }
+        .contract ul {
+            margin-left: 1.5rem; margin-bottom: 1rem;
+        }
+        .contract li {
+            list-style-type: disc;
+        }
+        .contract .clause-num {
+            display: inline-block; min-width: 32px;
+            font-family: 'Playfair Display', serif; font-weight: 700;
+            color: var(--accent);
+        }
+        .contract .sub-clause {
+            margin-left: 1.2rem; margin-bottom: 0.5rem;
+        }
+        .contract .sub-clause::before {
+            content: '▸ '; color: var(--accent); opacity: 0.6;
+        }
+        .contract .signature-block {
+            margin-top: 2rem; text-align: center;
+        }
+        .contract .sig-line {
+            border-top: 2px solid var(--text);
+            width: 300px; margin: 40px auto 5px;
+        }
+        .contract .sig-label {
+            font-size: 0.85rem; font-weight: 500;
+        }
+        .contract .sig-date {
+            margin-top: 1rem; font-size: 0.8rem; color: var(--text-3);
+        }
+
+        /* ===== Appendix ===== */
+        .appendix {
+            margin-top: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            border-radius: var(--radius);
+            padding: 1.8rem;
+            box-shadow: var(--shadow);
+        }
+        .appendix h2 {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem;
+            color: var(--accent); margin-bottom: 0.8rem;
+        }
+        .appendix ul { list-style: none; padding: 0; }
+        .appendix li {
+            padding: 0.4rem 0; border-bottom: 1px dashed var(--border);
+        }
+        .appendix li:last-child { border-bottom: none; }
+
+        /* ===== Footer ===== */
+        .footer {
+            text-align: center; padding: 3rem 3rem 6rem;
+            border-top: 1px solid var(--border); color: var(--text-3);
+            font-size: 0.82rem;
+        }
+        .footer a { color: var(--accent); text-decoration: none; }
+        .footer a:hover { opacity: 0.7; }
+
+        /* ===== Print ===== */
+        @media print {
+            .nav, .footer { display: none; }
+            .doc-container { padding: 0; }
+            .contract { font-size: 11pt; }
+            :root {
+                --bg: #fff; --bg-card: #fff; --text: #000;
+                --text-2: #333; --accent: #7c2d3a;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav { padding: 1rem 1.5rem; }
+            .doc-container { padding: 3rem 1.5rem 4rem; }
+            .doc-title { font-size: 1.4rem; }
+            .doc-title::before, .doc-title::after { width: 25px; left: -40px; right: -40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== Nav ===== -->
+    <nav class="nav">
+        <a href="index.html" class="nav-back">
+            <i data-feather="arrow-left" width="16" height="16"></i> Voltar
+        </a>
+        <a href="index.html" class="nav-brand">Rubens</a>
+        <span class="page-label">Jornal · Direito · Vol. 1 · Nº 1</span>
+    </nav>
+
+    <!-- ===== Journal Header ===== -->
+    <div class="journal-header">
+        <p class="line1">Revista de Direito, Arte e Literatura | e-ISSN: 2525-9911 | Brasília</p>
+        <p class="line2">Organização Comitê Científico · Double Blind Review pelo SEER/OJS</p>
+        <p class="line3">Documento Particular · Vol. 1 · Nº 1 · Set/2026 · p. 013-024</p>
+    </div>
+
+    <!-- ===== Document ===== -->
+    <div class="doc-container">
+        <h1 class="doc-title">Contrato de Relacionamento</h1>
+        <div class="doc-meta">
+            <span>e-ISSN: 2525-9911 · Revista de Direito, Arte e Literatura · Vol. 1 · Nº 1 · Set/2026</span>
+            <span>Documento Particular · p. 013-024</span>
+        </div>
+
+        <div class="contract">
+
+            <h1>CONTRATO</h1>
+            <p>No dia___________ de 20 ("data de início")</p>
+
+            <h2>ENTRE</h2>
+
+            <p>O SR.…………, com domicilio, , ("o Dominante") PORTADOR DO CPF: RG: Nascido EM: 19/05/2000</p>
+
+            <p>e a SRTA. ____________________________________, com domicilio no ___________________________________________ ("a Submissa"). Portadora do cpf: RG: NASCIDA EM: / /</p>
+
+            <h2>AS PARTES ACORDAM O SEGUINTE</h2>
+
+            <h3>TERMOS FUNDAMENTAIS</h3>
+
+            <p><span class="clause-num">1.</span> A seguir estão os termos de um contrato vinculativo entre o Dominante e a Submissa.</p>
+
+            <p><span class="clause-num">2.</span> O propósito fundamental deste contrato é permitir que a Submissa explore sua sensualidade e seus limites de forma segura, com o devido respeito e cuidado de suas necessidades, seus limites e seu bem-estar.</p>
+
+            <p><span class="clause-num">3.</span> O Dominante e a Submissa acordam e admitem que tudo o que aconteça sob os termos deste contrato será consensual e confidencial, e estará sujeito aos limites acordados e aos procedimentos de segurança que se contemplam neste contrato. Podem acrescentar-se limites e procedimentos de segurança adicionais.</p>
+
+            <p><span class="clause-num">4.</span> O Dominante e a Submissa garantem que não padecem de infecções sexuais nem enfermidades graves, incluindo HIV, herpes e hepatite, entre outras. Se durante a vigência do contrato (como se define abaixo) ou de qualquer ampliação do mesmo, uma das partes for diagnosticada ou tiver conhecimento de padecer de alguma destas enfermidades, compromete-se a informar à outra imediatamente e em todo caso, antes que se produza qualquer tipo de contato entre as partes.</p>
+
+            <p><span class="clause-num">5.</span> É preciso cumprir as garantias e os acordos anteriormente mencionados (e todo limite e procedimento de segurança adicional acordado na cláusula 3). Toda infração invalidará este contrato com caráter imediato e ambas as partes aceitam assumir totalmente ante a outra as consequências da infração.</p>
+
+            <p><span class="clause-num">6.</span> Todos os pontos deste contrato devem ler-se e interpretar-se à luz do propósito e os términos fundamentais estabelecidos nas cláusulas 2-5.</p>
+
+            <h2>FUNÇÕES</h2>
+
+            <h3>Dominante</h3>
+            <p><span class="clause-num">7.</span> O Dominante será responsável pelo bem-estar e pelo treinamento, a orientação e a disciplina da Submissa. Decidirá o tipo de treinamento, a orientação e a disciplina, e o momento e o lugar de administrá-los, atendendo aos termos acordados, os limites e os procedimentos de segurança estabelecidos neste contrato ou acordado ainda nos termos da cláusula 3 acima.</p>
+
+            <p><span class="clause-num">8.</span> Se em algum momento o Dominante não mantiver os termos acordados, os limites e os procedimentos de segurança estabelecidos neste contrato ou acordados na cláusula 3, a Submissa tem direito a finalizar este contrato imediatamente e a abandonar seu serviço ao Dominante sem prévio aviso.</p>
+
+            <p><span class="clause-num">9.</span> Atendendo a esta condição e às cláusulas 2-5, a Submissa tem que obedecer em tudo ao Dominante. Atendendo aos termos acordados, os limites e os procedimentos de segurança estabelecidos neste contrato ou acordados na cláusula 3, deve oferecer ao Dominante, sem perguntar nem duvidar, todo o prazer que este lhe exija, e deve aceitar, sem perguntar nem duvidar, o treinamento, a orientação e a disciplina em todas suas formas.</p>
+
+            <h2>INÍCIO E VIGÊNCIA</h2>
+
+            <p><span class="clause-num">10.</span> O Dominante e a Submissa assinam este contrato na data de início, conscientes de sua natureza e comprometendo-se a acatar suas condições sem exceção.</p>
+
+            <p><span class="clause-num">11.</span> Este contrato terá efeito durante um período de três meses a partir da data de início ("vigência do contrato"). Ao expirar a vigência, as partes comentarão se este contrato e o disposto por eles no mesmo, são satisfatórios e se estiverem satisfeitas as necessidades de cada parte. Ambas as partes podem propor ampliar o contrato e ajustar os termos ou os acordos que nele se estabelecem. Se não se chegar a um acordo para ampliá-lo, este contrato concluirá e ambas as partes serão livres para seguir sua vida separados.</p>
+
+            <h2>DISPONIBILIDADE</h2>
+
+            <p><span class="clause-num">12.</span> A Submissa estará disponível para o Dominante desde sexta-feira à noite até o domingo pela tarde, todas as semanas durante a vigência do contrato, com as horas a especificar pelo Dominante ("horas atribuídas"). Podem acordar mutuamente por mais horas, atribuídas como adicionais.</p>
+
+            <p><span class="clause-num">13.</span> O Dominante se reserva o direito a rejeição do serviço da Submissa em qualquer momento e pelas razões que sejam. A Submissa pode solicitar sua liberação em qualquer momento, liberação que ficará a critério do Dominante e estará exclusivamente sujeito aos direitos da Submissa contemplados nas cláusulas 2-5 e 8.</p>
+
+            <h2>LOCALIZAÇÃO</h2>
+
+            <p><span class="clause-num">14.</span> A Submissa estará disponível às horas atribuídas e às horas adicionais, nos lugares que determinar o Dominante. O Dominante concorrerá com todos os custos de viagem que incorra a Submissa com este fim.</p>
+
+            <h2>PRESTAÇÃO DE SERVIÇOS</h2>
+
+            <p><span class="clause-num">15.</span> As duas partes discutem e acordam as seguintes prestações de serviços, e ambas deverão as cumprir durante a vigência do contrato. Ambas as partes aceitam que podem surgir questões não contempladas nos termos deste contrato de prestação de serviços, e que determinadas questões poderão renegociar-se. Nestas circunstâncias, poderão propor-se cláusulas adicionais a modo de emenda. Ambas as partes deverão acordar, redigir e assinar toda cláusula adicional ou emenda, que estará sujeita aos termos fundamentais estabelecidos nas cláusulas 2-5.</p>
+
+            <h3>Dominante</h3>
+
+            <div class="sub-clause">15.1. O Dominante deve priorizar em todo momento a saúde e a segurança da Submissa. O Dominante em nenhum momento exigirá, solicitará, permitirá nem pedirá à Submissa que participe das atividades detalhadas no Apêndice 2 ou em toda atividade que qualquer das duas partes considere insegura. O Dominante não levará a cabo, nem permitirá que se leve a cabo, nenhuma atividade que possa ferir gravemente à Submissa ou pôr em perigo sua vida. As restantes sub-partes desta cláusula 15 devem ler-se atendendo a esta condição e aos acordos fundamentais das cláusulas 2-5.</div>
+
+            <div class="sub-clause">15.2. O Dominante aceita o controle, o domínio e a disciplina da Submissa durante a vigência do contrato. O Dominante pode utilizar o corpo da Submissa em qualquer momento durante as horas atribuídas, ou em horas adicionais acordadas, da maneira que considere oportuno, no sexo ou em qualquer outro âmbito.</div>
+
+            <div class="sub-clause">15.3. O Dominante oferecerá a Submissa o treinamento e a orientação necessários para servir adequadamente ao Dominante.</div>
+
+            <div class="sub-clause">15.4. O Dominante manterá um entorno estável e seguro para que a Submissa possa levar a cabo suas obrigações para servir ao Dominante.</div>
+
+            <div class="sub-clause">15.5. O Dominante pode disciplinar à Submissa quanto seja necessário para assegurar-se de que a Submissa entenda totalmente seu papel de submissão ao Dominante e para desalentar condutas inaceitáveis. O Dominante pode açoitar, surrar, dar chicotadas e castigar fisicamente à Submissa se o considerar oportuno por motivos de disciplina, por prazer ou por qualquer outra razão, que não está obrigado a expor.</div>
+
+            <div class="sub-clause">15.6. No treinamento e na administração de disciplina, o Dominante garantirá que não fiquem marcas no corpo da Submissa, nem feridas que exijam atenção médica.</div>
+
+            <div class="sub-clause">15.7. No treinamento e na administração de disciplina, o Dominante garantirá que a disciplina e os instrumentos utilizados para administrá-la, sejam seguros, não os utilizarei de maneira que provoquem danos sérios e em nenhum caso poderá transpassar os limites estabelecidos e detalhados neste contrato.</div>
+
+            <div class="sub-clause">15.8. Em caso de enfermidade ou ferida, o Dominante cuidará da Submissa, vigiará sua saúde e sua segurança, e solicitará atenção médica quando o considerar necessário.</div>
+
+            <div class="sub-clause">15.9. O Dominante cuidará de sua própria saúde e procurará atenção médica quando for necessário para evitar riscos.</div>
+
+            <div class="sub-clause">15.10. O Dominante não emprestará sua Submissa a outro Dominante.</div>
+
+            <div class="sub-clause">15.11. O Dominante poderá sujeitar, algemar ou atar a Submissa em todo momento durante as horas atribuídas ou em qualquer hora adicional por qualquer razão e por compridos períodos de tempo, emprestando a devida atenção à saúde e a segurança da Submissa.</div>
+
+            <div class="sub-clause">15.12. O Dominante garantirá que todo o equipamento utilizado para o treinamento e a disciplina se mantenha limpo, higiênico e seguro em todo momento.</div>
+
+            <h3>Submissa</h3>
+
+            <div class="sub-clause">15.13. A Submissa aceita o Dominante como seu dono e entende que agora é de sua propriedade e que está ao seu dispor quando o Dominante lhe agradar durante a vigência do contrato em geral, mas especialmente nas horas atribuídas e nas horas adicionais acordadas.</div>
+
+            <div class="sub-clause">15.14. A Submissa obedecerá às normas estabelecidas no Apêndice 1 deste contrato.</div>
+
+            <div class="sub-clause">15.15. A Submissa servirá ao Dominante em tudo aquilo que o Dominante considerar oportuno e deve fazer todo o possível por agradar ao Dominante em todo momento.</div>
+
+            <div class="sub-clause">15.16. A Submissa tomará medidas necessárias para cuidar de sua saúde, solicitará ou procurará atenção médica quando a necessitar, e em todo momento manterá informado o Dominante de qualquer problema de saúde que possa surgir.</div>
+
+            <div class="sub-clause">15.17. A Submissa garantirá que toma anticoncepcionais orais, e que toma como e quando é devido para evitar ficar grávida.</div>
+
+            <div class="sub-clause">15.18. A Submissa aceitará sem questionar todas e cada uma das ações disciplinadoras que o Dominante considere necessárias, e em todo momento recordará seu papel e sua função perante o Dominante.</div>
+
+            <div class="sub-clause">15.19. A Submissa não se tocará nem se proporcionará prazer sexual sem a permissão do Dominante.</div>
+
+            <div class="sub-clause">15.20. A Submissa se submeterá a toda atividade sexual que exija o Dominante, sem duvidar e sem discutir.</div>
+
+            <div class="sub-clause">15.21. A Submissa aceitará açoites, surras, pauladas, chicotadas ou qualquer outra disciplina que o Dominante administrar, sem duvidar, perguntar nem queixar-se.</div>
+
+            <div class="sub-clause">15.22. A Submissa não olhará diretamente nos olhos ao Dominante, exceto quando lhe ordenar. A Submissa deve abaixar os olhos, guardar silêncio e mostrar-se respeitosa em presença do Dominante.</div>
+
+            <div class="sub-clause">15.23. A Submissa se comportará sempre com respeito para o Dominante e só se dirigirá a ele como senhor, senhor Grey ou qualquer outro apelido que lhe ordene o Dominante.</div>
+
+            <div class="sub-clause">15.24. A Submissa não tocará no Dominante sem seu rápido consentimento.</div>
+
+            <h2>ATIVIDADES</h2>
+
+            <p><span class="clause-num">16.</span> A Submissa não participará de atividades ou atos sexuais que qualquer das duas partes considere inseguras, nem nas atividades detalhadas no Apêndice 2.</p>
+
+            <p><span class="clause-num">17.</span> O Dominante e a Submissa comentaram as atividades estabelecidas no Apêndice 3 e fazem constar por escrito no Apêndice 3 seu acordo a respeito.</p>
+
+            <h2>PALAVRAS DE SEGURANÇA</h2>
+
+            <p><span class="clause-num">18.</span> O Dominante e a Submissa admitem que o Dominante pode solicitar à Submissa ações que não possam levar a cabo sem incorrer em danos físicos, mentais, emocionais, espirituais ou de outro tipo no momento em que lhe solicitam. Neste tipo de circunstâncias, a Submissa pode utilizar uma palavra de segurança. Serão incluídas duas palavras de segurança em função da intensidade das demandas.</p>
+
+            <p><span class="clause-num">19.</span> Será utilizada a palavra de segurança "Amarelo" para indicar ao Dominante que a Submissa está chegando ao limite da resistência.</p>
+
+            <p><span class="clause-num">20.</span> Será utilizada a palavra de segurança "Vermelho" para indicar ao Dominante que a Submissa já não pode tolerar mais exigências. Quando se disser esta palavra, a ação do Dominante cessará totalmente, com efeito imediato.</p>
+
+            <h2>CONCLUSÃO</h2>
+
+            <p><span class="clause-num">21.</span> Os abaixo assinantes têm lido e entendido totalmente o que estipula este contrato. Aceitamos livremente os termos deste contrato e com nossa assinatura damos nossa conformidade.</p>
+
+            <div class="signature-block">
+                <div class="sig-line"></div>
+                <div class="sig-label">Dominante</div>
+                <div class="sig-date">Data: ____/____/______</div>
+            </div>
+
+            <div class="signature-block">
+                <div class="sig-line"></div>
+                <div class="sig-label">Submissa</div>
+                <div class="sig-date">Data: ____/____/______</div>
+            </div>
+
+        </div>
+
+        <!-- ===== Apêndice 1 ===== -->
+        <div class="appendix">
+            <h2>Apêndice 1 — Normas</h2>
+
+            <h3>Obediência:</h3>
+            <p>A Submissa obedecerá imediatamente todas as instruções do Dominante, sem duvidar, sem reservas e de forma expedita. A Submissa aceitará toda atividade sexual que o Dominante considere oportuna e prazerosa, exceto as atividades contempladas nos limites infranqueáveis (Apêndice 2). O fará com entusiasmo e sem duvidar.</p>
+
+            <h3>Sono:</h3>
+            <p>A Submissa garantirá que dorme no mínimo oito horas diárias quando não estiver com o Dominante.</p>
+
+            <h3>Alimentação:</h3>
+            <p>Para cuidar de sua saúde e seu bem-estar, a Submissa comerá frequentemente os mantimentos incluídos em uma lista (Apêndice 4). A Submissa não comerá entre horas, à exceção de fruta.</p>
+
+            <h3>Roupa:</h3>
+            <p>Durante a vigência do contrato, a Submissa só vestirá roupa que o Dominante tenha aprovado. O Dominante oferecerá à Submissa um orçamento para roupas, que a Submissa deve utilizar. O Dominante acompanhará à Submissa às compras de roupas quando for necessário. Se o Dominante assim o exigir, enquanto o contrato esteja vigente, a Submissa ficará com os adornos que lhe exigir o Dominante, em sua presença ou em qualquer outro momento que o Dominante considere oportuno.</p>
+
+            <h3>Exercício:</h3>
+            <p>O Dominante proporcionará à Submissa um treinador pessoal quatro vezes por semana, em sessões de uma hora, a horas convencionadas pelo treinador pessoal e a Submissa. O treinador pessoal informará ao Dominante dos avanços da Submissa.</p>
+
+            <h3>Higiene pessoal e beleza:</h3>
+            <p>A Submissa estará limpa e depilada em todo momento. A Submissa irá a um salão de beleza eleito pelo Dominante quando este o determinar e se submeterá a qualquer tratamento que o Dominante considere oportuno. O Dominante concorrerá com todos os gastos.</p>
+
+            <h3>Segurança pessoal:</h3>
+            <p>A Submissa não beberá em excesso, não fumará, não tomará substâncias psicotrópicas, nem correrá riscos desnecessários.</p>
+
+            <h3>Qualidades pessoais:</h3>
+            <p>A Submissa só manterá relações sexuais com o Dominante. A Submissa se comportará em todo momento com respeito e humildade. Deve compreender que sua conduta influi diretamente na do Dominante. Será responsabilizada por eventuais delitos, desmandos e os excessos cometidos quando não na presença do Dominante. Ao descumprimento de qualquer uma destas normas será imediatamente castigada, e o Dominante determinará a natureza do castigo.</p>
+        </div>
+
+        <!-- ===== Apêndice 2 ===== -->
+        <div class="appendix">
+            <h2>Apêndice 2 — Limites Rígidos</h2>
+            <ul>
+                <li>Sem atos com fogo.</li>
+                <li>Sem atos com urina, defecação e seus produtos.</li>
+                <li>Sem atos com agulhas, facas, perfurações e sangue.</li>
+                <li>Sem atos envolvendo instrumentos médicos ginecológicos.</li>
+                <li>Sem atos com crianças ou animais.</li>
+                <li>Sem atos que deixem marcas permanentes na pele.</li>
+                <li>Sem atos relativos ao controle da respiração.</li>
+                <li>Sem atividade que implique contato direto com corrente elétrica (tanto alternada como contínua), fogo ou chamas no corpo.</li>
+            </ul>
+        </div>
+
+        <!-- ===== Apêndice 3 ===== -->
+        <div class="appendix">
+            <h2>Apêndice 3 — Limites Suaves</h2>
+            <p>A discutir e acordar por ambas as partes:</p>
+
+            <h3>Atividades sexuais aceitáveis para a Submissa?</h3>
+            <ul>
+                <li>Masturbação</li>
+                <li>Felacção</li>
+                <li>Cunnilingus</li>
+                <li>Penetração vaginal</li>
+                <li>Fisting vaginal</li>
+                <li>Penetração anal</li>
+                <li>Fisting anal</li>
+            </ul>
+
+            <h3>A ingestão de sêmen é aceitável para a Submissa?</h3>
+            <p>O uso de brinquedos sexuais é aceitável para a Submissa?</p>
+            <ul>
+                <li>Vibradores</li>
+                <li>Consoladores</li>
+                <li>Plugues anais</li>
+                <li>Outros brinquedos vaginais/anais</li>
+            </ul>
+
+            <h3>A Submissa aceita o uso de Bondage?</h3>
+            <ul>
+                <li>Mãos na frente</li>
+                <li>Mãos atrás</li>
+                <li>Tornozelos</li>
+                <li>Joelhos</li>
+                <li>Cotovelos</li>
+                <li>Pulsos aos tornozelos</li>
+                <li>Barras de amarração</li>
+                <li>Amarrada ao mobiliário</li>
+                <li>Vendar</li>
+                <li>Colocação de mordaça</li>
+                <li>Bondage com cordas</li>
+                <li>Bondage com fita adesiva</li>
+                <li>Bondage com algemas de couro</li>
+                <li>Suspensão</li>
+                <li>Bondage com algemas de metal/restrições</li>
+            </ul>
+
+            <h3>Quanto de dor a Submissa está disposta a experimentar?</h3>
+            <p>Onde 1 equivale a que gosta muito e 5, a que lhe desgosta muito: 1 – 2 – 3 – 4 – 5</p>
+
+            <h3>Aceita a Submissa as seguintes formas de dor/castigo/disciplina?</h3>
+            <p>Onde 1 é para nenhum e 5 é para grave: 1 – 2 – 3 – 4 – 5</p>
+            <ul>
+                <li>Açoites</li>
+                <li>Açoites com pá</li>
+                <li>Chicotadas</li>
+                <li>Açoites com vara</li>
+                <li>Mordidas</li>
+                <li>Pinças para mamilos</li>
+                <li>Pinças genitais</li>
+                <li>Gelo</li>
+                <li>Cera quente</li>
+                <li>Outros tipos/métodos de dor</li>
+            </ul>
+        </div>
+
+        <!-- ===== PDF Download ===== -->
+        <div style="text-align:center; margin-top:2.5rem; padding-top:2rem; border-top:1px solid var(--border);">
+            <a href="Cópia de contrato  50tons.pdf" class="nav-back" style="display:inline-flex;align-items:center;gap:0.4rem;">
+                <i data-feather="download" width="16" height="16"></i> Baixar em PDF
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== Footer ===== -->
+    <footer class="footer">
+        <p>&copy; 2026 Rubens Pereira Fernandes · Recife, PE · <a href="index.html">Voltar ao site</a></p>
+        <p style="margin-top:0.5rem;font-size:0.75rem;color:var(--text-3);">Documento particular — uso restrito</p>
+    </footer>
+
+    <script>
+        feather.replace({ 'aria-hidden': 'true' });
+    </script>
+</body>
+</html>

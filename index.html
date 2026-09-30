@@ -1240,18 +1240,28 @@
             </div>
             <div class="doc-container">
                 <p class="doc-intro">
-                    Abaixo você encontra os documentos relacionados a este relacionamento — o contrato em PDF e o documento de referência sobre sexualidade e contrato.
+                    Abaixo você encontra os documentos relacionados a este relacionamento. O contrato completo em HTML, a versão resumida e o PDF para download.
                 </p>
                 <div class="doc-grid">
-                    <div class="doc-card" onclick="openDoc('contrato.pdf', this)">
+                    <div class="doc-card" onclick="openPage('contrato-completo.html')">
                         <i data-feather="file-text" width="32" height="32"></i>
-                        <h4>Contrato de Relacionamento</h4>
-                        <p>PDF do contrato com todos os termos.</p>
+                        <h4>Contrato Completo</h4>
+                        <p>Documento integral em HTML (21 cláusulas + 3 apêndices).</p>
+                    </div>
+                    <div class="doc-card" onclick="openPage('contrato.html')">
+                        <i data-feather="book-open" width="32" height="32"></i>
+                        <h4>Contrato Resumido</h4>
+                        <p>7 termos essenciais do relacionamento (8 cláusulas).</p>
+                    </div>
+                    <div class="doc-card" onclick="downloadFile('contrato.pdf')">
+                        <i data-feather="download" width="32" height="32"></i>
+                        <h4>Baixar PDFs</h4>
+                        <p>Versão resumida em PDF para impressão.</p>
                     </div>
                 </div>
                 <div class="pdf-placeholder" id="pdfPlaceholder">
                     <i data-feather="file-text" width="48" height="48"></i>
-                    <p style="margin-top:0.5rem">Clique em um documento para visualizar.</p>
+                    <p style="margin-top:0.5rem">Clique em um documento para abrir.</p>
                 </div>
                 <div class="pdf-embed" id="pdfEmbed">
                     <iframe id="pdfFrame" title="Visualizador de PDF"></iframe>
@@ -1665,6 +1675,17 @@
                 dc.classList.remove('active');
             });
             if (cardEl) cardEl.classList.add('active');
+        }
+
+        function openPage(url) {
+            window.open(url, '_blank');
+        }
+
+        function downloadFile(file) {
+            const a = document.createElement('a');
+            a.href = file;
+            a.download = '';
+            a.click();
         }
 
         // --- Form ---
