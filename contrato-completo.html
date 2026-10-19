@@ -4,41 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#f6f7f9">
-    <meta name="description" content="Contrato de Relacionamento — Revista de Direito, Arte e Literatura">
-    <title>Contrato de Relacionamento — Rubens</title>
+    <meta name="description" content="Contrato Interativo — Revista de Direito, Arte e Literatura">
+    <title>Contrato Interativo — Rubens</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <style>
         :root {
             --bg:          #f6f7f9;
             --bg-card:     #ffffff;
+            --bg-alt:      #f0f1f4;
             --text:        #1a1a1a;
             --text-2:      #4b5563;
             --text-3:      #6b7280;
             --accent:      #7c2d3a;
             --accent-light:#9b4150;
             --border:      rgba(124, 45, 58, 0.12);
-            --shadow:      0 1px 3px rgba(0,0,0,0.03);
+            --shadow-sm:   0 1px 2px rgba(0,0,0,0.03);
+            --shadow:      0 4px 6px -1px rgba(0,0,0,0.04);
             --shadow-lg:   0 10px 25px -5px rgba(0,0,0,0.06);
-            --radius:      14px;
-            --radius-xl:   28px;
+            --shadow-xl:   0 20px 50px -10px rgba(124, 45, 58, 0.08);
+            --radius:      12px;
+            --radius-lg:   16px;
+            --radius-xl:   24px;
+        }
+        [data-theme="dark"] {
+            --bg:          #121216;     --bg-card:     #1c1c22;     --bg-alt:      #16161a;
+            --text:        #e4e4e7;     --text-2:      #a1a1aa;     --text-3:      #71717a;
+            --accent:      #ff4d6d;     --accent-light:#ff6f8a;     --border:      rgba(255, 77, 109, 0.18);
+            --shadow-sm:   0 1px 2px rgba(0,0,0,0.12);  --shadow:      0 4px 6px -1px rgba(0,0,0,0.22);
+            --shadow-lg:   0 10px 25px -5px rgba(0,0,0,0.30); --shadow-xl:   0 20px 50px -10px rgba(0,0,0,0.36);
+        }
+        [data-theme="burgundy"] {
+            --bg:          #0f060e;     --bg-card:     #1a0f16;     --bg-alt:      #140816;
+            --text:        #f3e9ee;     --text-2:      #d4b4c0;     --text-3:      #a68a95;
+            --accent:      #ff4d6d;     --accent-light:#ff6f8a;     --border:      rgba(255, 77, 109, 0.25);
+            --shadow-sm:   0 1px 2px rgba(0,0,0,0.18);  --shadow:      0 4px 6px -1px rgba(0,0,0,0.24);
+            --shadow-lg:   0 10px 25px -5px rgba(0,0,0,0.40); --shadow-xl:   0 20px 50px -10px rgba(0,0,0,0.48);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        *, *::before, *::after { transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease; }
+        html { scroll-behavior: smooth; scroll-padding-top: 90px; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            line-height: 1.6;
+            background: var(--bg); color: var(--text);
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+            transition: background 0.4s ease, color 0.4s ease;
+            position: relative; overflow-x: hidden;
         }
-
-        /* ===== Custom Scrollbar ===== */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb {
@@ -46,134 +64,474 @@
             border-radius: 10px;
         }
 
+        /* ===== Dot Pattern ===== */
+        .dot-pattern {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(var(--border) 1px, transparent 1px);
+            background-size: 40px 40px; pointer-events: none; z-index: 0; opacity: 0.06;
+        }
+
+        /* ===== Hero ===== */
+        .hero-contract {
+            padding: 4rem 6vw 2rem; max-width: 1100px; margin: 0 auto;
+            text-align: center; position: relative;
+        }
+        .hero-contract .journal-badge {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em;
+            color: var(--text-3); padding: 0.3rem 0.9rem; border-radius: 20px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+        .hero-contract .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.6rem, 4vw, 2.3rem);
+            font-weight: 400; font-style: italic;
+            color: var(--text); text-transform: uppercase;
+            letter-spacing: 0.03em; margin: 1.2rem 0 0.4rem;
+        }
+        .hero-contract .hero-title .hl { color: var(--accent); }
+        .hero-contract .hero-desc {
+            font-size: 0.9rem; color: var(--text-2); max-width: 640px;
+            margin: 0 auto; line-height: 1.6;
+        }
+        .hero-contract .hero-divider {
+            width: 60px; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            margin: 1.4rem auto; opacity: 0.5;
+        }
+
         /* ===== Nav ===== */
         .nav {
             position: fixed; top: 0; left: 0; right: 0;
             display: flex; align-items: center; justify-content: space-between;
             padding: 1rem 3rem; z-index: 100;
-            background: rgba(255,255,255,0.85);
-            backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+            background: rgba(255,255,255,0.82); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border); transition: all 0.3s ease;
+        }
+        .nav.scrolled {
+            padding: 0.7rem 3rem; background: rgba(255,255,255,0.94);
+            box-shadow: var(--shadow-lg);
         }
         .nav-brand {
             font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700;
             color: var(--text); text-decoration: none;
         }
         .nav-brand .hl { color: var(--accent); }
+        .nav-actions { display: flex; align-items: center; gap: 1rem; }
         .nav-back {
             display: inline-flex; align-items: center; gap: 0.4rem;
             font-size: 0.82rem; color: var(--text-2); text-decoration: none;
             transition: all 0.2s ease;
         }
         .nav-back:hover { color: var(--accent); }
+        .theme-toggle {
+            display: flex; align-items: center; gap: 0.4rem;
+            cursor: pointer; font-size: 0.78rem; color: var(--text-3);
+            padding: 0.4rem 0.85rem; border-radius: 8px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+        .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+
+        /* ===== Scroll Progress ===== */
+        .scroll-progress-container {
+            position: fixed; top: 54px; left: 0; right: 0; height: 3px;
+            background: var(--border); z-index: 100; overflow: hidden;
+        }
+        .scroll-progress {
+            height: 100%; width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            transition: width 0.1s ease-out;
+        }
+
+        /* ===== Page Indicator ===== */
+        .page-indicator {
+            position: fixed; right: 20px; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 0.8rem; z-index: 50;
+        }
+        .page-indicator .dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: var(--border); cursor: pointer;
+            transition: all 0.3s ease; position: relative;
+        }
+        .page-indicator .dot.active, .page-indicator .dot:hover {
+            background: var(--accent); width: 9px; height: 9px;
+        }
+        .page-indicator .dot::after {
+            content: attr(data-label); position: absolute; right: -85px; top: 0;
+            font-size: 0.72rem; color: var(--text-3); white-space: nowrap;
+            opacity: 0; transition: opacity 0.2s ease;
+        }
+        .page-indicator .dot:hover::after { opacity: 1; }
 
         /* ===== Journal Header ===== */
         .journal-header {
             text-align: center; padding: 0.6rem 3rem 0.4rem;
             border-bottom: 1px solid var(--border); margin-bottom: 0;
         }
-        .journal-header .line1 { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-3); margin-bottom: 0.1rem; }
-        .journal-header .line2 { font-size: 0.62rem; color: var(--text-3); font-style: italic; margin-bottom: 0.3rem; }
+        .journal-header .line1 { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-3); }
+        .journal-header .line2 { font-size: 0.62rem; color: var(--text-3); font-style: italic; }
         .journal-header .line3 { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); font-weight: 700; }
 
-        /* ===== Document ===== */
-        .doc-container {
-            max-width: 900px; margin: 0 auto; padding: 4rem 3rem 5rem;
+        /* ===== TOC Floating ===== */
+        .toc-floating {
+            position: fixed; left: 20px; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 0.4rem; z-index: 50;
         }
-        .doc-title {
+        .toc-item {
+            font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em;
+            color: var(--text-3); padding: 0.3rem 0.8rem; border-radius: 6px;
+            cursor: pointer; transition: all 0.2s ease; white-space: nowrap;
+            max-width: 180px; overflow: hidden; text-overflow: ellipsis;
+        }
+        .toc-item:hover { color: var(--accent); background: rgba(124, 45, 58, 0.06); }
+        .toc-item.active { color: var(--accent); background: rgba(124, 45, 58, 0.10); font-weight: 600; }
+
+        /* ===== Config Section ===== */
+        .config-section {
+            padding: 2rem 6vw 3rem; max-width: 1200px; margin: 0 auto;
+        }
+        .config-header { text-align: center; margin-bottom: 1.5rem; }
+        .config-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-size: clamp(1.3rem, 2.5vw, 1.7rem);
             font-weight: 400; font-style: italic;
-            text-align: center; text-transform: uppercase;
-            color: var(--accent); letter-spacing: 0.05em;
-            margin-bottom: 2rem; position: relative;
+            color: var(--accent); text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
-        .doc-title::before, .doc-title::after {
-            content: ''; position: absolute; top: 50%; transform: translateY(-50%);
-            width: 40px; height: 1px; background: var(--accent); opacity: 0.4;
-        }
-        .doc-title::before { left: -60px; }
-        .doc-title::after { right: -60px; }
-
-        .doc-meta {
-            text-align: center; margin-bottom: 2.5rem; color: var(--text-2);
-            font-size: 0.85rem; line-height: 1.8;
-        }
-        .doc-meta span { display: block; }
-
-        /* ===== Contract Content ===== */
-        .contract {
-            font-size: 0.9rem; column-count: 1;
-        }
-        .contract h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem; text-align: center;
-            color: var(--accent); margin: 1.5rem 0 1rem;
-            font-weight: 400; font-style: italic;
-        }
-        .contract h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.05rem; color: var(--text);
-            margin: 1.5rem 0 0.8rem; padding-bottom: 0.3rem;
-            border-bottom: 1px solid var(--border);
-        }
-        .contract h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 0.95rem; color: var(--accent);
-            margin: 1rem 0 0.5rem;
-        }
-        .contract p, .contract li {
-            margin-bottom: 0.8rem; color: var(--text-2); text-align: justify;
-        }
-        .contract ul {
-            margin-left: 1.5rem; margin-bottom: 1rem;
-        }
-        .contract li {
-            list-style-type: disc;
-        }
-        .contract .clause-num {
-            display: inline-block; min-width: 32px;
-            font-family: 'Playfair Display', serif; font-weight: 700;
-            color: var(--accent);
-        }
-        .contract .sub-clause {
-            margin-left: 1.2rem; margin-bottom: 0.5rem;
-        }
-        .contract .sub-clause::before {
-            content: '▸ '; color: var(--accent); opacity: 0.6;
-        }
-        .contract .signature-block {
-            margin-top: 2rem; text-align: center;
-        }
-        .contract .sig-line {
-            border-top: 2px solid var(--text);
-            width: 300px; margin: 40px auto 5px;
-        }
-        .contract .sig-label {
-            font-size: 0.85rem; font-weight: 500;
-        }
-        .contract .sig-date {
-            margin-top: 1rem; font-size: 0.8rem; color: var(--text-3);
+        .config-subtitle {
+            font-size: 0.86rem; color: var(--text-2); margin-top: 0.6rem;
+            max-width: 640px; margin-left: auto; margin-right: auto;
+            text-align: center; line-height: 1.6;
         }
 
-        /* ===== Appendix ===== */
-        .appendix {
-            margin-top: 2rem;
+        .config-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.2rem; max-width: 960px; margin: 0 auto;
+        }
+        .config-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-left: 3px solid var(--accent);
-            border-radius: var(--radius);
-            padding: 1.8rem;
-            box-shadow: var(--shadow);
+            border-left: 4px solid var(--accent);
+            border-radius: 18px; padding: 1.3rem;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.5, 1);
+            position: relative; overflow: hidden;
         }
-        .appendix h2 {
-            font-family: 'Playfair Display', serif; font-size: 1.1rem;
-            color: var(--accent); margin-bottom: 0.8rem;
+        .config-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(124, 45, 58, 0.03) 0%, transparent 60%);
+            opacity: 0; transition: opacity 0.3s ease;
         }
-        .appendix ul { list-style: none; padding: 0; }
-        .appendix li {
-            padding: 0.4rem 0; border-bottom: 1px dashed var(--border);
+        .config-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(124, 45, 58, 0.08);
+            border-left-width: 8px;
         }
-        .appendix li:last-child { border-bottom: none; }
+        .config-card:hover::before { opacity: 1; }
+        .config-card label {
+            display: block; font-size: 0.66rem; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--text-3); margin-bottom: 0.4rem;
+            font-weight: 500;
+        }
+        .config-card input[type="text"], .config-card input[type="date"] {
+            width: 100%; padding: 0.55rem 1rem; border-radius: 12px;
+            border: 1.5px solid var(--border); background: var(--bg-alt);
+            color: var(--text); font-family: inherit; font-size: 0.88rem;
+            transition: all 0.2s ease;
+        }
+        .config-card input:focus {
+            outline: none; border-color: var(--accent); background: var(--bg-card);
+            box-shadow: 0 0 0 3px rgba(124, 45, 58, 0.08);
+        }
+        .auto-fill-btn {
+            margin-top: 0.6rem; width: 100%;
+            font-size: 0.74rem; padding: 0.4rem; border-radius: 10px;
+            border: 1px solid var(--border); background: var(--bg-alt);
+            color: var(--text-3); cursor: pointer; transition: all 0.2s ease;
+            display: flex; align-items: center; justify-content: center; gap: 0.3rem;
+            font-weight: 500;
+        }
+        .auto-fill-btn:hover {
+            background: var(--accent); color: #fff;
+            transform: scale(1.02);
+        }
+
+        /* ===== Reading Progress ===== */
+        .reading-progress {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            height: 3px; background: var(--border); z-index: 50;
+        }
+        .reading-progress .bar {
+            height: 100%; width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            transition: width 0.1s ease;
+        }
+
+        /* ===== Contract Section ===== */
+        .contract-section {
+            padding: 3.5rem 3rem 3rem; max-width: 900px; margin: 0 auto;
+        }
+        .contract-header { text-align: center; margin-bottom: 2.5rem; }
+        .contract-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+            font-weight: 400; font-style: italic;
+            color: var(--accent); text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .contract-subtitle {
+            font-size: 0.88rem; color: var(--text-2); margin-top: 0.8rem;
+            line-height: 1.7; font-style: italic;
+        }
+
+        .clause-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 18px;
+            margin-bottom: 0.8rem;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.5, 1);
+            cursor: pointer;
+        }
+        .clause-card:hover {
+            transform: translateX(6px) scale(1.01);
+            box-shadow: 0 12px 30px rgba(124, 45, 58, 0.08);
+            border-left-width: 8px;
+        }
+        .clause-header {
+            display: flex; align-items: center; gap: 1rem;
+            padding: 1rem 1.5rem; cursor: pointer;
+        }
+        .clause-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem; font-weight: 700;
+            color: var(--accent);
+            min-width: 48px; height: 48px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(124, 45, 58, 0.08) 0%, rgba(155, 65, 80, 0.12) 100%);
+        }
+        .clause-title {
+            font-family: 'Inter', sans-serif; font-size: 0.94rem;
+            font-weight: 600; color: var(--text);
+            flex: 1;
+        }
+        .clause-toggle {
+            margin-left: auto; transition: transform 0.3s ease; color: var(--text-3);
+        }
+        .clause-card.active .clause-toggle { transform: rotate(180deg); }
+        .clause-body-wrapper {
+            max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.2, 0.8, 0.5, 1);
+        }
+        .clause-card.active .clause-body-wrapper { max-height: 3000px; }
+        .clause-body {
+            padding: 0 1.5rem 1.5rem 4.5rem;
+            font-size: 0.88rem; line-height: 1.7; color: var(--text-2);
+            border-top: 1px solid var(--border);
+        }
+        .clause-body p { margin-bottom: 0.7rem; text-align: justify; }
+        .clause-body .sub-clause {
+            margin-left: 1rem; margin-bottom: 0.4rem; position: relative;
+        }
+        .clause-body .sub-clause::before {
+            content: '▸'; color: var(--accent); opacity: 0.6;
+            position: absolute; left: -1rem; font-size: 0.8rem;
+        }
+        .clause-body h4 {
+            color: var(--accent); margin: 1rem 0 0.4rem;
+            font-family: 'Playfair Display', serif; font-size: 0.88rem;
+        }
+        .clause-body ul { margin: 0.4rem 0; padding-left: 1.2rem; }
+        .clause-body li { margin-bottom: 0.3rem; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .clause-card { animation: fadeInUp 0.5s ease forwards; }
+        .clause-card:nth-child(1) { animation-delay: 0.05s; }
+        .clause-card:nth-child(2) { animation-delay: 0.1s; }
+        .clause-card:nth-child(3) { animation-delay: 0.15s; }
+        .clause-card:nth-child(4) { animation-delay: 0.2s; }
+        .clause-card:nth-child(5) { animation-delay: 0.25s; }
+        .clause-card:nth-child(6) { animation-delay: 0.3s; }
+        .clause-card:nth-child(n+7) { animation-delay: 0.35s; }
+
+        /* ===== Appendix ===== */
+        .appendix-section { margin-top: 2rem; }
+        .appendix-card {
+            background: var(--bg-alt); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); margin-bottom: 0.6rem; overflow: hidden;
+            box-shadow: var(--shadow-sm); transition: all 0.25s ease;
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        .appendix-card:nth-child(1) { animation-delay: 0.4s; }
+        .appendix-card:nth-child(2) { animation-delay: 0.45s; }
+        .appendix-card:nth-child(3) { animation-delay: 0.5s; }
+        .appendix-card:nth-child(4) { animation-delay: 0.55s; }
+        .appendix-card:nth-child(n+5) { animation-delay: 0.6s; }
+        .appendix-card:hover {
+            background: var(--bg-card); transform: translateX(4px);
+        }
+        .appendix-header {
+            padding: 0.9rem 1.3rem; cursor: pointer;
+            display: flex; align-items: center; gap: 0.8rem;
+        }
+        .appendix-title {
+            font-family: 'Playfair Display', serif; font-size: 0.9rem;
+            font-weight: 500; color: var(--accent); flex: 1;
+        }
+        .appendix-toggle { transition: transform 0.3s ease; color: var(--text-3); }
+        .appendix-card.active .appendix-toggle { transform: rotate(180deg); }
+        .appendix-body {
+            max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+        }
+        .appendix-card.active .appendix-body { max-height: 2000px; }
+        .appendix-body-inner { padding: 0 1.3rem 1.2rem 2.8rem; }
+        .appendix-body p { font-size: 0.85rem; line-height: 1.6; color: var(--text-2); margin-bottom: 0.6rem; text-align: justify; }
+        .appendix-body h3 { font-family: 'Playfair Display', serif; font-size: 0.88rem; color: var(--accent); margin: 0.6rem 0 0.3rem; }
+        .appendix-body ul { padding-left: 1.2rem; }
+        .appendix-body li { margin-bottom: 0.25rem; font-size: 0.82rem; color: var(--text-2); }
+
+        /* ===== Signature Section ===== */
+        .signature-section {
+            padding: 3rem 6vw 4rem; max-width: 1100px; margin: 0 auto;
+        }
+        .sig-header { text-align: center; margin-bottom: 2rem; }
+        .sig-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+            font-weight: 400; font-style: italic;
+            color: var(--accent);
+        }
+        .sig-subtitle { font-size: 0.83rem; color: var(--text-2); margin-top: 0.6rem; }
+
+        .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .sig-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 18px;
+            padding: 1.5rem; box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.5, 1);
+            position: relative; overflow: hidden;
+        }
+        .sig-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(124, 45, 58, 0.02) 0%, transparent 60%);
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .sig-card:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 12px 30px rgba(124, 45, 58, 0.08);
+            border-left-width: 8px;
+        }
+        .sig-card:hover::before { opacity: 1; }
+        .sig-card label {
+            display: block; font-size: 0.66rem; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--text-3); margin-bottom: 0.4rem; font-weight: 500;
+        }
+        .sig-card input {
+            width: 100%; padding: 0.5rem 0.8rem; border-radius: 10px;
+            border: 1.5px solid var(--border); background: var(--bg-alt);
+            color: var(--text); font-family: 'Playfair Display', serif; font-size: 0.95rem;
+            margin-bottom: 1rem; transition: all 0.2s ease; text-align: center;
+        }
+        .sig-card input:focus {
+            outline: none; border-color: var(--accent); background: var(--bg-card);
+            box-shadow: 0 0 0 3px rgba(124, 45, 58, 0.08);
+        }
+
+        .sig-canvas-container {
+            border: 2px dashed var(--border);
+            border-radius: 16px;
+            background: #fdfdfd;
+            position: relative;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .sig-canvas-container::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.015) 0px, rgba(0,0,0,0.015) 1px, transparent 1px, transparent 3px);
+            border-radius: 16px; pointer-events: none; opacity: 0.5;
+        }
+        [data-theme="dark"] .sig-canvas-container::before, [data-theme="burgundy"] .sig-canvas-container::before {
+            background: repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 3px);
+        }
+        .sig-canvas-container { transition: all 0.3s ease; }
+        [data-theme="dark"] .sig-canvas-container, [data-theme="burgundy"] .sig-canvas-container {
+            background: #0d0d11; border-color: rgba(255,77,109,0.3);
+        }
+        #sigCanvasDom, #sigCanvasSub {
+            width: 100%; height: 170px; cursor: crosshair;
+            background: transparent;
+        }
+        .sig-actions { display: flex; gap: 0.6rem; margin-top: 0.8rem; }
+        .sig-btn {
+            flex: 1; padding: 0.5rem; border-radius: 10px;
+            font-size: 0.74rem; border: 1px solid var(--border);
+            background: var(--bg-alt); color: var(--text-3); cursor: pointer;
+            transition: all 0.2s ease; display: flex;
+            align-items: center; justify-content: center; gap: 0.3rem;
+            font-weight: 500;
+        }
+        .sig-btn:hover {
+            background: var(--accent); color: #fff; transform: scale(1.02);
+        }
+        .sig-btn.clear:hover { background: #e74c60; }
+        .sig-hint {
+            font-size: 0.7rem; color: var(--text-3); text-align: center;
+            margin-top: 0.6rem; font-style: italic;
+        }
+        .sig-signed { color: var(--accent); font-weight: 500; }
+        .sig-preview { margin-top: 0.9rem; text-align: center; }
+        .sig-preview img {
+            max-height: 55px; border-bottom: 1px dashed var(--border);
+            opacity: 0.7; border-radius: 2px;
+        }
+        .sig-status { font-size: 0.72rem; margin-top: 0.3rem; }
+
+        /* ===== Actions ===== */
+        .actions-section { text-align: center; padding: 2rem 3rem 4rem; }
+        .actions-grid {
+            display: flex; gap: 1.5rem; justify-content: center;
+            flex-wrap: wrap; margin-top: 1.5rem;
+        }
+        .action-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.55rem 2rem; border-radius: 60px; font-size: 0.82rem;
+            font-weight: 500; text-decoration: none; cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.5, 1); font-family: inherit;
+            border: 1px solid var(--border); background: var(--accent);
+            color: #fff; box-shadow: 0 4px 14px rgba(124, 45, 58, 0.18);
+            position: relative; overflow: hidden;
+        }
+        .action-btn::before {
+            content: ''; position: absolute; top: 0; left: -2px;
+            width: calc(100% + 4px); height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .action-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(124, 45, 58, 0.35);
+        }
+        .action-btn:hover::before { opacity: 1; }
+        .action-btn:disabled, .action-btn[disabled] {
+            opacity: 0.4; cursor: not-allowed;
+            transform: none; box-shadow: 0 4px 14px rgba(124, 45, 58, 0.06);
+        }
+        .action-btn.secondary {
+            background: var(--bg-card); color: var(--text);
+            border-color: var(--border);
+        }
+        .action-btn.secondary:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+        }
+        .action-btn.secondary:hover::before { background: linear-gradient(135deg, rgba(124, 45, 58, 0.04) 0%, transparent 100%); opacity: 1; }
 
         /* ===== Footer ===== */
         .footer {
@@ -184,34 +542,59 @@
         .footer a { color: var(--accent); text-decoration: none; }
         .footer a:hover { opacity: 0.7; }
 
+        /* ===== Snackbar ===== */
+        .snackbar {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: var(--accent); color: #fff; padding: 0.7rem 1.5rem;
+            border-radius: 8px; font-size: 0.82rem; z-index: 1000;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .snackbar.show { opacity: 1; pointer-events: all; }
+
         /* ===== Print ===== */
         @media print {
-            .nav, .footer { display: none; }
+            .nav, .footer, .config-section, .signature-section,
+            .actions-section, .page-indicator, .toc-floating { display: none; }
+            .reading-progress { display: none; }
             .doc-container { padding: 0; }
-            .contract { font-size: 11pt; }
-            :root {
-                --bg: #fff; --bg-card: #fff; --text: #000;
-                --text-2: #333; --accent: #7c2d3a;
-            }
         }
-
         @media (max-width: 768px) {
             .nav { padding: 1rem 1.5rem; }
-            .doc-container { padding: 3rem 1.5rem 4rem; }
-            .doc-title { font-size: 1.4rem; }
-            .doc-title::before, .doc-title::after { width: 25px; left: -40px; right: -40px; }
+            .config-section { padding: 3rem 2rem 1rem; }
+            .contract-section { padding: 3rem 2rem; }
+            .sig-grid { grid-template-columns: 1fr; }
+            .toc-floating { display: none; }
+            .page-indicator { display: none; }
+            .actions-grid { flex-direction: column; align-items: center; }
         }
     </style>
 </head>
 <body>
 
+    <div class="dot-pattern"></div>
+
+    <!-- ===== Scroll Progress ===== -->
+    <div class="scroll-progress-container">
+        <div class="reading-progress-bar"></div>
+    </div>
+
+    <!-- ===== Page Indicator ===== -->
+    <div class="page-indicator" id="pageIndicator">
+        <div class="dot active" data-label="Configuração" onclick="scrollToSection('config')"></div>
+        <div class="dot" data-label="Contrato" onclick="scrollToSection('contract')"></div>
+        <div class="dot" data-label="Assinaturas" onclick="scrollToSection('signatures')"></div>
+    </div>
+
     <!-- ===== Nav ===== -->
-    <nav class="nav">
-        <a href="index.html" class="nav-back">
-            <i data-feather="arrow-left" width="16" height="16"></i> Voltar
-        </a>
-        <a href="index.html" class="nav-brand">Rubens</a>
-        <span class="page-label">Jornal · Direito · Vol. 1 · Nº 1</span>
+    <nav class="nav" id="navBar">
+        <a href="index.html" class="nav-back"><i data-feather="arrow-left" width="16" height="16"></i> Voltar</a>
+        <a href="contrato-completo.html" class="nav-brand">Contrato <span class="hl">Completo</span></a>
+        <div class="nav-actions">
+            <div class="theme-toggle" id="themeToggle">
+                <i data-feather="sun" width="14" height="14"></i>
+                <span>Tema</span>
+            </div>
+        </div>
     </nav>
 
     <!-- ===== Journal Header ===== -->
@@ -221,277 +604,731 @@
         <p class="line3">Documento Particular · Vol. 1 · Nº 1 · Set/2026 · p. 013-024</p>
     </div>
 
-    <!-- ===== Document ===== -->
-    <div class="doc-container">
-        <h1 class="doc-title">Contrato de Relacionamento</h1>
-        <div class="doc-meta">
-            <span>e-ISSN: 2525-9911 · Revista de Direito, Arte e Literatura · Vol. 1 · Nº 1 · Set/2026</span>
-            <span>Documento Particular · p. 013-024</span>
-        </div>
-
-        <div class="contract">
-
-            <h1>CONTRATO</h1>
-            <p>No dia___________ de 20 ("data de início")</p>
-
-            <h2>ENTRE</h2>
-
-            <p>O SR.…………, com domicilio, , ("o Dominante") PORTADOR DO CPF: RG: Nascido EM: 19/05/2000</p>
-
-            <p>e a SRTA. ____________________________________, com domicilio no ___________________________________________ ("a Submissa"). Portadora do cpf: RG: NASCIDA EM: / /</p>
-
-            <h2>AS PARTES ACORDAM O SEGUINTE</h2>
-
-            <h3>TERMOS FUNDAMENTAIS</h3>
-
-            <p><span class="clause-num">1.</span> A seguir estão os termos de um contrato vinculativo entre o Dominante e a Submissa.</p>
-
-            <p><span class="clause-num">2.</span> O propósito fundamental deste contrato é permitir que a Submissa explore sua sensualidade e seus limites de forma segura, com o devido respeito e cuidado de suas necessidades, seus limites e seu bem-estar.</p>
-
-            <p><span class="clause-num">3.</span> O Dominante e a Submissa acordam e admitem que tudo o que aconteça sob os termos deste contrato será consensual e confidencial, e estará sujeito aos limites acordados e aos procedimentos de segurança que se contemplam neste contrato. Podem acrescentar-se limites e procedimentos de segurança adicionais.</p>
-
-            <p><span class="clause-num">4.</span> O Dominante e a Submissa garantem que não padecem de infecções sexuais nem enfermidades graves, incluindo HIV, herpes e hepatite, entre outras. Se durante a vigência do contrato (como se define abaixo) ou de qualquer ampliação do mesmo, uma das partes for diagnosticada ou tiver conhecimento de padecer de alguma destas enfermidades, compromete-se a informar à outra imediatamente e em todo caso, antes que se produza qualquer tipo de contato entre as partes.</p>
-
-            <p><span class="clause-num">5.</span> É preciso cumprir as garantias e os acordos anteriormente mencionados (e todo limite e procedimento de segurança adicional acordado na cláusula 3). Toda infração invalidará este contrato com caráter imediato e ambas as partes aceitam assumir totalmente ante a outra as consequências da infração.</p>
-
-            <p><span class="clause-num">6.</span> Todos os pontos deste contrato devem ler-se e interpretar-se à luz do propósito e os términos fundamentais estabelecidos nas cláusulas 2-5.</p>
-
-            <h2>FUNÇÕES</h2>
-
-            <h3>Dominante</h3>
-            <p><span class="clause-num">7.</span> O Dominante será responsável pelo bem-estar e pelo treinamento, a orientação e a disciplina da Submissa. Decidirá o tipo de treinamento, a orientação e a disciplina, e o momento e o lugar de administrá-los, atendendo aos termos acordados, os limites e os procedimentos de segurança estabelecidos neste contrato ou acordado ainda nos termos da cláusula 3 acima.</p>
-
-            <p><span class="clause-num">8.</span> Se em algum momento o Dominante não mantiver os termos acordados, os limites e os procedimentos de segurança estabelecidos neste contrato ou acordados na cláusula 3, a Submissa tem direito a finalizar este contrato imediatamente e a abandonar seu serviço ao Dominante sem prévio aviso.</p>
-
-            <p><span class="clause-num">9.</span> Atendendo a esta condição e às cláusulas 2-5, a Submissa tem que obedecer em tudo ao Dominante. Atendendo aos termos acordados, os limites e os procedimentos de segurança estabelecidos neste contrato ou acordados na cláusula 3, deve oferecer ao Dominante, sem perguntar nem duvidar, todo o prazer que este lhe exija, e deve aceitar, sem perguntar nem duvidar, o treinamento, a orientação e a disciplina em todas suas formas.</p>
-
-            <h2>INÍCIO E VIGÊNCIA</h2>
-
-            <p><span class="clause-num">10.</span> O Dominante e a Submissa assinam este contrato na data de início, conscientes de sua natureza e comprometendo-se a acatar suas condições sem exceção.</p>
-
-            <p><span class="clause-num">11.</span> Este contrato terá efeito durante um período de três meses a partir da data de início ("vigência do contrato"). Ao expirar a vigência, as partes comentarão se este contrato e o disposto por eles no mesmo, são satisfatórios e se estiverem satisfeitas as necessidades de cada parte. Ambas as partes podem propor ampliar o contrato e ajustar os termos ou os acordos que nele se estabelecem. Se não se chegar a um acordo para ampliá-lo, este contrato concluirá e ambas as partes serão livres para seguir sua vida separados.</p>
-
-            <h2>DISPONIBILIDADE</h2>
-
-            <p><span class="clause-num">12.</span> A Submissa estará disponível para o Dominante desde sexta-feira à noite até o domingo pela tarde, todas as semanas durante a vigência do contrato, com as horas a especificar pelo Dominante ("horas atribuídas"). Podem acordar mutuamente por mais horas, atribuídas como adicionais.</p>
-
-            <p><span class="clause-num">13.</span> O Dominante se reserva o direito a rejeição do serviço da Submissa em qualquer momento e pelas razões que sejam. A Submissa pode solicitar sua liberação em qualquer momento, liberação que ficará a critério do Dominante e estará exclusivamente sujeito aos direitos da Submissa contemplados nas cláusulas 2-5 e 8.</p>
-
-            <h2>LOCALIZAÇÃO</h2>
-
-            <p><span class="clause-num">14.</span> A Submissa estará disponível às horas atribuídas e às horas adicionais, nos lugares que determinar o Dominante. O Dominante concorrerá com todos os custos de viagem que incorra a Submissa com este fim.</p>
-
-            <h2>PRESTAÇÃO DE SERVIÇOS</h2>
-
-            <p><span class="clause-num">15.</span> As duas partes discutem e acordam as seguintes prestações de serviços, e ambas deverão as cumprir durante a vigência do contrato. Ambas as partes aceitam que podem surgir questões não contempladas nos termos deste contrato de prestação de serviços, e que determinadas questões poderão renegociar-se. Nestas circunstâncias, poderão propor-se cláusulas adicionais a modo de emenda. Ambas as partes deverão acordar, redigir e assinar toda cláusula adicional ou emenda, que estará sujeita aos termos fundamentais estabelecidos nas cláusulas 2-5.</p>
-
-            <h3>Dominante</h3>
-
-            <div class="sub-clause">15.1. O Dominante deve priorizar em todo momento a saúde e a segurança da Submissa. O Dominante em nenhum momento exigirá, solicitará, permitirá nem pedirá à Submissa que participe das atividades detalhadas no Apêndice 2 ou em toda atividade que qualquer das duas partes considere insegura. O Dominante não levará a cabo, nem permitirá que se leve a cabo, nenhuma atividade que possa ferir gravemente à Submissa ou pôr em perigo sua vida. As restantes sub-partes desta cláusula 15 devem ler-se atendendo a esta condição e aos acordos fundamentais das cláusulas 2-5.</div>
-
-            <div class="sub-clause">15.2. O Dominante aceita o controle, o domínio e a disciplina da Submissa durante a vigência do contrato. O Dominante pode utilizar o corpo da Submissa em qualquer momento durante as horas atribuídas, ou em horas adicionais acordadas, da maneira que considere oportuno, no sexo ou em qualquer outro âmbito.</div>
-
-            <div class="sub-clause">15.3. O Dominante oferecerá a Submissa o treinamento e a orientação necessários para servir adequadamente ao Dominante.</div>
-
-            <div class="sub-clause">15.4. O Dominante manterá um entorno estável e seguro para que a Submissa possa levar a cabo suas obrigações para servir ao Dominante.</div>
-
-            <div class="sub-clause">15.5. O Dominante pode disciplinar à Submissa quanto seja necessário para assegurar-se de que a Submissa entenda totalmente seu papel de submissão ao Dominante e para desalentar condutas inaceitáveis. O Dominante pode açoitar, surrar, dar chicotadas e castigar fisicamente à Submissa se o considerar oportuno por motivos de disciplina, por prazer ou por qualquer outra razão, que não está obrigado a expor.</div>
-
-            <div class="sub-clause">15.6. No treinamento e na administração de disciplina, o Dominante garantirá que não fiquem marcas no corpo da Submissa, nem feridas que exijam atenção médica.</div>
-
-            <div class="sub-clause">15.7. No treinamento e na administração de disciplina, o Dominante garantirá que a disciplina e os instrumentos utilizados para administrá-la, sejam seguros, não os utilizarei de maneira que provoquem danos sérios e em nenhum caso poderá transpassar os limites estabelecidos e detalhados neste contrato.</div>
-
-            <div class="sub-clause">15.8. Em caso de enfermidade ou ferida, o Dominante cuidará da Submissa, vigiará sua saúde e sua segurança, e solicitará atenção médica quando o considerar necessário.</div>
-
-            <div class="sub-clause">15.9. O Dominante cuidará de sua própria saúde e procurará atenção médica quando for necessário para evitar riscos.</div>
-
-            <div class="sub-clause">15.10. O Dominante não emprestará sua Submissa a outro Dominante.</div>
-
-            <div class="sub-clause">15.11. O Dominante poderá sujeitar, algemar ou atar a Submissa em todo momento durante as horas atribuídas ou em qualquer hora adicional por qualquer razão e por compridos períodos de tempo, emprestando a devida atenção à saúde e a segurança da Submissa.</div>
-
-            <div class="sub-clause">15.12. O Dominante garantirá que todo o equipamento utilizado para o treinamento e a disciplina se mantenha limpo, higiênico e seguro em todo momento.</div>
-
-            <h3>Submissa</h3>
-
-            <div class="sub-clause">15.13. A Submissa aceita o Dominante como seu dono e entende que agora é de sua propriedade e que está ao seu dispor quando o Dominante lhe agradar durante a vigência do contrato em geral, mas especialmente nas horas atribuídas e nas horas adicionais acordadas.</div>
-
-            <div class="sub-clause">15.14. A Submissa obedecerá às normas estabelecidas no Apêndice 1 deste contrato.</div>
-
-            <div class="sub-clause">15.15. A Submissa servirá ao Dominante em tudo aquilo que o Dominante considerar oportuno e deve fazer todo o possível por agradar ao Dominante em todo momento.</div>
-
-            <div class="sub-clause">15.16. A Submissa tomará medidas necessárias para cuidar de sua saúde, solicitará ou procurará atenção médica quando a necessitar, e em todo momento manterá informado o Dominante de qualquer problema de saúde que possa surgir.</div>
-
-            <div class="sub-clause">15.17. A Submissa garantirá que toma anticoncepcionais orais, e que toma como e quando é devido para evitar ficar grávida.</div>
-
-            <div class="sub-clause">15.18. A Submissa aceitará sem questionar todas e cada uma das ações disciplinadoras que o Dominante considere necessárias, e em todo momento recordará seu papel e sua função perante o Dominante.</div>
-
-            <div class="sub-clause">15.19. A Submissa não se tocará nem se proporcionará prazer sexual sem a permissão do Dominante.</div>
-
-            <div class="sub-clause">15.20. A Submissa se submeterá a toda atividade sexual que exija o Dominante, sem duvidar e sem discutir.</div>
-
-            <div class="sub-clause">15.21. A Submissa aceitará açoites, surras, pauladas, chicotadas ou qualquer outra disciplina que o Dominante administrar, sem duvidar, perguntar nem queixar-se.</div>
-
-            <div class="sub-clause">15.22. A Submissa não olhará diretamente nos olhos ao Dominante, exceto quando lhe ordenar. A Submissa deve abaixar os olhos, guardar silêncio e mostrar-se respeitosa em presença do Dominante.</div>
-
-            <div class="sub-clause">15.23. A Submissa se comportará sempre com respeito para o Dominante e só se dirigirá a ele como senhor, senhor Grey ou qualquer outro apelido que lhe ordene o Dominante.</div>
-
-            <div class="sub-clause">15.24. A Submissa não tocará no Dominante sem seu rápido consentimento.</div>
-
-            <h2>ATIVIDADES</h2>
-
-            <p><span class="clause-num">16.</span> A Submissa não participará de atividades ou atos sexuais que qualquer das duas partes considere inseguras, nem nas atividades detalhadas no Apêndice 2.</p>
-
-            <p><span class="clause-num">17.</span> O Dominante e a Submissa comentaram as atividades estabelecidas no Apêndice 3 e fazem constar por escrito no Apêndice 3 seu acordo a respeito.</p>
-
-            <h2>PALAVRAS DE SEGURANÇA</h2>
-
-            <p><span class="clause-num">18.</span> O Dominante e a Submissa admitem que o Dominante pode solicitar à Submissa ações que não possam levar a cabo sem incorrer em danos físicos, mentais, emocionais, espirituais ou de outro tipo no momento em que lhe solicitam. Neste tipo de circunstâncias, a Submissa pode utilizar uma palavra de segurança. Serão incluídas duas palavras de segurança em função da intensidade das demandas.</p>
-
-            <p><span class="clause-num">19.</span> Será utilizada a palavra de segurança "Amarelo" para indicar ao Dominante que a Submissa está chegando ao limite da resistência.</p>
-
-            <p><span class="clause-num">20.</span> Será utilizada a palavra de segurança "Vermelho" para indicar ao Dominante que a Submissa já não pode tolerar mais exigências. Quando se disser esta palavra, a ação do Dominante cessará totalmente, com efeito imediato.</p>
-
-            <h2>CONCLUSÃO</h2>
-
-            <p><span class="clause-num">21.</span> Os abaixo assinantes têm lido e entendido totalmente o que estipula este contrato. Aceitamos livremente os termos deste contrato e com nossa assinatura damos nossa conformidade.</p>
-
-            <div class="signature-block">
-                <div class="sig-line"></div>
-                <div class="sig-label">Dominante</div>
-                <div class="sig-date">Data: ____/____/______</div>
-            </div>
-
-            <div class="signature-block">
-                <div class="sig-line"></div>
-                <div class="sig-label">Submissa</div>
-                <div class="sig-date">Data: ____/____/______</div>
-            </div>
-
-        </div>
-
-        <!-- ===== Apêndice 1 ===== -->
-        <div class="appendix">
-            <h2>Apêndice 1 — Normas</h2>
-
-            <h3>Obediência:</h3>
-            <p>A Submissa obedecerá imediatamente todas as instruções do Dominante, sem duvidar, sem reservas e de forma expedita. A Submissa aceitará toda atividade sexual que o Dominante considere oportuna e prazerosa, exceto as atividades contempladas nos limites infranqueáveis (Apêndice 2). O fará com entusiasmo e sem duvidar.</p>
-
-            <h3>Sono:</h3>
-            <p>A Submissa garantirá que dorme no mínimo oito horas diárias quando não estiver com o Dominante.</p>
-
-            <h3>Alimentação:</h3>
-            <p>Para cuidar de sua saúde e seu bem-estar, a Submissa comerá frequentemente os mantimentos incluídos em uma lista (Apêndice 4). A Submissa não comerá entre horas, à exceção de fruta.</p>
-
-            <h3>Roupa:</h3>
-            <p>Durante a vigência do contrato, a Submissa só vestirá roupa que o Dominante tenha aprovado. O Dominante oferecerá à Submissa um orçamento para roupas, que a Submissa deve utilizar. O Dominante acompanhará à Submissa às compras de roupas quando for necessário. Se o Dominante assim o exigir, enquanto o contrato esteja vigente, a Submissa ficará com os adornos que lhe exigir o Dominante, em sua presença ou em qualquer outro momento que o Dominante considere oportuno.</p>
-
-            <h3>Exercício:</h3>
-            <p>O Dominante proporcionará à Submissa um treinador pessoal quatro vezes por semana, em sessões de uma hora, a horas convencionadas pelo treinador pessoal e a Submissa. O treinador pessoal informará ao Dominante dos avanços da Submissa.</p>
-
-            <h3>Higiene pessoal e beleza:</h3>
-            <p>A Submissa estará limpa e depilada em todo momento. A Submissa irá a um salão de beleza eleito pelo Dominante quando este o determinar e se submeterá a qualquer tratamento que o Dominante considere oportuno. O Dominante concorrerá com todos os gastos.</p>
-
-            <h3>Segurança pessoal:</h3>
-            <p>A Submissa não beberá em excesso, não fumará, não tomará substâncias psicotrópicas, nem correrá riscos desnecessários.</p>
-
-            <h3>Qualidades pessoais:</h3>
-            <p>A Submissa só manterá relações sexuais com o Dominante. A Submissa se comportará em todo momento com respeito e humildade. Deve compreender que sua conduta influi diretamente na do Dominante. Será responsabilizada por eventuais delitos, desmandos e os excessos cometidos quando não na presença do Dominante. Ao descumprimento de qualquer uma destas normas será imediatamente castigada, e o Dominante determinará a natureza do castigo.</p>
-        </div>
-
-        <!-- ===== Apêndice 2 ===== -->
-        <div class="appendix">
-            <h2>Apêndice 2 — Limites Rígidos</h2>
-            <ul>
-                <li>Sem atos com fogo.</li>
-                <li>Sem atos com urina, defecação e seus produtos.</li>
-                <li>Sem atos com agulhas, facas, perfurações e sangue.</li>
-                <li>Sem atos envolvendo instrumentos médicos ginecológicos.</li>
-                <li>Sem atos com crianças ou animais.</li>
-                <li>Sem atos que deixem marcas permanentes na pele.</li>
-                <li>Sem atos relativos ao controle da respiração.</li>
-                <li>Sem atividade que implique contato direto com corrente elétrica (tanto alternada como contínua), fogo ou chamas no corpo.</li>
-            </ul>
-        </div>
-
-        <!-- ===== Apêndice 3 ===== -->
-        <div class="appendix">
-            <h2>Apêndice 3 — Limites Suaves</h2>
-            <p>A discutir e acordar por ambas as partes:</p>
-
-            <h3>Atividades sexuais aceitáveis para a Submissa?</h3>
-            <ul>
-                <li>Masturbação</li>
-                <li>Felacção</li>
-                <li>Cunnilingus</li>
-                <li>Penetração vaginal</li>
-                <li>Fisting vaginal</li>
-                <li>Penetração anal</li>
-                <li>Fisting anal</li>
-            </ul>
-
-            <h3>A ingestão de sêmen é aceitável para a Submissa?</h3>
-            <p>O uso de brinquedos sexuais é aceitável para a Submissa?</p>
-            <ul>
-                <li>Vibradores</li>
-                <li>Consoladores</li>
-                <li>Plugues anais</li>
-                <li>Outros brinquedos vaginais/anais</li>
-            </ul>
-
-            <h3>A Submissa aceita o uso de Bondage?</h3>
-            <ul>
-                <li>Mãos na frente</li>
-                <li>Mãos atrás</li>
-                <li>Tornozelos</li>
-                <li>Joelhos</li>
-                <li>Cotovelos</li>
-                <li>Pulsos aos tornozelos</li>
-                <li>Barras de amarração</li>
-                <li>Amarrada ao mobiliário</li>
-                <li>Vendar</li>
-                <li>Colocação de mordaça</li>
-                <li>Bondage com cordas</li>
-                <li>Bondage com fita adesiva</li>
-                <li>Bondage com algemas de couro</li>
-                <li>Suspensão</li>
-                <li>Bondage com algemas de metal/restrições</li>
-            </ul>
-
-            <h3>Quanto de dor a Submissa está disposta a experimentar?</h3>
-            <p>Onde 1 equivale a que gosta muito e 5, a que lhe desgosta muito: 1 – 2 – 3 – 4 – 5</p>
-
-            <h3>Aceita a Submissa as seguintes formas de dor/castigo/disciplina?</h3>
-            <p>Onde 1 é para nenhum e 5 é para grave: 1 – 2 – 3 – 4 – 5</p>
-            <ul>
-                <li>Açoites</li>
-                <li>Açoites com pá</li>
-                <li>Chicotadas</li>
-                <li>Açoites com vara</li>
-                <li>Mordidas</li>
-                <li>Pinças para mamilos</li>
-                <li>Pinças genitais</li>
-                <li>Gelo</li>
-                <li>Cera quente</li>
-                <li>Outros tipos/métodos de dor</li>
-            </ul>
-        </div>
-
-        <!-- ===== PDF Download ===== -->
-        <div style="text-align:center; margin-top:2.5rem; padding-top:2rem; border-top:1px solid var(--border);">
-            <a href="Cópia de contrato  50tons.pdf" class="nav-back" style="display:inline-flex;align-items:center;gap:0.4rem;">
-                <i data-feather="download" width="16" height="16"></i> Baixar em PDF
-            </a>
-        </div>
+    <!-- ===== TOC ===== -->
+    <div class="toc-floating" id="tocFloating">
+        <div class="toc-item" data-clause="1">TERMOS FUNDAMENTAIS</div>
+        <div class="toc-item" data-clause="2">FUNÇÕES</div>
+        <div class="toc-item" data-clause="3">INÍCIO</div>
+        <div class="toc-item" data-clause="4">DISPONIBILIDADE</div>
+        <div class="toc-item" data-clause="5">LOCALIZAÇÃO</div>
+        <div class="toc-item" data-clause="6">PRESTAÇÃO</div>
+        <div class="toc-item" data-clause="7">ATIVIDADES</div>
+        <div class="toc-item" data-clause="8">SEGURANÇA</div>
+        <div class="toc-item" data-clause="9">CONCLUSÃO</div>
     </div>
+
+    <main>
+        <!-- ===== HERO ===== -->
+        <div class="hero-contract">
+            <div class="journal-badge">Documento Particular · Vol. 1 · Nº 1 · Set/2026</div>
+            <h1 class="hero-title">Contrato de Relacionamento <span class="hl">Interativo</span></h1>
+            <p class="hero-desc">
+                Preencha os dados dos signatários, assine digitalmente com a mão e gere o PDF final — tudo em um clique.
+            </p>
+            <div class="hero-divider"></div>
+        </div>
+
+        <!-- ===== CONFIG SECTION ===== -->
+        <section class="config-section" id="config">
+            <div class="config-header">
+                <h1 class="config-title">Configurações do Contrato</h1>
+                <p class="config-subtitle">
+                    Preencha os dados abaixo. O sistema <strong>auto-completa com seu nome</strong> se já estiver salvo.
+                    A <strong>Submissa</strong> e o <strong>Dominante</strong> assinam com a mão na tela.
+                </p>
+            </div>
+            <div class="config-grid">
+                <div class="config-card">
+                    <label for="dominanteNome">Nome do Dominante</label>
+                    <input type="text" id="dominanteNome" placeholder="Digite o nome...">
+                    <button class="auto-fill-btn" onclick="autoFillName('dominanteNome')">
+                        <i data-feather="user" width="12" height="12"></i> Usar nome salvo
+                    </button>
+                </div>
+                <div class="config-card">
+                    <label for="submissaNome">Nome da Submissa</label>
+                    <input type="text" id="submissaNome" placeholder="Digite o nome...">
+                    <button class="auto-fill-btn" onclick="autoFillName('submissaNome')">
+                        <i data-feather="user" width="12" height="12"></i> Usar meu nome
+                    </button>
+                </div>
+                <div class="config-card">
+                    <label for="dataInicio">Data de início</label>
+                    <input type="date" id="dataInicio">
+                    <button class="auto-fill-btn" onclick="setToday()">
+                        <i data-feather="calendar" width="12" height="12"></i> Hoje
+                    </button>
+                </div>
+                <div class="config-card">
+                    <label style="display:flex;align-items:center;gap:0.4rem">
+                        <input type="checkbox" id="autoPopulate" style="width:16px;height:16px;cursor:pointer">
+                        Auto-preencher nomes no contrato
+                    </label>
+                    <button class="auto-fill-btn" onclick="applyToContract()" style="margin-top:0.5rem">
+                        <i data-feather="edit-3" width="12" height="12"></i> Aplicar ao contrato
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CONTRACT SECTION ===== -->
+        <section class="contract-section" id="contract">
+            <div class="contract-header">
+                <h1 class="contract-title">Contrato de Relacionamento</h1>
+                <p class="contract-subtitle">
+                    <span id="displayDominante">_______</span> (o Dominante) e <span id="displaySubmissa">_______</span> (a Submissa)<br>
+                    Data de início: <span id="displayDate">_______</span>
+                </p>
+            </div>
+
+            <!-- ===== TERMOS FUNDAMENTAIS ===== -->
+            <div class="clause-card" data-clause="1">
+                <div class="clause-header" onclick="toggleClause(this)">
+                    <div class="clause-number">1</div>
+                    <div class="clause-title">TERMOS FUNDAMENTAIS</div>
+                    <i class="clause-toggle" data-feather="chevron-down" width="18" height="18"></i>
+                </div>
+                <div class="clause-body-wrapper">
+                    <div class="clause-body">
+                        <p><strong>1.</strong> A seguir estão os termos de um contrato vinculativo entre o Dominante e a Submissa.</p>
+                        <p><strong>2.</strong> O propósito fundamental deste contrato é permitir que a Submissa explore sua sensualidade e seus limites de forma segura, com o devido respeito e cuidado de suas necessidades, seus limites e seu bem-estar.</p>
+                        <p><strong>3.</strong> O Dominante e a Submissa acordam e admitem que tudo o que aconteça sob os termos deste contrato será consensual e confidencial, e estará sujeito aos limites acordados e aos procedimentos de segurança que se contemplam neste contrato. Podem acrescentar-se limites e procedimentos de segurança adicionais.</p>
+                        <p><strong>4.</strong> O Dominante e a Submissa garantem que não padecem de infecções sexuais nem enfermidades graves, incluindo HIV, herpes e hepatite, entre outras. Se durante a vigência do contrato ou de qualquer ampliação do mesmo, uma das partes for diagnosticada ou tiver conhecimento de padecer de alguma destas enfermidades, compromete-se a informar à outra imediatamente e em todo caso, antes que se produza qualquer tipo de contato entre as partes.</p>
+                        <p><strong>5.</strong> É preciso cumprir as garantias e os acordos anteriormente mencionados (e todo limite e procedimento de segurança adicional acordado na cláusula 3). Toda infração invalidará este contrato com caráter imediato e ambas as partes aceitam assumir totalmente ante a outra as consequências da infração.</p>
+                        <p><strong>6.</strong> Todos os pontos deste contrato devem ler-se e interpretar-se à luz do propósito e os términos fundamentais estabelecidos nas cláusulas 2-5.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== FUNÇÕES ===== -->
+            <div class="clause-card" data-clause="2">
+                <div class="clause-header" onclick="toggleClause(this)">
+                    <div class="clause-number">7</div>
+                    <div class="clause-title">FUNÇÕES</div>
+                    <i class="clause-toggle" data-feather="chevron-down" width="18" height="18"></i>
+                </div>
+                <div class="clause-body-wrapper">
+                    <div class="clause-body">
+                        <p><strong>7.</strong> O Dominante será responsável pelo bem-estar e pelo treinamento, a orientação e a disciplina da Submissa. Decidirá o tipo de treinamento, a orientação e a disciplina, e o momento e o lugar de administrá-los.</p>
+                        <p><strong>8.</strong> Se em algum momento o Dominante não mantiver os termos acordados, os limites e os procedimentos de segurança estabelecidos neste contrato ou acordados na cláusula 3, a Submissa tem direito a finalizar este contrato imediatamente.</p>
+                        <p><strong>9.</strong> Atendendo a esta condição e às cláusulas 2-5, a Submissa tem que obedecer em tudo ao Dominante. Deve oferecer ao Dominante, sem perguntar nem duvidar, todo o prazer que este lhe exija.</p>
+
+                        <h4>Dominante</h4>
+                        <div class="sub-clause">15.1. O Dominante deve priorizar em todo momento a saúde e a segurança da Submissa.</div>
+                        <div class="sub-clause">15.2. O Dominante aceita o controle, o domínio e a disciplina da Submissa durante a vigência do contrato.</div>
+                        <div class="sub-clause">15.3. O Dominante oferecerá a Submissa o treinamento e a orientação necessários.</div>
+                        <div class="sub-clause">15.4. O Dominante manterá um entorno estável e seguro.</div>
+                        <div class="sub-clause">15.5. O Dominante pode disciplinar à Submissa quanto seja necessário.</div>
+                        <div class="sub-clause">15.6. No treinamento e disciplina, o Dominante garantirá que não fiquem marcas no corpo da Submissa.</div>
+                        <div class="sub-clause">15.7. Os instrumentos de disciplina serão seguros.</div>
+                        <div class="sub-clause">15.8. Em caso de enfermidade ou ferida, o Dominante cuidará da Submissa e solicitará atenção médica.</div>
+                        <div class="sub-clause">15.9. O Dominante cuidará de sua própria saúde.</div>
+                        <div class="sub-clause">15.10. O Dominante não emprestará sua Submissa a outro Dominante.</div>
+                        <div class="sub-clause">15.11. O Dominante pode sujeitar, algemar ou atar a Submissa em horas atribuídas ou adicionais.</div>
+                        <div class="sub-clause">15.12. O Dominante garantirá que todo equipamento esteja limpo, higiênico e seguro.</div>
+
+                        <h4>Submissa</h4>
+                        <div class="sub-clause">15.13. A Submissa aceita o Dominante como seu dono e está ao seu dispor.</div>
+                        <div class="sub-clause">15.14. A Submissa obedecerá às normas estabelecidas no Apêndice 1.</div>
+                        <div class="sub-clause">15.15. A Submissa servirá ao Dominante em tudo aquilo que ele considerar oportuno.</div>
+                        <div class="sub-clause">15.16. A Submissa tomará medidas para cuidar de sua saúde e manterá o Dominante informado.</div>
+                        <div class="sub-clause">15.17. A Submissa garantirá que toma anticoncepcionais orais.</div>
+                        <div class="sub-clause">15.18. A Submissa aceitará sem questionar todas as ações disciplinadoras.</div>
+                        <div class="sub-clause">15.19. A Submissa não se tocará nem proverá prazer sexual sem permissão.</div>
+                        <div class="sub-clause">15.20. A Submissa se submeterá a toda atividade sexual que exija o Dominante.</div>
+                        <div class="sub-clause">15.21. A Submissa aceitará açoites, surras, chicotadas ou qualquer disciplina.</div>
+                        <div class="sub-clause">15.22. A Submissa não olhará diretamente nos olhos ao Dominante, exceto quando ordenado.</div>
+                        <div class="sub-clause">15.23. A Submissa se comportará sempre com respeito para o Dominante.</div>
+                        <div class="sub-clause">15.24. A Submissa não tocará no Dominante sem seu rápido consentimento.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== INÍCIO E VIGÊNCIA ===== -->
+            <div class="clause-card" data-clause="3">
+                <div class="clause-header" onclick="toggleClause(this)">
+                    <div class="clause-number">10</div>
+                    <div class="clause-title">INÍCIO E VIGÊNCIA</div>
+                    <i class="clause-toggle" data-feather="chevron-down" width="18" height="18"></i>
+                </div>
+                <div class="clause-body-wrapper">
+                    <div class="clause-body">
+                        <p><strong>10.</strong> O Dominante e a Submissa assinam este contrato na data de início, conscientes de sua natureza e comprometendo-se a acatar suas condições sem exceção.</p>
+                        <p><strong>11.</strong> Este contrato terá efeito durante um período de três meses a partir da data de início ("vigência do contrato"). Ao expirar, as partes comentarão se o contrato é satisfatório e, se assim o desejarem, podem ampliá-lo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== DISPONIBILIDADE ===== -->
+            <div class="clause-card" data-clause="4">
+                <div class="clause-header" onclick="toggleClause(this)">
+                    <div class="clause-number">12</div>
+                    <div class="clause-title">DISPONIBILIDADE</div>
+                    <i class="clause-toggle" data-feather="chevron-down" width="18" height="18"></i>
+                </div>
+                <div class="clause-body-wrapper">
+                    <div class="clause-body">
+                        <p><strong>12.</strong> A Submissa estará disponível para o Dominante desde sexta-feira à noite até o domingo pela tarde, todas as semanas durante a vigência do contrato. Podem acordar mutuamente por mais horas.</p>
+                        <p><strong>13.</strong> O Dominante se reserva o direito de rejeitar o serviço da Submissa em qualquer momento. A Submissa pode solicitar sua liberação a qualquer momento.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== LOCALIZAÇÃO ===== -->
+            <div class="clause-card" data-clause="5">
+                <div class="clause-header" onclick="toggleClause(this)">
+                    <div class="clause-number">14</div>
+                    <div class="clause-title">LOCALIZAÇÃO</div>
+                    <i class="clause-toggle" data-feather="chevron-down" width="18" height="18"></i>
+                </div>
+                <div class="clause-body-wrapper">
+                    <div class="clause-body">
+                        <p><strong>14.</strong> A Submissa estará disponível nos lugares que determinar o Dominante. O Dominante concorrerá com todos os custos de viagem.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== PRESTAÇÃO DE SERVIÇOS ===== -->
+            <div class="clause-card" data-clause="6">
+                <div class="clause-header" onclick="toggleClause(this)">
+                    <div class="clause-number">15</div>
+                    <div class="clause-title">PRESTAÇÃO DE SERVIÇOS</div>
+                    <i class="clause-toggle" data-feather="chevron-down" width="18" height="18"></i>
+                </div>
+                <div class="clause-body-wrapper">
+                    <div class="clause-body">
+                        <p>As duas partes discutem e acordam as seguintes prestações de serviços, que ambas deverão cumprir durante a vigência do contrato. Podem surgir cláusulas adicionais a modo de emenda.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== ATIVIDADES ===== -->
+            <div class="clause-card" data-clause="7">
+                <div class="clause-header" onclick="toggleClause(this)">
+                    <div class="clause-number">16</div>
+                    <div class="clause-title">ATIVIDADES</div>
+                    <i class="clause-toggle" data-feather="chevron-down" width="18" height="18"></i>
+                </div>
+                <div class="clause-body-wrapper">
+                    <div class="clause-body">
+                        <p><strong>16.</strong> A Submissa não participará de atividades ou atos sexuais que qualquer das duas partes considere inseguras, nem nas detalhadas no Apêndice 2.</p>
+                        <p><strong>17.</strong> O Dominante e a Submissa comentaram as atividades estabelecidas no Apêndice 3 e fazem constar seu acordo por escrito.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== SEGURANÇA ===== -->
+            <div class="clause-card" data-clause="8">
+                <div class="clause-header" onclick="toggleClause(this)">
+                    <div class="clause-number">18</div>
+                    <div class="clause-title">PALAVRAS DE SEGURANÇA</div>
+                    <i class="clause-toggle" data-feather="chevron-down" width="18" height="18"></i>
+                </div>
+                <div class="clause-body-wrapper">
+                    <div class="clause-body">
+                        <p><strong>18.</strong> O Dominante e a Submissa admitem que o Dominante pode solicitar à Submissa ações que podem causar danos. Nesse caso, a Submissa pode utilizar palavras de segurança.</p>
+                        <div class="sub-clause">19. Palavra "Amarelo" — indica que a Submissa está chegando ao limite da resistência.</div>
+                        <div class="sub-clause">20. Palavra "Vermelho" — indica que a Submissa não pode mais tolerar. A ação cessa imediatamente.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== CONCLUSÃO ===== -->
+            <div class="clause-card" data-clause="9">
+                <div class="clause-header" onclick="toggleClause(this)">
+                    <div class="clause-number">21</div>
+                    <div class="clause-title">CONCLUSÃO</div>
+                    <i class="clause-toggle" data-feather="chevron-down" width="18" height="18"></i>
+                </div>
+                <div class="clause-body-wrapper">
+                    <div class="clause-body">
+                        <p>Los abaixo assinantes têm lido e entendido totalmente o que estipula este contrato. Aceitamos livremente os termos deste contrato e com nossa assinatura damos nossa conformidade.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== APÊNDICES ===== -->
+            <div class="appendix-section">
+                <div class="appendix-card">
+                    <div class="appendix-header" onclick="toggleAppendix(this)">
+                        <div class="appendix-title">Apêndice 1 — Normas</div>
+                        <i data-feather="chevron-down" width="16" height="16" class="appendix-toggle"></i>
+                    </div>
+                    <div class="appendix-body">
+                        <div class="appendix-body-inner">
+                            <h3>Obediência:</h3>
+                            <p>A Submissa obedecerá imediatamente todas as instruções do Dominante, sem duvidar, sem reservas e de forma expedita. A Submissa aceitará toda atividade sexual que o Dominante considere oportuna e prazerosa, exceto as atividades contempladas nos limites infranqueáveis (Apêndice 2). O fará com entusiasmo e sem duvidar.</p>
+                            <h3>Sono:</h3>
+                            <p>A Submissa garantirá que dorme no mínimo oito horas diárias quando não estiver com o Dominante.</p>
+                            <h3>Alimentação:</h3>
+                            <p>Para cuidar de sua saúde e seu bem-estar, a Submissa comerá frequentemente os mantimentos incluídos em uma lista (Apêndice 4). A Submissa não comerá entre horas, à exceção de fruta.</p>
+                            <h3>Roupa:</h3>
+                            <p>Durante a vigência do contrato, a Submissa só vestirá roupa que o Dominante tenha aprovado. O Dominante oferecerá à Submissa um orçamento para roupas, que a Submissa deve utilizar. O Dominante acompanhará à Submissa às compras de roupas quando for necessário. Se o Dominante assim o exigir, enquanto o contrato esteja vigente, a Submissa ficará com os adornos que lhe exigir o Dominante, em sua presença ou em qualquer outro momento que o Dominante considere oportuno.</p>
+                            <h3>Exercício:</h3>
+                            <p>O Dominante proporcionará à Submissa um treinador pessoal quatro vezes por semana, em sessões de uma hora, a horas convencionadas pelo treinador pessoal e a Submissa. O treinador pessoal informará ao Dominante dos avanços da Submissa.</p>
+                            <h3>Higiene pessoal e beleza:</h3>
+                            <p>A Submissa estará limpa e depilada em todo momento. A Submissa irá a um salão de beleza eleito pelo Dominante quando este o determinar e se submeterá a qualquer tratamento que o Dominante considere oportuno. O Dominante concorrerá com todos os gastos.</p>
+                            <h3>Segurança pessoal:</h3>
+                            <p>A Submissa não beberá em excesso, não fumará, não tomará substâncias psicotrópicas, nem correrá riscos desnecessários.</p>
+                            <h3>Qualidades pessoais:</h3>
+                            <p>A Submissa só manterá relações sexuais com o Dominante. A Submissa se comportará em todo momento com respeito e humildade. Será responsabilizada por eventuais delitos, desmandos e os excessos cometidos quando não na presença do Dominante.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="appendix-card">
+                    <div class="appendix-header" onclick="toggleAppendix(this)">
+                        <div class="appendix-title">Apêndice 2 — Limites Rígidos</div>
+                        <i data-feather="chevron-down" width="16" height="16" class="appendix-toggle"></i>
+                    </div>
+                    <div class="appendix-body">
+                        <div class="appendix-body-inner">
+                            <ul>
+                                <li>Sem atos com fogo.</li>
+                                <li>Sem atos com urina, defecação e seus produtos.</li>
+                                <li>Sem atos com agulhas, facas, perfurações e sangue.</li>
+                                <li>Sem atos envolvendo instrumentos médicos ginecológicos.</li>
+                                <li>Sem atos com crianças ou animais.</li>
+                                <li>Sem atos que deixem marcas permanentes na pele.</li>
+                                <li>Sem atos relativos ao controle da respiração.</li>
+                                <li>Sem contato direto com corrente elétrica, fogo ou chamas no corpo.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="appendix-card">
+                    <div class="appendix-header" onclick="toggleAppendix(this)">
+                        <div class="appendix-title">Apêndice 3 — Limites Suaves (a discussão)</div>
+                        <i data-feather="chevron-down" width="16" height="16" class="appendix-toggle"></i>
+                    </div>
+                    <div class="appendix-body">
+                        <div class="appendix-body-inner">
+                            <p>Atividades sexualidades aceitáveis: masturbação, felação, cunnilingus, penetração vaginal, fisting, penetração anal.</p>
+                            <p>Uso de brinquedos sexuais: vibradores, consoladores, plugues anais, outros brinquedos.</p>
+                            <p>Bondage: mãos na frente/atrás, tornozelos, joelhos, cotovelos, pulso aos tornozelos, barras de amarração, mobiliário, venda, mordaça, cordas, fita adesiva, algemas de couro, suspensão, algemas metálicas.</p>
+                            <p>Nível de dor tolerado: 1–2–3–4–5 (1 = muito gosta, 5 = desgosta muito)</p>
+                            <p>Açoites, chicotadas, mordidas, pinças, gelo, cera quente — escala 1–5 (1 = nenhum, 5 = grave)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SIGNATURE SECTION ===== -->
+        <section class="signature-section" id="signatures">
+            <div class="sig-header">
+                <h1 class="sig-title">Assinaturas</h1>
+                <p class="sig-subtitle">Assine com a mão — toque na tela ou use o mouse. Os nomes já vêm preenchidos dos campos acima.</p>
+            </div>
+            <div class="sig-grid">
+                <!-- ===== DOMINANTE ===== -->
+                <div class="sig-card">
+                    <label for="sigDomInput">Dominante</label>
+                    <input type="text" id="sigDomInput" placeholder="Nome do Dominante...">
+                    <div class="sig-canvas-container" id="sigContainerDom">
+                        <canvas id="sigCanvasDom" width="400" height="160"></canvas>
+                    </div>
+                    <div class="sig-actions">
+                        <button class="sig-btn clear" onclick="clearSig('dom')">
+                            <i data-feather="trash-2" width="14" height="14"></i> Limpar
+                        </button>
+                        <button class="sig-btn" onclick="saveSig('dom')">
+                            <i data-feather="save" width="14" height="14"></i> Salvar
+                        </button>
+                    </div>
+                    <div class="sig-hint">Toque e arraste para assinar · Use o mouse ou tela sensível ao toque</div>
+                    <div class="sig-preview" id="sigPreviewDom">
+                        <div class="sig-status">Nenhuma assinatura capturada</div>
+                    </div>
+                </div>
+
+                <!-- ===== SUBMISSA ===== -->
+                <div class="sig-card">
+                    <label for="sigSubInput">Submissa</label>
+                    <input type="text" id="sigSubInput" placeholder="Nome da Submissa...">
+                    <div class="sig-canvas-container" id="sigContainerSub">
+                        <canvas id="sigCanvasSub" width="400" height="160"></canvas>
+                    <div class="sig-actions">
+                        <button class="sig-btn clear" onclick="clearSig('sub')">
+                            <i data-feather="trash-2" width="14" height="14"></i> Limpar
+                        </button>
+                        <button class="sig-btn" onclick="saveSig('sub')">
+                            <i data-feather="save" width="14" height="14"></i> Salvar
+                        </button>
+                    </div>
+                    <div class="sig-hint">Toque e arraste para assinar · Use o mouse ou tela sensível ao toque</div>
+                    <div class="sig-preview" id="sigPreviewSub">
+                        <div class="sig-status">Nenhuma assinatura capturada</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== ACTIONS ===== -->
+        <section class="actions-section">
+            <div class="actions-grid">
+                <button class="action-btn" id="generatePdfBtn" onclick="generateFinalPdf()" disabled>
+                    <i data-feather="download" width="16" height="16"></i> Gerar PDF final
+                </button>
+                <a href="index.html" class="action-btn secondary">
+                    <i data-feather="home" width="16" height="16"></i> Voltar ao site
+                </a>
+            </div>
+        </section>
+    </main>
 
     <!-- ===== Footer ===== -->
     <footer class="footer">
-        <p>&copy; 2026 Rubens Pereira Fernandes · Recife, PE · <a href="index.html">Voltar ao site</a></p>
+        <p>&copy; 2026 Rubens Pereira Fernandes · Recife, PE · <a href="index.html">Voltar ao site principal</a></p>
         <p style="margin-top:0.5rem;font-size:0.75rem;color:var(--text-3);">Documento particular — uso restrito</p>
     </footer>
 
+    <!-- ===== Snackbar ===== -->
+    <div class="snackbar" id="snackbar"></div>
+
     <script>
         feather.replace({ 'aria-hidden': 'true' });
+        const root = document.documentElement;
+
+        /* ===== Theme System ===== */
+        const themes = ['light', 'dark', 'burgundy'];
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        root.setAttribute('data-theme', savedTheme);
+        const themeIcons = { light: 'moon', dark: 'sun', burgundy: 'heart' };
+
+    const toggle = document.getElementById('themeToggle');
+    const iconEl = document.createElement('i');
+    iconEl.setAttribute('data-feather', themeIcons[savedTheme]);
+    iconEl.setAttribute('width', '14');
+    iconEl.setAttribute('height', '14');
+    toggle.insertBefore(iconEl, toggle.firstChild);
+    feather.replace({ 'aria-hidden': 'true' });
+
+    toggle.addEventListener('click', () => {
+        const current = root.getAttribute('data-theme') || 'light';
+        const next = themes[(themes.indexOf(current) + 1) % themes.length];
+        root.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        iconEl.setAttribute('data-feather', themeIcons[next]);
+        feather.replace({ 'aria-hidden': 'true' });
+    });
+
+    /* ===== Auto-fill names from localStorage ===== */
+    function autoFillName(fieldId) {
+        const visitorName = localStorage.getItem('visitorName');
+        const field = document.getElementById(fieldId);
+        if (visitorName && visitorName.trim()) {
+            field.value = visitorName.trim();
+            document.getElementById('sig' + (fieldId.includes('dom') ? 'Dom' : 'Sub') + 'Input').value = visitorName.trim();
+        } else {
+            showSnackbar('Nenhum nome salvo. Digite manualmente.');
+        }
+    }
+
+    /* ===== Set today's date ===== */
+    function setToday() {
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const yyyy = today.getFullYear();
+        document.getElementById('dataInicio').value = yyyy + '-' + mm + '-' + dd;
+    }
+
+    /* ===== Apply to contract ===== */
+    function applyToContract() {
+        const dom = document.getElementById('dominanteNome').value || '_______';
+        const sub = document.getElementById('submissaNome').value || '_______';
+        const date = document.getElementById('dataInicio').value || '_______';
+        const formattedDate = date ? new Date(date).toLocaleDateString('pt-BR') : '_______';
+
+        document.getElementById('displayDominante').textContent = dom || '_______';
+        document.getElementById('displaySubmissa').textContent = sub || '_______';
+        document.getElementById('displayDate').textContent = formattedDate;
+
+        document.getElementById('sigDomInput').value = dom || '';
+        document.getElementById('sigSubInput').value = sub || '';
+
+        showSnackbar('Aplicado ao contrato!');
+    }
+
+    /* ===== Toggle clause ===== */
+    function toggleClause(header) {
+        const card = header.parentElement;
+        card.classList.toggle('active');
+        const icon = header.querySelector('.clause-toggle');
+        if (icon) {
+            icon.setAttribute('data-feather', card.classList.contains('active') ? 'chevron-up' : 'chevron-down');
+            feather.replace({ 'aria-hidden': 'true' });
+        }
+    }
+
+    /* ===== Toggle appendix ===== */
+    function toggleAppendix(header) {
+        const card = header.parentElement;
+        card.classList.toggle('active');
+        const icon = header.querySelector('.appendix-toggle');
+        if (icon) {
+            icon.setAttribute('data-feather', card.classList.contains('active') ? 'chevron-up' : 'chevron-down');
+            feather.replace({ 'aria-hidden': 'true' });
+        }
+    }
+
+    /* ===== Scroll to section ===== */
+    function scrollToSection(id) {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /* ===== Reading progress ===== */
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrolled = (scrollTop / Math.max(docHeight, 1)) * 100;
+        document.querySelector('.reading-progress .bar').style.width = scrolled + '%';
+
+        if (scrollTop > 60) document.querySelector('.nav').classList.add('scrolled');
+        else document.querySelector('.nav').classList.remove('scrolled');
+
+        /* Page indicator */
+        const sections = ['config', 'contract', 'signatures'];
+        const dots = document.querySelectorAll('.page-indicator .dot');
+        dots.forEach((dot, i) => {
+            const s = document.getElementById(sections[i]);
+            if (s) {
+                const rect = s.getBoundingClientRect();
+                const mid = window.innerHeight / 2;
+                dot.classList.toggle('active', rect.top <= mid && rect.bottom >= mid);
+            }
+        });
+    });
+
+    /* ===== TOC active on scroll ===== */
+    const clauseCards = document.querySelectorAll('.clause-card');
+    const tocItems = document.querySelectorAll('.toc-item');
+
+    const tocObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const id = entry.target.dataset.clause;
+            const item = document.querySelector('.toc-item[data-clause="' + id + '"]');
+            if (item) item.classList.toggle('active', entry.isIntersecting);
+        });
+    }, { threshold: 0.3 });
+
+    clauseCards.forEach(card => tocObserver.observe(card));
+
+    /* ===== Canvas Signature ===== */
+    let sigStates = { dom: { drawing: false, data: null }, sub: { drawing: false, data: null } };
+
+    function setupCanvas(canvasId, key) {
+        const canvas = document.getElementById(canvasId);
+        const ctx = canvas.getContext('2d');
+        const theme = root.getAttribute('data-theme') || 'light';
+        const bg = theme === 'light' ? '#fafafa' : '#0d0d11';
+
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: clientX - rect.left, y: clientY - rect.top };
+        }
+
+        function startDraw(e) {
+            e.preventDefault();
+            sigStates[key].drawing = true;
+            const pos = getPos(e);
+            ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+            ctx.strokeStyle = '#000';
+            ctx.beginPath(); ctx.moveTo(pos.x, pos.y);
+        }
+
+        function draw(e) {
+            if (!sigStates[key].drawing) return;
+            e.preventDefault();
+            const pos = getPos(e);
+            ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+            ctx.strokeStyle = '#000';
+            ctx.lineTo(pos.x, pos.y); ctx.stroke();
+        }
+
+        function stopDraw() {
+            if (sigStates[key].drawing) {
+                sigStates[key].drawing = false;
+                ctx.closePath();
+            }
+        }
+
+        canvas.addEventListener('mousedown', startDraw);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDraw);
+        canvas.addEventListener('mouseleave', stopDraw);
+        canvas.addEventListener('touchstart', startDraw, { passive: false });
+        canvas.addEventListener('touchmove', draw, { passive: false });
+        canvas.addEventListener('touchend', stopDraw);
+        canvas.addEventListener('touchcancel', stopDraw);
+    }
+
+    setupCanvas('sigCanvasDom', 'dom');
+    setupCanvas('sigCanvasSub', 'sub');
+
+    /* ===== Auto-fill signature inputs ===== */
+    document.getElementById('dominanteNome').addEventListener('input', function() {
+        document.getElementById('sigDomInput').value = this.value;
+    });
+    document.getElementById('submissaNome').addEventListener('input', function() {
+        document.getElementById('sigSubInput').value = this.value;
+    });
+
+    /* ===== Clear signature ===== */
+    function clearSig(key) {
+        const canvas = document.getElementById(key === 'dom' ? 'sigCanvasDom' : 'sigCanvasSub');
+        const ctx = canvas.getContext('2d');
+        const theme = root.getAttribute('data-theme') || 'light';
+        const bg = theme === 'light' ? '#fafafa' : '#0d0d11';
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        sigStates[key].data = null;
+        document.getElementById(key === 'dom' ? 'sigPreviewDom' : 'sigPreviewSub').innerHTML =
+            '<div class="sig-status">Nenhuma assinatura capturada</div>';
+        checkSignaturesComplete();
+    }
+
+    /* ===== Save signature ===== */
+    function saveSig(key) {
+        const canvas = document.getElementById(key === 'dom' ? 'sigCanvasDom' : 'sigCanvasSub');
+        const dataURL = canvas.toDataURL('image/png');
+        sigStates[key].data = dataURL;
+
+        const preview = document.getElementById(key === 'dom' ? 'sigPreviewDom' : 'sigPreviewSub');
+        const nameInput = document.getElementById(key === 'dom' ? 'sigDomInput' : 'sigSubInput');
+        const signName = nameInput.value || (key === 'dom' ? 'Dominante' : 'Submissa');
+
+        preview.innerHTML = '<img src="' + dataURL + '" alt="Assinatura">' +
+            '<div class="sig-status sig-signed">Assinado por: ' + signName + '</div>';
+        checkSignaturesComplete();
+    }
+
+    /* ===== Check if both signatures are done ===== */
+    function checkSignaturesComplete() {
+        const pdfBtn = document.getElementById('generatePdfBtn');
+        pdfBtn.disabled = !(sigStates.dom.data && sigStates.sub.data);
+    }
+
+    /* ===== Generate final PDF ===== */
+    function generateFinalPdf() {
+        showSnackbar('Gerando PDF...');
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('p', 'mm', 'a4');
+
+        const domName = document.getElementById('sigDomInput').value || '_______';
+        const subName = document.getElementById('sigSubInput').value || '_______';
+        const dateVal = document.getElementById('dataInicio').value;
+        const formattedDate = dateVal ? new Date(dateVal).toLocaleDateString('pt-BR') : '_______';
+
+        let y = 20;
+
+        // Header
+        doc.setFontSize(8);
+        doc.setTextColor(100, 100, 100);
+        doc.text('Revista de Direito, Arte e Literatura | e-ISSN: 2525-9911 | Brasília', 105, y, { align: 'center' });
+        y += 5;
+        doc.setFontSize(6);
+        doc.text('Organização Comitê Científico · SEER/OJS · Vol. 1 · Nº 1 · Set/2026', 105, y, { align: 'center' });
+        y += 10;
+
+        // Title
+        doc.setFontSize(16);
+        doc.setTextColor(124, 45, 58);
+        doc.text('CONTRATO DE RELAÇÃO', 105, y, { align: 'center' });
+        y += 10;
+
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+        doc.text('No dia __________ de __________ de 20__ ("data de início")', 15, y); y += 6;
+        doc.text('ENTRE', 15, y); y += 6;
+        doc.text('O SR. ' + domName + ', ("o Dominante")', 25, y); y += 6;
+        doc.text('E A SRTA. ' + subName + ', ("a Submissa")', 25, y); y += 12;
+
+        const clauses = [
+            '1. Contrato vinculativo entre o Dominante e a Submissa.',
+            '2. Propósito: Submissa explorar sua sensualidade de forma segura.',
+            '3. Tudo consensual e confidencial. Limites acordados.',
+            '4. Garantia de ausência de ISTs. Notificar imediatamente.',
+            '5. Infração invalida contrato imediatamente.',
+            '6. Ler e interpretar à luz do propósito e termos fundamentais.',
+            '7. O Dominante responsável pelo bem-estar da Submissa.',
+            '8. Submissa pode finalizar contrato imediatamente se violado.',
+            '9. Submissa obedece ao Dominante em tudo. Obediência sem duvidar.'
+        ];
+
+        doc.setFontSize(11);
+        doc.setTextColor(124, 45, 58);
+        doc.text('TERMOS FUNDAMENTAIS', 15, y); y += 8;
+        doc.setTextColor(0, 0, 0);
+        clauses.forEach(function(clause) {
+            doc.setFontSize(8); doc.text(clause, 15, y); y += 5;
+        });
+        y += 5;
+
+        doc.setTextColor(124, 45, 58);
+        doc.text('PALAVRAS DE SEGURANÇA', 15, y); y += 8;
+        doc.setFontSize(8); doc.setTextColor(0, 0, 0);
+        doc.text('Amarelo — limite da resistência', 20, y); y += 5;
+        doc.text('Vermelho — parada imediata', 20, y); y += 15;
+
+        doc.setTextColor(124, 45, 58);
+        doc.text('ASSINATURAS', 15, y); y += 8;
+        doc.setTextColor(0, 0, 0);
+
+        doc.text('Dominante:', 15, y);
+        doc.setDrawColor(0); doc.setLineWidth(0.3);
+        doc.line(25, y + 2, 85, y + 2);
+        doc.setFontSize(8);
+        doc.text(domName, 25, y + 7);
+        doc.text('Data: ' + formattedDate, 25, y + 11);
+        y += 18;
+
+        doc.text('Submissa:', 15, y);
+        doc.line(25, y + 2, 85, y + 2);
+        doc.setFontSize(8);
+        doc.text(subName, 25, y + 7);
+        doc.text('Data: ' + formattedDate, 25, y + 11);
+
+        // Add signature images if available
+        if (sigStates.dom.data && sigStates.sub.data) {
+            doc.addImage(sigStates.dom.data, 'PNG', 25, y + 20, 60, 30);
+            doc.addImage(sigStates.sub.data, 'PNG', 115, y + 20, 60, 30);
+        }
+
+        doc.save('contrato-relacionamento-assinado.pdf');
+        showSnackbar('PDF baixado com sucesso!');
+    }
+
+    /* ===== Snackbar ===== */
+    function showSnackbar(msg) {
+        const sb = document.getElementById('snackbar');
+        sb.textContent = msg;
+        sb.classList.add('show');
+        setTimeout(function() { sb.classList.remove('show'); }, 3000);
+    }
+
+    /* ===== Initialize ===== */
+    window.addEventListener('load', function() {
+        setToday();
+
+        // Try to auto-fill from localStorage visitor name
+        const visitorName = localStorage.getItem('visitorName');
+        if (visitorName) {
+            document.getElementById('submissaNome').value = visitorName;
+            document.getElementById('sigSubInput').value = visitorName;
+        }
+
+        // Auto-expand first clause
+        const firstCard = document.querySelector('.clause-card');
+        if (firstCard) firstCard.classList.add('active');
+    });
     </script>
 </body>
 </html>
