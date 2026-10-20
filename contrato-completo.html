@@ -1387,6 +1387,36 @@
         const firstCard = document.querySelector('.clause-card');
         if (firstCard) firstCard.classList.add('active');
     });
+
+    // ===== PASSWORD GATE =====
+    const CORRECT_PASSWORD = '481445';
+    const passwordGate = document.getElementById('passwordGate');
+    const passwordInput = document.getElementById('passwordInput');
+    const passwordSubmit = document.getElementById('passwordSubmit');
+    const passwordError = document.getElementById('passwordError');
+
+    if (sessionStorage.getItem('contractAccess') === 'granted') {
+        passwordGate.classList.add('hidden');
+    }
+
+    passwordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') checkPassword();
+    });
+    passwordSubmit.addEventListener('click', checkPassword);
+
+    function checkPassword() {
+        const entered = passwordInput.value.trim();
+        if (entered === CORRECT_PASSWORD) {
+            sessionStorage.setItem('contractAccess', 'granted');
+            passwordGate.classList.add('hidden');
+            setTimeout(() => { passwordGate.style.display = 'none'; }, 500);
+        } else {
+            passwordError.classList.add('show');
+            passwordInput.value = '';
+            passwordInput.focus();
+            setTimeout(() => { passwordError.classList.remove('show'); }, 2000);
+        }
+    }
     </script>
 </body>
 </html>
