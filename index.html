@@ -1003,10 +1003,44 @@
             transform: translateY(20px); transition: all 0.6s cubic-bezier(0.2, 0.8, 0.5, 1);
         }
 
+        /* ===== Mobile-First Base ===== */
+        @media (hover: none) and (pointer: coarse) {
+            .custom-cursor { display: none; }
+            .audio-toggle { bottom: 110px; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-text h1 { font-size: 1.7rem; }
+            .hero-text .hero-subtitle { font-size: 0.95rem; }
+            .hero-text .hero-subtitle::after { display: none; }
+            .hero-meta { flex-direction: column; gap: 0.5rem; }
+            .stat-badge { justify-content: center; }
+            .personalize input { font-size: 0.9rem; padding: 0.8rem 1rem; }
+            .section-title { font-size: 1.3rem; }
+            .section-label { font-size: 0.62rem; }
+            .skill-card { padding: 1.2rem 0.5rem; }
+            .skill-card h4 { font-size: 0.8rem; }
+            .termo-card { padding: 1rem; }
+            .termo-text { font-size: 0.75rem; }
+            .termo-num { font-size: 1.2rem; }
+            .card h3 { font-size: 0.95rem; }
+            .section { padding: 3rem 1.5rem; }
+            .footer { padding: 2rem 1.5rem 4rem; }
+            .form-container { padding: 1.5rem; }
+            .form-grid { gap: 0.8rem; }
+            .nav { padding: 0.8rem 1rem; }
+            .nav-brand { font-size: 1rem; }
+            .theme-toggle { font-size: 0.65rem; }
+            .page-label { font-size: 0.55rem; }
+        }
+
         @media (max-width: 1024px) {
             .hero { padding: 4rem 4vw 3rem; }
+            .hero-container { grid-template-columns: 1fr; }
+            .photo-frame { max-width: 400px; margin: 0 auto; }
             .form-grid { grid-template-columns: 1fr; }
             .page-indicator { display: none; }
+            .skill-circles { justify-content: center; }
         }
         @media (max-width: 768px) {
             .page-label { right: 1.5rem; font-size: 0.6rem; }
@@ -1018,7 +1052,30 @@
             .section { padding: 3rem 2rem; }
             .form-container { padding: 2rem; }
             .doc-grid { grid-template-columns: 1fr; }
+            .signature { font-size: 0.9rem; }
+            .card-grid { grid-template-columns: 1fr; }
+            .termos-grid { grid-template-columns: 1fr; }
         }
+        @media (max-width: 380px) {
+            .hero-text h1 { font-size: 1.5rem; }
+            .stat-badge { font-size: 0.72rem; }
+            .section { padding: 2.5rem 1.2rem; }
+            .form-container { padding: 1.2rem; }
+        }
+
+        /* ===== Touch Active States ===== */
+        .touch .skill-card:active,
+        .touch .card:active,
+        .touch .termo-card:active,
+        .touch .doc-card:active,
+        .touch .interest-tag:active,
+        .touch .nav-btn:active,
+        .touch .btn-primary:active {
+            transform: scale(0.97) !important;
+            opacity: 0.8;
+        }
+        .touch .custom-cursor { display: none !important; }
+        .touch .audio-toggle { display: none !important; }
         @media (min-width: 768px) { .scroll-down { display: flex; } }
     </style>
 </head>
@@ -1864,6 +1921,7 @@
                     card.classList.add('selected');
                     const rect = e.target.closest('.termo-card').getBoundingClientRect();
                     createConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+                    window.dispatchEvent(new CustomEvent('termoVoted'));
                 }
                 resultEl.textContent = selected.size === 0 ? '' :
                     `Você concorda com os termos: ${Array.from(selected).sort().join(', ')}.`;
@@ -2326,15 +2384,88 @@
             circles.forEach(c => circleObserver.observe(c));
         })();
 
-        // ===== Add termoVoted event to existing termo handler =====
-        const _origTermoCards = document.querySelectorAll('.termo-card');
-        _origTermoCards.forEach(card => {
-            card.addEventListener('click', () => {
-                if (card.classList.contains('selected')) {
-                    window.dispatchEvent(new CustomEvent('termoVoted'));
-                }
+        // ===== Touch / Mobile Enhancements =====
+        (function() {
+            const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            document.body.classList.add(isTouch ? 'touch' : 'no-touch');
+
+            // Disable text-stagger on touch (too much JS on mobile)
+            if (isTouch) {
+                const chars = document.querySelectorAll('.char');
+                chars.forEach(c => { c.style.opacity = '1'; c.style.transform = 'translateY(0)'; });
+            }
+
+            // Add touch-active class for CSS feedback
+            document.addEventListener('touchstart', (e) => {
+                const btn = e.target.closest('button, .card, .skill-card, .termo-card, .doc-card, .interest-tag');
+                if (btn) btn.classList.add('touch-active');
+            }, { passive: true });
+            document.addEventListener('touchend', (e) => {
+                const btn = e.target.closest('button, .card, .skill-card, .termo-card, .doc-card, .interest-tag');
+                if (btn) setTimeout(() => btn.classList.remove('touch-active'), 150);
+            }, { passive: true });
+        })();
+
+        // ===== Scroll-Linked Auto-Reveal =====
+        (function() {
+            const revealEls = document.querySelectorAll('.skill-card, .card-inner, .doc-card, .termo-card, .progress-item');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    entry.target.style.opacity = entry.isIntersecting ? '1' : '0.5';
+                    entry.target.style.transform = entry.isIntersecting ? 'translateY(0)' : 'translateY(8px)';
+                });
+            }, { threshold: 0.1 });
+            revealEls.forEach(el => {
+                el.style.transition = 'all 0.6s cubic-bezier(0.2, 0.8, 0.5, 1)';
+                revealObserver.observe(el);
             });
-        });
+        })();
+
+        // ===== Auto-sort skill cards by category on mobile =====
+        (function() {
+            const grid = document.querySelector('.skill-grid');
+            if (!grid) return;
+
+            function sortGrid() {
+                const cards = Array.from(grid.querySelectorAll('.skill-card'));
+                const isMobile = window.innerWidth <= 768;
+
+                if (isMobile) {
+                    // Auto-group by category on mobile: cooking first, then tech, plants, massage, music
+                    const order = ['cooking', 'tech', 'plants', 'massage', 'music'];
+                    cards.sort((a, b) => {
+                        const ca = order.indexOf(a.dataset.category);
+                        const cb = order.indexOf(b.dataset.category);
+                        return ca - cb;
+                    });
+                    cards.forEach(c => grid.appendChild(c));
+                }
+            }
+
+            sortGrid();
+            window.addEventListener('resize', sortGrid);
+        })();
+
+        // ===== Responsive font sizing on viewport change =====
+        (function() {
+            function resizeFonts() {
+                const vw = window.innerWidth / 100;
+                const titles = document.querySelectorAll('.section-title');
+                titles.forEach(t => {
+                    const min = window.innerWidth <= 768 ? 1.3 : 1.4;
+                    const max = window.innerWidth <= 768 ? 1.3 : 1.9;
+                    t.style.fontSize = `${Math.min(max, Math.max(min, vw * 2.2))}rem`;
+                });
+            }
+            resizeFonts();
+            window.addEventListener('resize', resizeFonts);
+        })();
+
+        // ===== Prevent scroll-bounce on iOS =====
+        document.body.style.overflow = 'hidden';
+        const scrollable = document.querySelector('main');
+        if (scrollable) scrollable.style.overflow = 'auto';
+
     </script>
 </body>
 </html>
