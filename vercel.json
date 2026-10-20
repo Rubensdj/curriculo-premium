@@ -1,9 +1,0 @@
-{
-  "version": 2,
-  "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/contrato", "destination": "/contrato.html" },
-    { "source": "/contrato-completo", "destination": "/contrato-completo.html" }
-  ],
-  "trailingSlash": false
-}
