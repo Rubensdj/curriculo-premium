@@ -1448,7 +1448,7 @@
     </button>
 
     <script>
-        feather.replace({ 'aria-hidden': 'true' });
+        try { feather.replace({ 'aria-hidden': 'true' }); } catch(e) {}
         const root = document.documentElement;
         const WHATSAPP_PHONE = '[REDACTED]'; // configure seu WhatsApp aqui
 
@@ -1458,7 +1458,9 @@
         const tosAcceptBtn = document.getElementById('tosAcceptBtn');
         const tosRejectBtn = document.getElementById('tosRejectBtn');
         const tosDate = document.getElementById('tosDate');
-        const pageContent = document.querySelector('body > :not(.tos-gate):not(#loader)');
+        const reverBtn = document.getElementById('reverTermosBtn');
+        const pageContent = document.querySelector('main, .page-wrap, .content-wrap') || 
+                           document.querySelector('body > :not(.tos-gate):not(#loader)');
 
         tosDate.textContent = new Date().toLocaleDateString('pt-BR');
 
@@ -1492,7 +1494,6 @@
         });
 
         // --- Rever Termos Button ---
-        const reverBtn = document.getElementById('reverTermosBtn');
         reverBtn.addEventListener('click', () => {
             tosGate.classList.remove('hidden');
             if (pageContent) pageContent.classList.add('blurred');
