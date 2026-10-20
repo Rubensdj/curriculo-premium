@@ -148,6 +148,87 @@
         .journal-header .line2 { font-size: 0.62rem; color: var(--text-3); font-style: italic; margin-bottom: 0.3rem; }
         .journal-header .line3 { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); font-weight: 700; }
 
+        /* ===== Terms Gate ===== */
+        .tos-gate {
+            position: fixed; inset: 0; z-index: 10000;
+            background: var(--bg); display: flex;
+            align-items: center; justify-content: center;
+            opacity: 1; pointer-events: all;
+            transition: opacity 1s ease;
+        }
+        .tos-gate.hidden { opacity: 0; pointer-events: none; }
+        .tos-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 18px;
+            max-width: 560px; width: 90vw;
+            padding: 2rem; box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+            text-align: left;
+        }
+        .tos-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            font-weight: 400; font-style: italic;
+            color: var(--accent); text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .tos-body {
+            max-height: 320px; overflow-y: auto;
+            font-size: 0.82rem; line-height: 1.6; color: var(--text-2);
+            padding: 1rem; background: var(--bg-alt);
+            border-radius: 12px; border: 1px solid var(--border);
+            margin: 1rem 0;
+        }
+        .tos-footer {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-top: 1rem; font-size: 0.76rem; color: var(--text-3);
+        }
+        .tos-accept {
+            margin-top: 1rem; width: 100%;
+            padding: 0.7rem 1.5rem; border-radius: 60px;
+            font-size: 0.82rem; font-weight: 500;
+            border: none; cursor: pointer;
+            background: var(--accent); color: #fff;
+            box-shadow: 0 4px 14px rgba(124, 45, 58, 0.18);
+            transition: all 0.3s ease;
+        }
+        .tos-accept:hover {
+            background: var(--accent-light);
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(124, 45, 58, 0.3);
+        }
+        .tos-reject {
+            margin-top: 0.8rem; width: 100%;
+            padding: 0.55rem 1.5rem; border-radius: 60px;
+            font-size: 0.78rem; font-weight: 400;
+            border: 1px solid var(--border);
+            background: transparent; color: var(--text-3);
+            cursor: pointer; transition: all 0.2s ease;
+        }
+        .tos-reject:hover {
+            background: var(--bg-alt); color: var(--text);
+            border-color: var(--accent);
+        }
+        .rever-termos {
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 100001;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-left: 3px solid var(--accent); border-radius: 60px;
+            padding: 0.4rem 1rem; font-size: 0.74rem; color: var(--text-3);
+            cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+            display: flex; align-items: center; gap: 0.4rem;
+            transition: all 0.3s ease; opacity: 0; pointer-events: none;
+        }
+        .rever-termos.visible { opacity: 1; pointer-events: all; }
+        .rever-termos:hover {
+            background: var(--accent); color: #fff;
+            transform: scale(1.03); box-shadow: 0 8px 25px rgba(124, 45, 58, 0.2);
+        }
+        .rever-termos i { font-size: 0.8rem; }
+        .blurred {
+            filter: blur(2px); pointer-events: none; user-select: none;
+        }
+
         /* ===== Loader ===== */
         .loader-screen {
             position: fixed; inset: 0; background: var(--bg); z-index: 9999;
@@ -196,6 +277,56 @@
             transition: all 0.2s ease; position: relative;
         }
         .nav-center a:hover { color: var(--accent); }
+        .footer a:hover { color: var(--accent); }
+
+        /* ===== PDF Password Gate ===== */
+        .pdf-gate {
+            position: fixed; inset: 0; z-index: 100000;
+            background: rgba(0,0,0,0.5); display: flex;
+            align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .pdf-gate.active { opacity: 1; pointer-events: all; }
+        .pdf-gate .gate-content {
+            background: var(--bg-card); border-radius: 18px;
+            padding: 1.8rem; max-width: 340px; width: 90vw;
+            text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+        }
+        .pdf-gate .gate-icon {
+            width: 56px; height: 56px; margin: 0 auto 1rem;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; background: var(--bg-alt);
+            border: 2px solid var(--border); color: var(--accent);
+        }
+        .pdf-gate h4 {
+            font-family: 'Playfair Display', serif; font-size: 1rem;
+            font-style: italic; color: var(--accent); margin-bottom: 0.4rem;
+        }
+        .pdf-gate p { font-size: 0.78rem; color: var(--text-2); margin-bottom: 1rem; }
+        .pdf-gate input {
+            width: 100%; padding: 0.5rem 0.8rem; border-radius: 10px;
+            border: 1.5px solid var(--border); background: var(--bg);
+            color: var(--text); font-size: 0.85rem; text-align: center;
+            letter-spacing: 0.1em; margin-bottom: 0.8rem;
+        }
+        .pdf-gate input:focus { outline: none; border-color: var(--accent); }
+        .pdf-gate .pdf-gate-btn {
+            width: 100%; padding: 0.5rem 1.5rem; border-radius: 60px;
+            font-size: 0.8rem; font-weight: 500; border: none;
+            background: var(--accent); color: #fff; cursor: pointer;
+            transition: all 0.3s ease; display: flex;
+            align-items: center; justify-content: center; gap: 0.4rem;
+        }
+        .pdf-gate .pdf-gate-btn:hover {
+            background: var(--accent-light); transform: scale(1.02);
+        }
+        .pdf-gate .pdf-error {
+            font-size: 0.72rem; color: #e74c60; margin-top: 0.4rem;
+            opacity: 0; transition: opacity 0.2s ease;
+        }
+        .pdf-gate .pdf-error.show { opacity: 1; }
         .nav-center a::after {
             content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
             height: 2px; background: var(--accent); transform: scaleX(0);
@@ -445,36 +576,6 @@
             transition: all 0.4s ease; pointer-events: none;
         }
         .sticky-badge.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-        /* ===== Quote Carousel ===== */
-        .quote-container {
-            max-width: 700px; margin: 0 auto; position: relative;
-        }
-        .quote {
-            text-align: center; opacity: 0; transform: translateY(20px) scale(0.98);
-            transition: all 0.7s cubic-bezier(0.2, 0.8, 0.5, 1);
-            position: absolute; inset: 0;
-        }
-        .quote.active {
-            opacity: 1; transform: translateY(0) scale(1);
-            position: relative;
-        }
-        .quote-text {
-            font-family: 'Playfair Display', serif; font-size: 1.15rem;
-            font-style: italic; line-height: 1.6; color: var(--text-2);
-            position: relative; padding: 0 1rem;
-        }
-        .quote-text::before, .quote-text::after {
-            content: '"'; font-family: 'Playfair Display', serif;
-            font-size: 2.5rem; color: var(--accent); opacity: 0.25;
-            position: absolute; font-style: normal;
-        }
-        .quote-text::before { top: -20px; left: -10px; }
-        .quote-text::after { bottom: -30px; right: -10px; }
-        .quote-author {
-            margin-top: 0.8rem; font-size: 0.85rem; color: var(--accent);
-            font-weight: 500; text-align: right;
-        }
 
         /* ===== Interest Tags ===== */
         .interest-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem; margin: 1.5rem auto; max-width: 620px; }
@@ -862,6 +963,31 @@
         <span class="loader-text">Rubens</span>
     </div>
 
+    <!-- ===== Terms Gate ===== -->
+    <div class="tos-gate" id="tosGate">
+        <div class="tos-content">
+            <div class="tos-title">Antes de entrar</div>
+            <div class="tos-body">
+                <p>Oi. Eu sou o Rubens. Este site é meu cantinho na internet — um lugar onde mostro quem sou, o que faço e como gosto de viver as coisas. Nada corporativo, nada de burocracia. Só uma cara pra você conhecer de verdade.</p>
+                <p>Se você quer saber quem eu sou, pode entrar. O conteúdo aqui é meu — fotos, textos, códigos. Se curtir algo e quiser compartilhar, me avisa primeiro. Simples.</p>
+                <p>Este não é um site de granda empresa. É um jeito de eu me apresentar. Use com carinho.</p>
+            </div>
+            <div class="tos-footer">
+                <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-size:0.76rem;color:var(--text-2);">
+                    <input type="checkbox" id="tosCheckbox" style="accent-color:var(--accent);">
+                    Entendi, entra
+                </label>
+                <span id="tosDate"></span>
+            </div>
+            <button class="tos-accept" id="tosAcceptBtn" disabled>
+                Entrar
+            </button>
+            <button class="tos-reject" id="tosRejectBtn">
+                Sair
+            </button>
+        </div>
+    </div>
+
     <!-- ===== Theme Notice ===== -->
     <div id="themeNotice">
         Tema salvo: <span id="themeNoticeText"></span>
@@ -877,7 +1003,6 @@
         <div class="dot active" data-label="Início" onclick="scrollToSection('sobre')"></div>
         <div class="dot" data-label="Habilidades" onclick="scrollToSection('habilidades')"></div>
         <div class="dot" data-label="Sobre mim" onclick="scrollToSection('sobre-mim')"></div>
-        <div class="dot" data-label="Reflexões" onclick="scrollToSection('reflexoes')"></div>
         <div class="dot" data-label="Termos" onclick="scrollToSection('termos')"></div>
         <div class="dot" data-label="Documentos" onclick="scrollToSection('documentos')"></div>
         <div class="dot" data-label="Contato" onclick="scrollToSection('contato')"></div>
@@ -885,21 +1010,20 @@
 
     <!-- ===== Journal Header ===== -->
     <div class="journal-header">
-        <p class="line1">Revista de Direito, Arte e Literatura | e-ISSN: 2525-9911 | Brasília</p>
-        <p class="line2">Organização Comitê Científico · Double Blind Review pelo SEER/OJS</p>
-        <p class="line3">Documento Particular · Vol. 1 · Nº 1 · Set/2026 · p. 01-012</p>
+        <p class="line1">Rubens · Recife</p>
+        <p class="line2">Desenvolvedor Full-Stack · Curioso por natureza</p>
+        <p class="line3">Portfólio pessoal · v5.2</p>
     </div>
 
     <!-- ===== Nav ===== -->
     <nav class="nav" id="navBar">
-        <span class="page-label">Jornal · Direito · Vol. 1 · Nº 1</span>
+        <span class="page-label">Portfólio</span>
         <a href="#" class="nav-brand">Rubens</a>
         <div class="nav-center">
             <a href="#sobre">Sobre</a>
             <a href="#habilidades">Habilidades</a>
             <a href="#sobre-mim">Sobre mim</a>
-            <a href="#reflexoes">Reflexões</a>
-            <a href="#termos">Termos</a>
+                        <a href="#termos">Termos</a>
             <a href="#documentos">Documentos</a>
             <a href="#contato">Contato</a>
         </div>
@@ -954,45 +1078,7 @@
                     </div>
                 </div>
             </div>
-            <div class="scroll-down" onclick="scrollToSection('reflexoes')"></div>
-        </section>
-
-        <!-- ===== QUOTE CAROUSEL ===== -->
-        <section class="section alt-bg" id="reflexoes">
-            <div class="section-header">
-                <p class="section-label">Reflexões</p>
-                <div class="section-divider"></div>
-                <h2 class="section-title">Pensamentos que guiam a vida.</h2>
-            </div>
-            <div class="quote-container">
-                <div class="quote active">
-                    <p class="quote-text">Construir devagar é construir pra sempre. Deus no centro, tudo dá certo.</p>
-                    <p class="quote-author"> — Rubens</p>
-                </div>
-                <div class="quote">
-                    <p class="quote-text">Cozinhar é amor com as mãos. Quem prove o que eu faço, sente um pedaço de mim.</p>
-                    <p class="quote-author"> — Rubens</p>
-                </div>
-                <div class="quote">
-                    <p class="quote-text">Nada é perfeito, mas a intenção de fazer certo dá um baita diferença.</p>
-                    <p class="quote-author"> — Rubens</p>
-                </div>
-                <div class="quote">
-                    <p class="quote-text">A gente não escolhe quem a gente ama. A gente escolhe cuidar.</p>
-                    <p class="quote-author"> — Rubens</p>
-                </div>
-                <div class="quote">
-                    <p class="quote-text">Sem pressa, sem estresse. Só com Deus e quem a gente quer perto.</p>
-                    <p class="quote-author"> — Rubens</p>
-                </div>
-            </div>
-            <div style="text-align:center;margin-top:1.5rem;">
-                <span class="quote-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin:0 3px;cursor:pointer;opacity:0.6;" onclick="showQuote(0)"></span>
-                <span class="quote-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin:0 3px;cursor:pointer;opacity:0.6;" onclick="showQuote(1)"></span>
-                <span class="quote-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin:0 3px;cursor:pointer;opacity:0.6;" onclick="showQuote(2)"></span>
-                <span class="quote-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin:0 3px;cursor:pointer;opacity:0.6;" onclick="showQuote(3)"></span>
-                <span class="quote-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin:0 3px;cursor:pointer;opacity:0.6;" onclick="showQuote(4)"></span>
-            </div>
+            <div class="scroll-down" onclick="scrollToSection('habilidades')"></div>
         </section>
 
         <!-- ===== HABILIDADES ===== -->
@@ -1243,10 +1329,10 @@
                     Abaixo você encontra os documentos relacionados a este relacionamento. O contrato completo em HTML, a versão resumida e o PDF para download.
                 </p>
                 <div class="doc-grid">
-                    <div class="doc-card" onclick="openPage('contrato-completo.html')">
+                    <div class="doc-card active" onclick="openPage('contrato-completo.html')">
                         <i data-feather="file-text" width="32" height="32"></i>
-                        <h4>Contrato Completo</h4>
-                        <p>Documento integral em HTML (21 cláusulas + 3 apêndices).</p>
+                        <h4>Contrato Interativo</h4>
+                        <p>Documento integral com coleta de dados, assinatura digital e geração de PDF.</p>
                     </div>
                     <div class="doc-card" onclick="openPage('contrato.html')">
                         <i data-feather="book-open" width="32" height="32"></i>
@@ -1255,8 +1341,13 @@
                     </div>
                     <div class="doc-card" onclick="downloadFile('contrato.pdf')">
                         <i data-feather="download" width="32" height="32"></i>
-                        <h4>Baixar PDFs</h4>
+                        <h4>Baixar PDF</h4>
                         <p>Versão resumida em PDF para impressão.</p>
+                    </div>
+                    <div class="doc-card" onclick="downloadFile('C%C3%B3pia%20de%20contrato%20%2050tons.pdf')">
+                        <i data-feather="file-text" width="32" height="32"></i>
+                        <h4>PDF Extra (50tons)</h4>
+                        <p>Versão alternativa em PDF — senha protegida.</p>
                     </div>
                 </div>
                 <div class="pdf-placeholder" id="pdfPlaceholder">
@@ -1293,7 +1384,13 @@
                     </div>
                     <div class="form-group">
                         <label>WhatsApp</label>
-                        <input type="tel" id="fWhats" placeholder="(00) 00000-0000">
+                        <div style="display:flex;gap:0.5rem;align-items:flex-start;">
+                            <input type="tel" id="fWhats" placeholder="(00) 00000-0000" style="flex:1;">
+                            <button type="button" id="copyWhats" style="padding:0.4rem 0.8rem;border-radius:8px;border:1px solid var(--border);background:var(--bg-alt);color:var(--text-3);cursor:pointer;font-size:0.68rem;display:flex;align-items:center;gap:0.3rem;">
+                                <i data-feather="copy" width="12" height="12"></i> Copiar
+                            </button>
+                        </div>
+                        <div id="copyFeedback" style="font-size:0.68rem;color:var(--accent);margin-top:0.3rem;opacity:0;height:0;overflow:hidden;transition:all 0.2s ease;"></div>
                     </div>
                     <div class="form-group full">
                         <label>Por que eu?</label>
@@ -1321,6 +1418,7 @@
             <div class="footer-copy">
                 <a href="https://github.com/Rubensdj/curriculo-premium">curriculo-premium</a> ·
                 <span>&copy; 2026 Rubens Pereira Fernandes · Recife, PE</span>
+                <span id="visitCount" style="font-size:0.72rem;color:var(--text-3);margin-left:0.6rem;">0</span>visitas
             </div>
             <div class="footer-links">
                 <a href="contrato.html">Contrato</a>
@@ -1328,14 +1426,112 @@
         </div>
     </footer>
 
+    <!-- ===== PDF Password Gate ===== -->
+    <div class="pdf-gate" id="pdfGate">
+        <div class="gate-content">
+            <div class="gate-icon">
+                <i data-feather="lock" width="20" height="20"></i>
+            </div>
+            <h4>Acesso ao PDF</h4>
+            <p>Este documento é protegido. Digite a senha para baixar.</p>
+            <input type="password" id="pdfPassword" placeholder="_ _ _ _ _ _" maxlength="6" autocomplete="off">
+            <button class="pdf-gate-btn" id="pdfGateSubmit">
+                <i data-feather="download" width="14" height="14"></i> Baixar
+            </button>
+            <div class="pdf-error" id="pdfError">Senha incorreta.</div>
+        </div>
+    </div>
+
+    <!-- ===== Rever Termos Button ===== -->
+    <button class="rever-termos" id="reverTermosBtn">
+        <i data-feather="shuffle" width="12" height="12"></i> Revisar termos
+    </button>
+
     <script>
         feather.replace({ 'aria-hidden': 'true' });
         const root = document.documentElement;
         const WHATSAPP_PHONE = '[REDACTED]'; // configure seu WhatsApp aqui
 
+        // --- Terms Gate ---
+        const tosGate = document.getElementById('tosGate');
+        const tosCheckbox = document.getElementById('tosCheckbox');
+        const tosAcceptBtn = document.getElementById('tosAcceptBtn');
+        const tosRejectBtn = document.getElementById('tosRejectBtn');
+        const tosDate = document.getElementById('tosDate');
+        const pageContent = document.querySelector('body > :not(.tos-gate):not(#loader)');
+
+        tosDate.textContent = new Date().toLocaleDateString('pt-BR');
+
+        if (localStorage.getItem('tosAccepted') === 'true') {
+            tosGate.classList.add('hidden');
+            if (pageContent) pageContent.classList.remove('blurred');
+        } else {
+            tosGate.classList.remove('hidden');
+            if (pageContent) pageContent.classList.add('blurred');
+        }
+
+        tosCheckbox.addEventListener('change', () => {
+            tosAcceptBtn.disabled = !tosCheckbox.checked;
+        });
+
+        tosAcceptBtn.addEventListener('click', () => {
+            if (!tosCheckbox.checked) return;
+            localStorage.setItem('tosAccepted', 'true');
+            localStorage.setItem('tosAcceptedAt', new Date().toISOString());
+            tosGate.classList.add('hidden');
+            if (pageContent) pageContent.classList.remove('blurred');
+            reverBtn.classList.add('visible');
+        });
+
+        tosRejectBtn.addEventListener('click', () => {
+            localStorage.removeItem('tosAccepted');
+            localStorage.removeItem('tosAcceptedAt');
+            tosGate.classList.remove('hidden');
+            if (pageContent) pageContent.classList.add('blurred');
+            reverBtn.classList.remove('visible');
+        });
+
+        // --- Rever Termos Button ---
+        const reverBtn = document.getElementById('reverTermosBtn');
+        reverBtn.addEventListener('click', () => {
+            tosGate.classList.remove('hidden');
+            if (pageContent) pageContent.classList.add('blurred');
+            tosCheckbox.checked = false;
+            tosAcceptBtn.disabled = true;
+            // Don't hide the button — keep it on top so user can re-open if needed
+        });
+
+        // --- Visitor Counter ---
+        let visits = parseInt(localStorage.getItem('visitCount') || '0') + 1;
+        localStorage.setItem('visitCount', visits);
+        const visitEl = document.getElementById('visitCount');
+        if (visitEl) visitEl.textContent = visits;
+
+        // --- Copy WhatsApp Button ---
+        document.getElementById('copyWhats').addEventListener('click', () => {
+            const phone = '5581999999999';
+            const feedback = document.getElementById('copyFeedback');
+            navigator.clipboard.writeText(phone).then(() => {
+                feedback.textContent = 'Copiado! (55) 81 99999-9999';
+                feedback.style.opacity = '1';
+                feedback.style.height = 'auto';
+                setTimeout(() => {
+                    feedback.style.opacity = '0';
+                    feedback.style.height = '0';
+                }, 2000);
+            }).catch(() => {
+                feedback.textContent = 'Clique duas vezes no campo pra copiar';
+                feedback.style.opacity = '1';
+                feedback.style.height = 'auto';
+            });
+        });
+
         // --- Loader ---
         setTimeout(() => {
             document.getElementById('loader').classList.add('hidden');
+            if (localStorage.getItem('tosAccepted') !== 'true') {
+                tosGate.classList.remove('hidden');
+            }
         }, 800);
 
         // --- Nav Shrink on Scroll ---
@@ -1582,25 +1778,6 @@
             });
         });
 
-        // --- Quote Carousel ---
-        let quoteIndex = 0;
-        const quotes = document.querySelectorAll('.quote');
-        const quoteDots = document.querySelectorAll('.quote-dot');
-        function showQuote(index) {
-            quotes.forEach((q, i) => {
-                q.classList.toggle('active', i === index);
-            });
-            quoteDots.forEach((d, i) => {
-                d.style.opacity = i === index ? '1' : '0.6';
-            });
-            quoteIndex = index;
-        }
-        function nextQuote() {
-            quoteIndex = (quoteIndex + 1) % quotes.length;
-            showQuote(quoteIndex);
-        }
-        setInterval(nextQuote, 6000);
-        showQuote(0);
 
         // --- Back to Top ---
         const scrollTopBtn = document.getElementById('scrollTop');
@@ -1620,7 +1797,7 @@
             document.getElementById('scrollProgress').style.transform = `scaleX(${(scrollY / Math.max(docHeight, 1))})`;
 
             const dots = document.querySelectorAll('.page-indicator .dot');
-            const sections = ['sobre', 'habilidades', 'sobre-mim', 'reflexoes', 'termos', 'documentos', 'contato'];
+            const sections = ['sobre', 'habilidades', 'sobre-mim', 'termos', 'documentos', 'contato'];
             dots.forEach((dot, i) => {
                 const s = document.getElementById(sections[i]);
                 if (s) {
@@ -1682,10 +1859,67 @@
         }
 
         function downloadFile(file) {
-            const a = document.createElement('a');
-            a.href = file;
-            a.download = '';
-            a.click();
+            // Only the "50tons" PDF requires password; others download directly
+            const is50tons = file.includes('50tons');
+
+            // If session already has access and it's the 50tons file, download directly
+            if (is50tons && sessionStorage.getItem('pdfAccess') === 'granted') {
+                const a = document.createElement('a');
+                a.href = file;
+                a.download = '';
+                a.click();
+                return;
+            }
+
+            // Non-50tons files download without password
+            if (!is50tons) {
+                const a = document.createElement('a');
+                a.href = file;
+                a.download = '';
+                a.click();
+                return;
+            }
+
+            // 50tons file — show password gate
+            let pdfGate = document.getElementById('pdfGate');
+            let pdfPassword = document.getElementById('pdfPassword');
+            let pdfError = document.getElementById('pdfError');
+            let pdfGateSubmit = document.getElementById('pdfGateSubmit');
+
+            pdfGate.classList.add('active');
+            pdfPassword.value = '';
+            pdfPassword.focus();
+            pdfError.classList.remove('show');
+
+            const doDownload = () => {
+                const entered = pdfPassword.value.trim();
+                if (entered === '481445') {
+                    sessionStorage.setItem('pdfAccess', 'granted');
+                    pdfGate.classList.remove('active');
+                    const a = document.createElement('a');
+                    a.href = file;
+                    a.download = '';
+                    a.click();
+                } else {
+                    pdfError.classList.add('show');
+                    setTimeout(() => pdfError.classList.remove('show'), 2000);
+                    pdfPassword.value = '';
+                    pdfPassword.focus();
+                }
+            };
+
+            pdfGateSubmit.replaceWith(pdfGateSubmit.cloneNode(true));
+            pdfGateSubmit = document.getElementById('pdfGateSubmit');
+            pdfGateSubmit.addEventListener('click', doDownload);
+
+            pdfPassword.replaceWith(pdfPassword.cloneNode(true));
+            pdfPassword = document.getElementById('pdfPassword');
+            pdfPassword.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    doDownload();
+                }
+            });
         }
 
         // --- Form ---
@@ -1822,10 +2056,6 @@
         gsap.fromTo('.signature', { opacity: 0, y: 10 }, {
             opacity: 0.5, y: 0, duration: 0.6, ease: 'power3.out',
             scrollTrigger: { trigger: '.signature', start: 'top 90%' }
-        });
-        gsap.fromTo('.quote', { opacity: 0, y: 15 }, {
-            opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-            scrollTrigger: { trigger: '.quote.active', start: 'top 85%' }
         });
         gsap.utils.toArray('.termo-card').forEach((card, i) => {
             gsap.fromTo(card, { opacity: 0, x: -15 }, {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#f6f7f9">
-    <meta name="description" content="Contrato Interativo — Revista de Direito, Arte e Literatura">
+    <meta name="description" content="Contrato interativo entre Rubens e você — relacionamento pessoal, consensual, com propósito.">
     <title>Contrato Interativo — Rubens</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -567,9 +567,67 @@
             .page-indicator { display: none; }
             .actions-grid { flex-direction: column; align-items: center; }
         }
+
+        /* ===== PASSWORD GATE ===== */
+        .password-gate {
+            position: fixed; inset: 0; z-index: 100000;
+            background: var(--bg); display: flex;
+            align-items: center; justify-content: center;
+            opacity: 1; pointer-events: all;
+            transition: opacity 0.5s ease;
+        }
+        .password-gate.hidden { opacity: 0; pointer-events: none; }
+        .password-content { text-align: center; max-width: 360px; }
+        .password-content .lock-icon {
+            width: 64px; height: 64px; margin: 0 auto 1.5rem;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; background: var(--bg-alt);
+            border: 2px solid var(--border); color: var(--accent);
+        }
+        .password-content h3 {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem;
+            font-style: italic; color: var(--accent); margin-bottom: 0.5rem;
+        }
+        .password-content p {
+            font-size: 0.82rem; color: var(--text-2); margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .password-content input {
+            width: 100%; padding: 0.6rem 1rem; border-radius: 10px;
+            border: 1.5px solid var(--border); background: var(--bg-card);
+            color: var(--text); font-family: 'Inter', sans-serif;
+            font-size: 0.9rem; text-align: center; letter-spacing: 0.1em;
+            transition: all 0.2s ease; margin-bottom: 0.8rem;
+        }
+        .password-content input:focus {
+            outline: none; border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(124, 45, 58, 0.08);
+        }
+        .password-content .btn-primary { width: 100%; padding: 0.6rem 1.5rem; }
+        .password-error {
+            font-size: 0.72rem; color: #e74c60; margin-top: 0.4rem;
+            opacity: 0; transition: opacity 0.2s ease;
+        }
+        .password-error.show { opacity: 1; }
     </style>
 </head>
 <body>
+
+    <!-- ===== PASSWORD GATE ===== -->
+    <div class="password-gate" id="passwordGate">
+        <div class="password-content">
+            <div class="lock-icon">
+                <i data-feather="lock" width="24" height="24"></i>
+            </div>
+            <h3>Acesso Restrito</h3>
+            <p>Este contrato interativo é particular e protegido. Digite a senha para acessar.</p>
+            <input type="password" id="passwordInput" placeholder="_ _ _ _ _ _" maxlength="6" autocomplete="off">
+            <button class="btn btn-primary" id="passwordSubmit">
+                <i data-feather="log-in" width="14" height="14"></i> Acessar
+            </button>
+            <div class="password-error" id="passwordError">Senha incorreta. Tente novamente.</div>
+        </div>
+    </div>
 
     <div class="dot-pattern"></div>
 
@@ -599,9 +657,9 @@
 
     <!-- ===== Journal Header ===== -->
     <div class="journal-header">
-        <p class="line1">Revista de Direito, Arte e Literatura | e-ISSN: 2525-9911 | Brasília</p>
-        <p class="line2">Organização Comitê Científico · Double Blind Review pelo SEER/OJS</p>
-        <p class="line3">Documento Particular · Vol. 1 · Nº 1 · Set/2026 · p. 013-024</p>
+        <p class="line1">Rubens · Contrato de Relacionamento · Recife, 2026</p>
+        <p class="line2">Documento particular — feito de mão, não de template</p>
+        <p class="line3">Confidencial — entre [nome] e Rubens</p>
     </div>
 
     <!-- ===== TOC ===== -->
@@ -620,10 +678,10 @@
     <main>
         <!-- ===== HERO ===== -->
         <div class="hero-contract">
-            <div class="journal-badge">Documento Particular · Vol. 1 · Nº 1 · Set/2026</div>
+            <div class="journal-badge">Rubens · Recife</div>
             <h1 class="hero-title">Contrato de Relacionamento <span class="hl">Interativo</span></h1>
             <p class="hero-desc">
-                Preencha os dados dos signatários, assine digitalmente com a mão e gere o PDF final — tudo em um clique.
+                Preencha os dados, assine com a mão na tela e gere o PDF final.
             </p>
             <div class="hero-divider"></div>
         </div>
@@ -690,12 +748,12 @@
                 </div>
                 <div class="clause-body-wrapper">
                     <div class="clause-body">
-                        <p><strong>1.</strong> A seguir estão os termos de um contrato vinculativo entre o Dominante e a Submissa.</p>
-                        <p><strong>2.</strong> O propósito fundamental deste contrato é permitir que a Submissa explore sua sensualidade e seus limites de forma segura, com o devido respeito e cuidado de suas necessidades, seus limites e seu bem-estar.</p>
-                        <p><strong>3.</strong> O Dominante e a Submissa acordam e admitem que tudo o que aconteça sob os termos deste contrato será consensual e confidencial, e estará sujeito aos limites acordados e aos procedimentos de segurança que se contemplam neste contrato. Podem acrescentar-se limites e procedimentos de segurança adicionais.</p>
-                        <p><strong>4.</strong> O Dominante e a Submissa garantem que não padecem de infecções sexuais nem enfermidades graves, incluindo HIV, herpes e hepatite, entre outras. Se durante a vigência do contrato ou de qualquer ampliação do mesmo, uma das partes for diagnosticada ou tiver conhecimento de padecer de alguma destas enfermidades, compromete-se a informar à outra imediatamente e em todo caso, antes que se produza qualquer tipo de contato entre as partes.</p>
-                        <p><strong>5.</strong> É preciso cumprir as garantias e os acordos anteriormente mencionados (e todo limite e procedimento de segurança adicional acordado na cláusula 3). Toda infração invalidará este contrato com caráter imediato e ambas as partes aceitam assumir totalmente ante a outra as consequências da infração.</p>
-                        <p><strong>6.</strong> Todos os pontos deste contrato devem ler-se e interpretar-se à luz do propósito e os términos fundamentais estabelecidos nas cláusulas 2-5.</p>
+                        <p><strong>1.</strong> A gente tá aqui pra viver um contrato de verdade — entre o Dominante e a Submissa, com as mãos dadas.</p>
+                        <p><strong>2.</strong> O que a gente quer? Que a Submissa explore sua sensualidade e limites de forma segura, com respeito, cuidado e muito carinho.</p>
+                        <p><strong>3.</strong> Tudo que acontece aqui é consensual e confidencial. Os limites e regras de segurança são acordados juntos. Pode acrescentar mais se preciso.</p>
+                        <p><strong>4.</strong> Ninguém aqui tem ISTs ou health issues graves. Se algo aparecer, conta na hora — antes de qualquer contato.</p>
+                        <p><strong>5.</strong> Respeitar as regras é básico. Se alguma for quebrada, contrato acaba na hora e cada um responde pelo que fez.</p>
+                        <p><strong>6.</strong> Tudo aqui se lê e entende no contexto do propósito e dos termos fundamentais. É pra viver, não pra interpretar.</p>
                     </div>
                 </div>
             </div>
@@ -709,9 +767,9 @@
                 </div>
                 <div class="clause-body-wrapper">
                     <div class="clause-body">
-                        <p><strong>7.</strong> O Dominante será responsável pelo bem-estar e pelo treinamento, a orientação e a disciplina da Submissa. Decidirá o tipo de treinamento, a orientação e a disciplina, e o momento e o lugar de administrá-los.</p>
-                        <p><strong>8.</strong> Se em algum momento o Dominante não mantiver os termos acordados, os limites e os procedimentos de segurança estabelecidos neste contrato ou acordados na cláusula 3, a Submissa tem direito a finalizar este contrato imediatamente.</p>
-                        <p><strong>9.</strong> Atendendo a esta condição e às cláusulas 2-5, a Submissa tem que obedecer em tudo ao Dominante. Deve oferecer ao Dominante, sem perguntar nem duvidar, todo o prazer que este lhe exija.</p>
+                        <p><strong>7.</strong> O Dominante cuida do bem-estar, do treinamento e da disciplina da Submissa. Ele decide como, quando e onde aplicar cada coisa.</p>
+                        <p><strong>8.</strong> Se o Dominante desrespeitar os limites acordados, a Submissa pode acabar com o contrato na hora.</p>
+                        <p><strong>9.</strong> Dentro dos limites e regras, a Submissa obedece ao Dominante sem questionar. Oferece prazer sem hesitar, com entusiasmo.</p>
 
                         <h4>Dominante</h4>
                         <div class="sub-clause">15.1. O Dominante deve priorizar em todo momento a saúde e a segurança da Submissa.</div>
@@ -797,7 +855,7 @@
                 </div>
                 <div class="clause-body-wrapper">
                     <div class="clause-body">
-                        <p>As duas partes discutem e acordam as seguintes prestações de serviços, que ambas deverão cumprir durante a vigência do contrato. Podem surgir cláusulas adicionais a modo de emenda.</p>
+                        <p>Duas regras claras: gente boa entra primeiro. O que vem aqui é nosso, escrito de olho no olho. Assina e vive.</p>
                     </div>
                 </div>
             </div>
@@ -842,7 +900,7 @@
                 </div>
                 <div class="clause-body-wrapper">
                     <div class="clause-body">
-                        <p>Los abaixo assinantes têm lido e entendido totalmente o que estipula este contrato. Aceitamos livremente os termos deste contrato e com nossa assinatura damos nossa conformidade.</p>
+                        <p>Eu, Rubens, e você — a gente leu tudo isso direitinho. O que está escrito aqui é entre nós. Com a assinatura, a gente confirma que entendeu cada palavra e concorda viver isso de verdade.</p>
                     </div>
                 </div>
             </div>
@@ -1232,10 +1290,10 @@
         // Header
         doc.setFontSize(8);
         doc.setTextColor(100, 100, 100);
-        doc.text('Revista de Direito, Arte e Literatura | e-ISSN: 2525-9911 | Brasília', 105, y, { align: 'center' });
+        doc.text('Rubens · Contrato particular · Recife, 2026', 105, y, { align: 'center' });
         y += 5;
         doc.setFontSize(6);
-        doc.text('Organização Comitê Científico · SEER/OJS · Vol. 1 · Nº 1 · Set/2026', 105, y, { align: 'center' });
+        doc.text('Feito de mão, não de template · Entre duas pessoas reais', 105, y, { align: 'center' });
         y += 10;
 
         // Title
