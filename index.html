@@ -919,8 +919,91 @@
         .footer-links { display: flex; gap: 1.5rem; }
         .footer-links a { font-size: 0.78rem; }
 
+        /* ===== Custom Cursor ===== */
+        .custom-cursor {
+            position: fixed; top: 0; left: 0; width: 24px; height: 24px;
+            border-radius: 50%; pointer-events: none; z-index: 9999;
+            background: var(--accent); opacity: 0; mix-blend-mode: difference;
+            transform: translate(-50%, -50%); transition: opacity 0.2s ease;
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.1);
+        }
+        .custom-cursor.visible { opacity: 0.7; }
+        .custom-cursor.hover { width: 32px; height: 32px; opacity: 0.9; }
+
+        /* ===== Gradient Text ===== */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; text-fill-color: transparent;
+            background-size: 200% 200%; animation: gradientShift 4s ease-in-out infinite;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ===== Background Mesh ===== */
+        #bgMesh {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; opacity: 0.3;
+        }
+
+        /* ===== SVG Divider Animation ===== */
+        .svg-divider {
+            width: 100%; height: 40px; overflow: visible;
+        }
+        .svg-divider path {
+            fill: none; stroke: var(--border); stroke-width: 1;
+            stroke-dasharray: 1000; stroke-dashoffset: 1000;
+            animation: drawLine 1s ease-out forwards;
+            animation-delay: calc(var(--delay, 0) * 1s);
+        }
+        @keyframes drawLine { to { stroke-dashoffset: 0; } }
+
+        /* ===== Photo 3D Frame ===== */
+        .photo-3d {
+            transform-style: preserve-3d; perspective: 1500px;
+            transition: transform 0.1s ease-out;
+        }
+        .photo-3d img {
+            transform-style: preserve-3d;
+        }
+
+        /* ===== Audio Toggle ===== */
+        .audio-toggle {
+            position: fixed; bottom: 100px; right: 30px; z-index: 1000;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 50%; width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.2s ease;
+            opacity: 0.6;
+        }
+        .audio-toggle:hover { opacity: 1; }
+
+        /* ===== Enhanced Progress Circles ===== */
+        .skill-circle .pct {
+            text-shadow: 0 0 8px rgba(124, 45, 58, 0.1);
+            transition: all 0.6s cubic-bezier(0.2, 0.8, 0.5, 1);
+        }
+        .skill-circle.completed .pct {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; text-shadow: 0 0 8px rgba(124, 45, 58, 0.1); }
+            50% { opacity: 0.85; text-shadow: 0 0 16px rgba(124, 45, 58, 0.3); }
+        }
+
+        /* ===== Text Stagger Container ===== */
+        .text-stagger {
+            display: inline-block; overflow: hidden;
+        }
+        .text-stagger .char {
+            display: inline-block; opacity: 0;
+            transform: translateY(20px); transition: all 0.6s cubic-bezier(0.2, 0.8, 0.5, 1);
+        }
+
         @media (max-width: 1024px) {
-            .hero-container { grid-template-columns: 1fr; }
             .hero { padding: 4rem 4vw 3rem; }
             .form-grid { grid-template-columns: 1fr; }
             .page-indicator { display: none; }
@@ -1446,6 +1529,14 @@
     <!-- ===== Rever Termos Button ===== -->
     <button class="rever-termos" id="reverTermosBtn">
         <i data-feather="shuffle" width="12" height="12"></i> Revisar termos
+    </button>
+
+    <!-- ===== Custom Cursor ===== -->
+    <div class="custom-cursor" id="customCursor"></div>
+
+    <!-- ===== Audio Toggle ===== -->
+    <button class="audio-toggle" id="audioToggle" title="Ativar/Desativar sons">
+        <i data-feather="volume-2" width="18" height="18"></i>
     </button>
 
     <script>
@@ -2072,6 +2163,177 @@
         gsap.fromTo('.doc-card', { opacity: 0, y: 20 }, {
             opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
             scrollTrigger: { trigger: '.doc-card', start: 'top 90%', stagger: 0.1 }
+        });
+        // ===== Custom Cursor =====
+        (function() {
+            const cursor = document.getElementById('customCursor');
+            if (!cursor) return;
+            let mouseX = 0, mouseY = 0, posX = 0, posY = 0;
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX; mouseY = e.clientY;
+                cursor.classList.add('visible');
+            });
+            document.addEventListener('mouseleave', () => cursor.classList.remove('visible'));
+            const interactive = document.querySelectorAll('button, .card, .skill-card, .termo-card, .doc-card, .interest-tag, a, input');
+            interactive.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+            });
+            function animateCursor() {
+                posX += (mouseX - posX) * 0.12;
+                posY += (mouseY - posY) * 0.12;
+                cursor.style.transform = `translate(${posX}px, ${posY}px)`;
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
+        })();
+
+        // ===== Audio Feedback =====
+        (function() {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            let audioEnabled = localStorage.getItem('audioEnabled') !== 'false';
+            function playBeep(freq, dur) {
+                if (!audioEnabled || !audioCtx) return;
+                try {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.frequency.value = freq; osc.type = 'sine';
+                    gain.gain.setValueAtTime(0.008, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+                    osc.start(); osc.stop(audioCtx.currentTime + dur);
+                } catch(e) {}
+            }
+            document.addEventListener('mouseover', (e) => {
+                if (e.target.closest('button, .card, .skill-card, .termo-card, .doc-card, .interest-tag')) playBeep(440, 0.05);
+            }, true);
+            document.addEventListener('click', (e) => {
+                const el = e.target.closest('button');
+                if (el) playBeep(660, 0.06);
+            });
+            window.addEventListener('termoVoted', () => playBeep(880, 0.08));
+            const audioToggle = document.getElementById('audioToggle');
+            audioToggle.addEventListener('click', () => {
+                audioEnabled = !audioEnabled;
+                localStorage.setItem('audioEnabled', audioEnabled);
+                const icon = audioToggle.querySelector('i');
+                icon.setAttribute('data-feather', audioEnabled ? 'volume-2' : 'volume-x');
+                feather.replace({ 'aria-hidden': 'true' });
+                if (audioEnabled) playBeep(523, 0.1);
+            });
+        })();
+
+        // ===== 3D Photo Frame Mouse Parallax =====
+        (function() {
+            const frame = document.querySelector('.photo-frame');
+            if (!frame) return;
+            frame.classList.add('photo-3d');
+            document.addEventListener('mousemove', (e) => {
+                const rect = frame.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                frame.style.transform = `perspective(1500px) rotateY(${x * 8}deg) rotateX(${-y * 5}deg)`;
+            });
+            document.addEventListener('mouseleave', () => {
+                frame.style.transform = '';
+            });
+        })();
+
+        // ===== Background Mesh Canvas =====
+        (function() {
+            const canvas = document.createElement('canvas');
+            canvas.id = 'bgMesh';
+            document.body.appendChild(canvas);
+            const ctx = canvas.getContext('2d');
+            let nodes = [];
+            const nodeCount = 60;
+            function init() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                nodes = Array.from({ length: nodeCount }, () => ({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.15,
+                    vy: (Math.random() - 0.5) * 0.15,
+                }));
+            }
+            let mouse = { x: null, y: null };
+            document.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX; mouse.y = e.clientY;
+            });
+            document.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const accent = getComputedStyle(root).getPropertyValue('--accent').trim();
+                ctx.strokeStyle = accent;
+                ctx.lineWidth = 0.6;
+                ctx.globalAlpha = 0.12;
+                for (let i = 0; i < nodes.length; i++) {
+                    const n = nodes[i];
+                    n.x += n.vx; n.y += n.vy;
+                    if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+                    if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+                    if (mouse.x !== null) {
+                        const dx = mouse.x - n.x, dy = mouse.y - n.y;
+                        n.vx += dx * 0.00003; n.vy += dy * 0.00003;
+                    }
+                    for (let j = i + 1; j < nodes.length; j++) {
+                        const m = nodes[j];
+                        const dist = Math.hypot(n.x - m.x, n.y - m.y);
+                        if (dist < 120) {
+                            ctx.globalAlpha = Math.max(0, 0.12 - dist / 120 * 0.12);
+                            ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(m.x, m.y); ctx.stroke();
+                        }
+                    }
+                }
+                ctx.globalAlpha = 1;
+                requestAnimationFrame(animate);
+            }
+            init(); animate();
+            window.addEventListener('resize', init);
+        })();
+
+        // ===== Text Stagger on Scroll =====
+        (function() {
+            const staggerEls = document.querySelectorAll('.section-title, .hero-text h1, .hero-subtitle');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const text = entry.target.textContent.trim();
+                        entry.target.innerHTML = text.split('').map(c => `<span class="char">${c === ' ' ? '&nbsp;' : c}</span>`).join('');
+                        const chars = entry.target.querySelectorAll('.char');
+                        chars.forEach((c, i) => {
+                            setTimeout(() => { c.style.opacity = '1'; c.style.transform = 'translateY(0)'; }, i * 30);
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.6 });
+            staggerEls.forEach(el => observer.observe(el));
+        })();
+
+        // ===== Enhanced Progress Circles =====
+        (function() {
+            const circles = document.querySelectorAll('.skill-circle');
+            const circleObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => entry.target.classList.add('completed'), 900);
+                        circleObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.6 });
+            circles.forEach(c => circleObserver.observe(c));
+        })();
+
+        // ===== Add termoVoted event to existing termo handler =====
+        const _origTermoCards = document.querySelectorAll('.termo-card');
+        _origTermoCards.forEach(card => {
+            card.addEventListener('click', () => {
+                if (card.classList.contains('selected')) {
+                    window.dispatchEvent(new CustomEvent('termoVoted'));
+                }
+            });
         });
     </script>
 </body>
