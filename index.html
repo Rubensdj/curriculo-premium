@@ -100,6 +100,47 @@
             opacity: 0.12; transition: opacity 0.4s ease;
         }
 
+        /* ===== Hero Background ===== */
+        .hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: url('../img/hero.jpg') center/cover no-repeat fixed;
+            opacity: 0.12; z-index: -1;
+        }
+        @media (max-width: 768px) {
+            .hero::before { background-attachment: scroll; opacity: 0.08; }
+        }
+
+        /* ===== Gallery Section ===== */
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem; margin-top: 1.5rem;
+        }
+        .gallery-item {
+            position: relative; border-radius: var(--radius);
+            overflow: hidden; cursor: pointer;
+            transform: translateZ(0); transition: all 0.4s cubic-bezier(0.2, 0.8, 0.5, 1);
+        }
+        .gallery-item img {
+            width: 100%; height: 180px; object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .gallery-item:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+        .gallery-item:hover img { transform: scale(1.1); }
+        .gallery-item::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, var(--accent), transparent);
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .gallery-item:hover::after { opacity: 0.15; }
+
+        @media (max-width: 768px) {
+            .gallery-item:hover { transform: none; }
+            .gallery-item:hover img { transform: none; }
+        }
+
         /* ===== SVG Decorative Waves ===== */
         .decorative-wave {
             position: fixed; bottom: 0; left: 0; width: 100%; height: 100px;
@@ -1003,7 +1044,20 @@
             transform: translateY(20px); transition: all 0.6s cubic-bezier(0.2, 0.8, 0.5, 1);
         }
 
-        /* ===== Mobile-First Base ===== */
+    /* ===== Lightbox ===== */
+    .lightbox {
+        position: fixed; inset: 0; z-index: 9999;
+        display: flex; flex-direction: column; align-items: center;
+        justify-content: center; background: rgba(0,0,0,0.8);
+        opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    }
+    .lightbox.visible { opacity: 1; pointer-events: all; }
+    .lb-close {
+        position: absolute; top: 2rem; right: 2rem;
+        color: #fff; cursor: pointer; z-index: 10000;
+    }
+
+    /* ===== Mobile-First Base ===== */
         @media (hover: none) and (pointer: coarse) {
             .custom-cursor { display: none; }
             .audio-toggle { bottom: 110px; }
@@ -1081,6 +1135,13 @@
 </head>
 <body>
 
+    <!-- ===== Lightbox ===== -->
+    <div class="lightbox" id="lb">
+        <span class="lb-close"><i data-feather="x" width="20" height="20"></i></span>
+        <img src="" alt="" style="max-width:90vw;max-height:90vh;border-radius:12px;box-shadow:0 30px 60px -15px rgba(0,0,0,0.3);">
+        <span class="lb-caption" style="color:#fff;font-size:0.85rem;margin-top:0.8rem;display:block;text-align:center;"></span>
+    </div>
+
     <!-- ===== Canvas Particles ===== -->
     <canvas id="particleCanvas"></canvas>
 
@@ -1146,6 +1207,7 @@
         <div class="dot" data-label="Sobre mim" onclick="scrollToSection('sobre-mim')"></div>
         <div class="dot" data-label="Termos" onclick="scrollToSection('termos')"></div>
         <div class="dot" data-label="Documentos" onclick="scrollToSection('documentos')"></div>
+        <div class="dot" data-label="Galeria" onclick="scrollToSection('galeria')"></div>
         <div class="dot" data-label="Contato" onclick="scrollToSection('contato')"></div>
     </div>
 
@@ -1166,6 +1228,7 @@
             <a href="#sobre-mim">Sobre mim</a>
                         <a href="#termos">Termos</a>
             <a href="#documentos">Documentos</a>
+            <a href="#galeria">Galeria</a>
             <a href="#contato">Contato</a>
         </div>
         <div class="nav-actions">
@@ -1497,6 +1560,39 @@
                 </div>
                 <div class="pdf-embed" id="pdfEmbed">
                     <iframe id="pdfFrame" title="Visualizador de PDF"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== GALERIA ===== -->
+        <section class="section" id="galeria">
+            <span class="sticky-badge">Galeria</span>
+            <div class="section-header">
+                <p class="section-label">Momentos</p>
+                <div class="section-divider"></div>
+                <h2 class="section-title">Um pouco do que me inspira.</h2>
+            </div>
+            <div class="section-body">
+                <p class="drop-cap">Nada melhor que uma cena bem feita — seja o cheiro da cebola dourando na frigideira, o sol de Recife caindo sobre o mar, ou o silêncio certo pra tocar violão. Estas são as fotos que melembra são:</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item" onclick="openLightbox('img/scene-coffee.jpg', 'Café da manhã matinal')" data-caption="Café da manhã matinal">
+                    <img src="img/scene-coffee.jpg" alt="Café da manhã">
+                </div>
+                <div class="gallery-item" onclick="openLightbox('img/scene-food.jpg', 'Cozinha em ação')" data-caption="Cozinha em ação">
+                    <img src="img/scene-food.jpg" alt="Cozinha">
+                </div>
+                <div class="gallery-item" onclick="openLightbox('img/scene-nature.jpg', 'Horta da janela')" data-caption="Horta da janela">
+                    <img src="img/scene-nature.jpg" alt="Plantas">
+                </div>
+                <div class="gallery-item" onclick="openLightbox('img/scene-music.jpg', 'Violão e silêncio')" data-caption="Violão e silêncio">
+                    <img src="img/scene-music.jpg" alt="Música">
+                </div>
+                <div class="gallery-item" onclick="openLightbox('img/scene-city.jpg', 'Recife ao entardecer')" data-caption="Recife ao entardecer">
+                    <img src="img/scene-city.jpg" alt="Recife">
+                </div>
+                <div class="gallery-item" onclick="openLightbox('img/scene-sunset.jpg', 'Pôr do sol')" data-caption="Pôr do sol">
+                    <img src="img/scene-sunset.jpg" alt="Pôr do sol">
                 </div>
             </div>
         </section>
@@ -1948,7 +2044,7 @@
             document.getElementById('scrollProgress').style.transform = `scaleX(${(scrollY / Math.max(docHeight, 1))})`;
 
             const dots = document.querySelectorAll('.page-indicator .dot');
-            const sections = ['sobre', 'habilidades', 'sobre-mim', 'termos', 'documentos', 'contato'];
+                const sections = ['sobre', 'habilidades', 'sobre-mim', 'termos', 'documentos', 'galeria', 'contato'];
             dots.forEach((dot, i) => {
                 const s = document.getElementById(sections[i]);
                 if (s) {
@@ -2461,10 +2557,24 @@
             window.addEventListener('resize', resizeFonts);
         })();
 
-        // ===== Prevent scroll-bounce on iOS =====
-        document.body.style.overflow = 'hidden';
-        const scrollable = document.querySelector('main');
-        if (scrollable) scrollable.style.overflow = 'auto';
+        // ===== Lightbox =====
+        const lb = document.getElementById('lb');
+        if (lb) {
+            function openLightbox(img, caption) {
+                lb.querySelector('img').src = img;
+                lb.querySelector('.lb-caption').textContent = caption;
+                lb.classList.add('visible');
+                document.body.style.overflow = 'hidden';
+            }
+            function closeLightbox() {
+                lb.classList.remove('visible');
+                document.body.style.overflow = '';
+            }
+            lb.addEventListener('click', closeLightbox);
+            lb.querySelector('img').addEventListener('click', closeLightbox);
+            window.openLightbox = openLightbox;
+            window.closeLightbox = closeLightbox;
+        }
 
     </script>
 </body>
