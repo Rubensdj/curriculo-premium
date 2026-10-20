@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrato de Relacionamento — Rubens Pereira Fernandes</title>
+    <meta name="theme-color" content="#f6f7f9">
+    <meta name="description" content="Contrato de relacionamento sério entre Rubens e você. Fundamentado em Deus, lealdade e propósito.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --bg: #f6f7f9; --bg-card: #ffffff; --text: #1a1a1a;
+            --text-2: #4b5563; --text-3: #6b7280;
+            --accent: #7c2d3a; --accent-light: #9b4150;
+            --border: rgba(124, 45, 58, 0.12);
+            --shadow: 0 1px 3px rgba(0,0,0,0.03), 0 2px 4px -1px rgba(0,0,0,0.02);
+            --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.06), 0 4px 6px -2px rgba(0,0,0,0.03);
+            --radius: 14px; --radius-lg: 20px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg); color: var(--text); overflow-x: hidden;
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+        }
+        @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+        ::selection { background: var(--accent); color: #fff; }
+
+        /* ===== LOADER ===== */
+        .loader-screen {
+            position: fixed; inset: 0; background: var(--bg); z-index: 99999;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 1; transition: opacity 0.5s ease;
+        }
+        .loader-screen.hidden { opacity: 0; pointer-events: none; }
+
+        /* ===== PASSWORD GATE ===== */
+        .password-gate {
+            position: fixed; inset: 0; z-index: 100000;
+            background: var(--bg); display: flex;
+            align-items: center; justify-content: center;
+            opacity: 1; pointer-events: all;
+            transition: opacity 0.5s ease;
+        }
+        .password-gate.hidden { opacity: 0; pointer-events: none; }
+        .password-content {
+            text-align: center; max-width: 360px;
+        }
+        .password-content .lock-icon {
+            width: 64px; height: 64px; margin: 0 auto 1.5rem;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; background: var(--bg-alt);
+            border: 2px solid var(--border); color: var(--accent);
+        }
+        .password-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem; font-style: italic;
+            color: var(--accent); margin-bottom: 0.5rem;
+        }
+        .password-content p {
+            font-size: 0.82rem; color: var(--text-2);
+            margin-bottom: 1rem; line-height: 1.5;
+        }
+        .password-content input {
+            width: 100%; padding: 0.6rem 1rem; border-radius: 10px;
+            border: 1.5px solid var(--border); background: var(--bg-card);
+            color: var(--text); font-family: 'Inter', sans-serif;
+            font-size: 0.9rem; text-align: center; letter-spacing: 0.1em;
+            transition: all 0.2s ease; margin-bottom: 0.8rem;
+            font-feature-settings: 'tnum';
+        }
+        .password-content input:focus {
+            outline: none; border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(124, 45, 58, 0.08);
+        }
+        .password-content .btn-primary {
+            width: 100%; padding: 0.6rem 1.5rem;
+        }
+        .password-error {
+            font-size: 0.72rem; color: #e74c60; margin-top: 0.4rem;
+            opacity: 0; transition: opacity 0.2s ease;
+        }
+        .password-error.show { opacity: 1; }
+
+        /* ===== NAVIGATION ===== */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 1.2rem 3rem; display: flex; justify-content: center;
+            backdrop-filter: blur(20px); background: rgba(246, 247, 249, 0.8);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav a {
+            font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 400; font-style: italic;
+            color: var(--text); text-decoration: none; letter-spacing: -0.01em;
+        }
+        .nav a .hl { color: var(--accent); }
+        .page-label {
+            position: absolute; top: 1.2rem; right: 3rem;
+            font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em;
+            color: var(--text-3);
+        }
+        @media (max-width: 768px) { .nav { padding: 1rem 1.5rem; } .page-label { right: 1.5rem; } }
+
+        /* ===== JOURNAL HEADER ===== */
+        .journal-header {
+            text-align: center; padding: 0.6rem 1.5rem;
+            border-bottom: 1px solid var(--border); margin-bottom: 1.8rem;
+        }
+        .journal-header .line1 {
+            font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em;
+            color: var(--text-3); margin-bottom: 0.1rem;
+        }
+        .journal-header .line2 {
+            font-size: 0.62rem; color: var(--text-3); font-style: italic; margin-bottom: 0.3rem;
+        }
+        .journal-header .line3 {
+            font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em;
+            color: var(--accent); font-weight: 700;
+        }
+
+        /* ===== DOCUMENTO ===== */
+        .doc {
+            max-width: 960px; margin: 0 auto; padding: 5rem 2rem 6rem;
+        }
+        .doc-header {
+            text-align: center; margin-bottom: 3rem; padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .doc-meta {
+            font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em;
+            color: var(--text-3); margin-bottom: 0.5rem;
+        }
+        .doc-num {
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em;
+            color: var(--accent); font-weight: 700; margin-bottom: 0.4rem;
+        }
+        .doc-title {
+            font-family: 'Playfair Display', serif; font-size: clamp(1.7rem, 4vw, 2.2rem);
+            font-weight: 400; letter-spacing: -0.015em; margin-bottom: 0.3rem;
+        }
+        .doc-title .hl { color: var(--accent); font-style: italic; }
+        .doc-sub {
+            font-size: 0.78rem; color: var(--text-2); font-weight: 300; font-style: italic;
+        }
+
+        /* ===== PREAMBULO ===== */
+        .preambulo {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow);
+            margin-bottom: 2.5rem;
+        }
+        .preambulo p {
+            font-size: 0.86rem; line-height: 1.7; color: var(--text-2); font-weight: 300;
+            text-align: justify; text-justify: inter-word;
+        }
+        .preambulo .highlight {
+            color: var(--accent); font-weight: 500; font-style: italic;
+        }
+        .preambulo .sub-p {
+            margin-top: 1.2rem; font-size: 0.83rem; color: var(--text-2);
+        }
+
+        /* ===== TERMOS ===== */
+        .termos-block {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); padding: 2.2rem; box-shadow: var(--shadow);
+            margin-bottom: 2.5rem;
+        }
+        .termos-block h3 {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--accent);
+            text-align: center; margin-bottom: 1.8rem; letter-spacing: 0.03em;
+        }
+        .termo-list { list-style: none; }
+        .termo-list li {
+            display: flex; gap: 0.9rem; padding: 0.7rem 0;
+            border-bottom: 1px solid rgba(124,45,58,0.05); font-size: 0.84rem; line-height: 1.5;
+        }
+        .termo-list li:last-child { border-bottom: none; }
+        .termo-list .num {
+            font-family: 'Playfair Display', serif; font-weight: 700; color: var(--accent);
+            font-size: 1.05rem; min-width: 32px;
+        }
+        .termo-list .txt { color: var(--text-2); }
+        .termo-list .txt strong { color: var(--text); }
+
+        /* ===== CLÁUSULAS ===== */
+        .clausula {
+            margin-bottom: 1.8rem; padding: 1.6rem 2rem;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0;
+            box-shadow: var(--shadow);
+        }
+        .clausula:hover { border-left-color: var(--accent-light); transform: translateX(2px); box-shadow: var(--shadow-lg); transition: all 0.2s ease; }
+        .clausula-num {
+            font-family: 'Playfair Display', serif; font-size: 0.85rem; color: var(--accent);
+            font-weight: 700; letter-spacing: 0.06em; margin-bottom: 0.6rem;
+        }
+        .clausula h4 {
+            font-family: 'Playfair Display', serif; font-size: 0.92rem; color: var(--text);
+            font-weight: 600; margin-bottom: 1rem; letter-spacing: -0.005em;
+        }
+        .clausula p {
+            font-size: 0.83rem; line-height: 1.7; color: var(--text-2); font-weight: 300;
+            text-align: justify; text-justify: inter-word; margin-bottom: 0.7rem;
+        }
+        .clausula ol { padding-left: 1.4rem; margin-top: 0.5rem; }
+        .clausula li {
+            margin-bottom: 0.3rem; font-size: 0.83rem; line-height: 1.6; color: var(--text-2);
+            text-align: justify;
+        }
+
+        /* ===== ANEXO ===== */
+        .anexo {
+            margin-top: 2.5rem; padding: 2rem; background: var(--bg);
+            border: 1px solid var(--border); border-radius: var(--radius);
+        }
+        .anexo h4 {
+            margin-bottom: 1rem; color: var(--accent); font-family: 'Playfair Display', serif;
+            font-size: 0.95rem; text-align: center; letter-spacing: 0.03em;
+        }
+        .anexo-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+        }
+        .anexo li {
+            font-size: 0.82rem; line-height: 1.6; color: var(--text-2);
+            padding: 0.2rem 0;
+        }
+        .anexo li strong { color: var(--text); }
+
+        /* ===== ASSINATURAS ===== */
+        .assinatura { margin-top: 3rem; padding-top: 2.5rem; border-top: 1px solid var(--border); }
+        .campo-assinatura {
+            text-align: center; margin-bottom: 2.5rem; padding: 1.5rem;
+            background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+        }
+        .campo-assinatura .linha-nome {
+            border-bottom: 1px solid var(--text-3); margin: 0 auto 0.6rem;
+            height: 32px; width: 85%;
+        }
+        .campo-assinatura .linha-cpf {
+            border-bottom: 1px dashed var(--text-3); margin: 0 auto 0.6rem;
+            height: 24px; width: 55%;
+        }
+        .campo-assinatura .linha-data {
+            border-bottom: 1px dashed var(--text-3); margin: 0 auto 0.4rem;
+            height: 22px; width: 25%;
+        }
+        .campo-assinatura p { font-size: 0.72rem; color: var(--text-3); }
+        .campo-assinatura .role { font-weight: 600; color: var(--text); font-size: 0.82rem; }
+
+        .testemunha {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;
+        }
+        .testemunha .campo { text-align: center; padding: 1.2rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); }
+        .testemunha .campo .linha {
+            border-bottom: 1px solid var(--text-3); margin: 0 auto 0.4rem; height: 28px; width: 90%;
+        }
+        .testemunha .campo .role { font-size: 0.72rem; color: var(--text-3); }
+        .data-local { text-align: center; margin-top: 2rem; font-size: 0.8rem; color: var(--text-3); letter-spacing: 0.03em; }
+
+        /* ===== ACTIONS ===== */
+        .actions-bottom { text-align: center; margin-top: 2.5rem; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.7rem 2rem; border-radius: 60px; font-size: 0.8rem;
+            font-weight: 500; text-decoration: none; letter-spacing: 0.02em;
+            transition: all 0.2s ease; font-family: inherit; border: none; cursor: pointer;
+        }
+        .btn-primary { background: var(--accent); color: #fff; }
+        .btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,45,58,0.25); }
+        .btn-ghost {
+            background: transparent; color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-ghost:hover { border-color: var(--accent); background: rgba(124,45,58,0.03); }
+
+        /* ===== FOOTER ===== */
+        .footer { padding: 2rem 3rem; text-align: center; border-top: 1px solid var(--border); color: var(--text-3); font-size: 0.7rem; }
+        .footer a { color: var(--text-2); text-decoration: none; }
+        .footer a:hover { color: var(--accent); }
+
+        @media (max-width: 768px) {
+            .doc { padding: 4rem 1rem 4rem; }
+            .nav { padding: 1rem 1.5rem; }
+            .clausula { padding: 1.2rem 1.4rem; }
+            .anexo-grid { grid-template-columns: 1fr; }
+            .testemunha { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== PASSWORD GATE ===== -->
+    <div class="password-gate" id="passwordGate">
+        <div class="password-content">
+            <div class="lock-icon">
+                <i data-feather="lock" width="24" height="24"></i>
+            </div>
+            <h3>Acesso Restrito</h3>
+            <p>Este contrato é particular e protegido. Digite a senha para acessar.</p>
+            <input type="password" id="passwordInput" placeholder="_ _ _ _ _ _" maxlength="6" autocomplete="off">
+            <button class="btn btn-primary" id="passwordSubmit">
+                <i data-feather="log-in" width="14" height="14"></i> Acessar
+            </button>
+            <div class="password-error" id="passwordError">Senha incorreta. Tente novamente.</div>
+        </div>
+    </div>
+
+    <!-- ===== LOADER ===== -->
+    <div class="loader-screen" id="loader">
+        <span class="loader-text">CONTRATO</span>
+    </div>
+
+    <!-- ===== NAV ===== -->
+    <nav class="nav">
+        <span class="page-label">Jornal · Direito · Vol. 1 · Nº 1</span>
+        <a href="index.html">Rubens <span class="hl">· Contrato</span></a>
+    </nav>
+
+    <!-- ===== JOURNAL HEADER ===== -->
+    <div class="journal-header">
+        <p class="line1">Rubens · Relacionamento Pessoal · Recife, 2026</p>
+        <p class="line2">Documento particular — feito de mão, não de template</p>
+        <p class="line3">Confidencial — para [nome] e Rubens</p>
+    </div>
+
+    <!-- ===== DOCUMENTO ===== -->
+    <main class="doc">
+
+        <!-- HEADER -->
+        <div class="doc-header">
+            <p class="doc-meta">Rubens Pereira Fernandes · Recife, Pernambuco · Brasil</p>
+            <p class="doc-num">CONTRATO 001/2026</p>
+            <h1 class="doc-title">CONTRATO DE <span class="hl">RELACIONAMENTO</span></h1>
+            <p class="doc-sub">Cláusulas e Condições Para Uma Vida Compartilhada</p>
+        </div>
+
+        <!-- PREAMBULO -->
+        <div class="preambulo">
+            <p>
+                Eu, Rubens, escrevo isso com o coração na mão. Não é contrato de burocracia —
+                é um "eu quero" escrito, com Deus no centro. <strong>Este aqui é o meu jeito</strong>
+                de dizer: quero construir algo sério, com sério potencial de virar família.
+            </p>
+            <p class="sub-p">
+                Não copiei nada disso de ninguém. É o que eu vivo, o que eu acredito, o que eu ofereço.
+                Cada regra aqui foi pensada pra gente não confundir depois.
+            </p>
+        </div>
+
+        <!-- TERMOS FUNDAMENTAIS -->
+        <div class="termos-block">
+            <h3>TERMOS FUNDAMENTAIS</h3>
+            <ul class="termo-list">
+                <li><span class="num">1.</span><span class="txt"><strong>Nunca iremos dormir brigados.</strong> Sempre resolvemos antes de apagar a luz. Se o dia ainda não acalma, combinamos: "resolvemos de manhã".</span></li>
+                <li><span class="num">2.</span><span class="txt"><strong>Não seremos suscetíveis.</strong> Falamos com calma, sem exagerar no que sentimos. Emoção forte não é isca para briga.</span></li>
+                <li><span class="num">3.</span><span class="txt"><strong>Nunca gritar alto um com o outro.</strong> A voz serve para chamar, acalmar, amar — nunca para ferir.</span></li>
+                <li><span class="num">4.</span><span class="txt"><strong>Se um passar por momentos difíceis, o outro estará do lado.</strong> Apoiamos sem julgamento, ouvimos sem minimizar.</span></li>
+                <li><span class="num">5.</span><span class="txt"><strong>Sempre concordaremos em públicos.</strong> A unidade é nossa força. Fora dela, a gente se perde.</span></li>
+                <li><span class="num">6.</span><span class="txt"><strong>Diremos "eu te amo" um para o outro, mesmo brigado.</strong> O amor não dorme. Mesmo na tristeza, o afeto se confirma.</span></li>
+                <li><span class="num">7.</span><span class="txt"><strong>Deus sempre será o centro e a base</strong> deste relacionamento. Sem Ele, nada é possível.</span></li>
+            </ul>
+        </div>
+
+        <!-- CLÁUSULAS -->
+
+        <div class="clausula">
+            <p class="clausula-num">CLÁUSULA 1ª — DAS PARTES</p>
+            <h4>Quem assina aqui.</h4>
+            <p>
+                <strong>CONTRATANTE:</strong> Rubens Pereira Fernandes, 26 anos, nascido em 19 de maio de 2000,
+                Touro, natural e residente em Recife, Pernambuco, solteiro, filho de
+                comerciantes, criado com os valores da família, trabalho honesto e fé.
+            </p>
+            <p>
+                <strong>CONTRATADA:</strong> Você, que está lendo isso agora. Se concorda com cada ponto,
+                assina logo abaixo. Seu nome e contato vão aqui.
+            </p>
+        </div>
+
+        <div class="clausula">
+            <p class="clausula-num">CLÁUSULA 2ª — DO OBJETO</p>
+            <h4>Por que esse contrato existe.</h4>
+            <p>
+                Esse documento é o meu plano de relacionamento. Quero algo sério, com futuro,
+                onde a gente cresce juntos. Se Deus quiser, vira família.
+                Pra isso funcionar, precisa ter regras claras e gente falando direito.
+            </p>
+        </div>
+
+        <div class="clausula">
+            <p class="clausula-num">CLÁUSULA 3ª — DOS DEVERES MUTUOS</p>
+            <h4>Obrigações de fidelidade, cuidado e respeito compartilhado.</h4>
+            <ol>
+                <li>Ambas as partes se comprometem à exclusividade — <strong>fidelidade em pensamentos, palavras e ações</strong>.</li>
+                <li><strong>Comunicação direta</strong>: dizer o que sente, sem jogar cadera, sem artimanhas.</li>
+                <li>A <strong>presença física e emocional</strong>: não sumir sem avisar, não se fechar sem tentar abrir.</li>
+                <li>A <strong>respeita a individualidade</strong> da outra: espaço, amizades, sonhos. Nada de posse, tudo de escolha.</li>
+                <li>A <strong>divisão justa das tarefas domésticas</strong>: cozinhar, arrumar, limpar — ninguém é dono do trabalho.</li>
+                <li>A <strong>fidelidade financeira</strong>: gastar com responsabilidade, planejar juntos, nem que seja devagar.</li>
+                <li>A <strong>resolução de conflitos sem violência</strong>: não levantar a voz, não dizer crueldade, não silenciar.</li>
+            </ol>
+        </div>
+
+        <div class="clausula">
+            <p class="clausula-num">CLÁUSULA 4ª — DAS REGRAS DE CONVIVÊNCIA</p>
+            <h4>Como a gente vai viver o dia a dia.</h4>
+            <p>Essas regras aqui guiam o cotidiano. A gente revisa de vez em quando pra ver se tá tudo certo.</p>
+            <ol>
+                <li><strong>Respeito ao tempo um do outro:</strong> não se atropassar, nem se exigir demais. Vida real tem imprevistos.</li>
+                <li><strong>Decisões em pares:</strong> questões que afetam os dois — dinheiro, casa, planos — decidem-se juntos, sem maioria.</li>
+                <li><strong>Conversa antes do julgamento:</strong> se algo incomodar, fala primeiro. Não carregue rancor em silêncio.</li>
+                <li><strong>Intimidade sob consentimento:</strong> o corpo e o afeto são livres, nunca forçados. "Não" é sempre uma resposta válida.</li>
+                <li><strong>Lidar com o ambiente familiar:</strong> respeitar os dois laços familiares, sem dominar ou anular.</li>
+            </ol>
+        </div>
+
+        <div class="clausula">
+            <p class="clausula-num">CLÁUSULA 5ª — DAS VEDAÇÕES E LIMITES</p>
+            <h4>O que eu NÃO aceito.</h4>
+            <p>É isso aqui que não rola, de jeito nenhum:</p>
+            <ol>
+                <li><strong>Traição</strong>, de qualquer natureza — emoional, física, financeira ou espiritual.</li>
+                <li><strong>Mentiras ou omissões relevantes</strong> sobre passado, presente ou intenções.</li>
+                <li><strong>Agressão física ou verbal</strong> — palavra ou ação. Zero tolerância.</li>
+                <li><strong>Ciúmes doentiosos</strong> ou controle excessivo — não se ama por posse, se ama por escolha.</li>
+                <li><strong>Compartilhar intimidades terceiros</strong> — o que vive entre nós fica entre nós.</li>
+                <li><strong>Desrespeitar a família</strong> da outra parte — ela é parte da história.</li>
+                <li><strong>Gastos descontrolados</strong> ou investimentos unilaterais sem conversa.</li>
+                <li><strong>Isolamento</strong> — um não puxa o outro para fugir do mundo. O relacionamento não é prisão.</li>
+            </ol>
+        </div>
+
+        <div class="clausula">
+            <p class="clausula-num">CLÁUSULA 6ª — DA VIGÊNCIA E REVISÃO</p>
+            <h4>Quanto tempo dura e como a gente atualiza.</h4>
+            <p>
+                Esse contrato começa quando a gente assina e dura... enquanto faz sentido.
+                A gente revisa a cada 6 meses pra ver se tá tudo certo.
+                Se o que escrevemos não serve mais, a gente atualiza — juntos.
+            </p>
+        </div>
+
+        <div class="clausula">
+            <p class="clausula-num">CLÁUSULA 7ª — DA RESCISÃO</p>
+            <h4>Se um dia der errado.</h4>
+            <p>Se um dia não der mais certo:</p>
+            <ol>
+                <li><strong>Conversa antes de qualquer decisão</strong> — jamais de surpresa, de texto ou de silêncio.</li>
+                <li><strong>Buscar reconciliação</strong> — se houver espaço, um tentativa clara com apoio externo (terapeuta).</li>
+                <li><strong>Respeito total no despedida</strong> — palavras gentis, tempo de ajuste, nada de ofensas.</li>
+                <li><strong>Divisão pacata dos bens</strong> — como nasceu, cada um leva. Nada de disputa.</li>
+                <li><strong>Confidencialidade pós-relacionamento</strong> — não se fala mal, não se expõe.</li>
+            </ol>
+        </div>
+
+        <div class="clausula">
+            <p class="clausula-num">CLÁUSULA 8ª — DAS DISPOSIÇÕES FINAIS</p>
+            <h4>Coisa que não cabe em outro lugar.</h4>
+            <ol>
+                <li>A <strong>fé em Deus</strong> é a base — oração, gratidão e esperança não são negociáveis.</li>
+                <li>Esse documento vale mais que promessas verbais.</li>
+                <li>Qualquer <strong>alteração</strong> precisa ser feita por escrito, assinada por duas.</li>
+                <li>Se <strong>alguma cláusula não servir</strong>, o resto continua. A gente se ajusta.</li>
+                <li>Esse contrato <strong>já começa a valer</strong> desde que você concorde — não precisa de assinatura formal pra isso.</li>
+            </ol>
+        </div>
+
+        <!-- ANEXO -->
+        <div class="anexo">
+            <h4>ANEXO ÚNICO — FICHA DE QUALIFICAÇÃO DO CONTRATANTE</h4>
+            <div class="anexo-grid">
+                <div>
+                    <p><strong>Nome completo:</strong> Rubens Pereira Fernandes</p>
+                    <p><strong>Nascimento:</strong> 19 de maio de 2000 (26 anos)</p>
+                    <p><strong>Signo:</strong> Touro</p>
+                    <p><strong>Altura:</strong> 171 cm — <strong>Peso:</strong> 69 kg</p>
+                    <p><strong>Cidade:</strong> Recife, Pernambuco</p>
+                    <p><strong>Status civil:</strong> Solteiro</p>
+                </div>
+                <div>
+                    <p><strong>Vida:</strong> Solteiro. Trabalha com tecnologia.</p>
+                    <p><strong>Paixões:</strong> Cozinhar, cuidar de plantas, consertar, massagem, tocar violão</p>
+                    <p><strong>Vícios:</strong> Nenhum — não bebo, não fumo</p>
+                    <p><strong>Crença:</strong> Cristão — Deus no centro de tudo</p>
+                    <p><strong>Objetivo:</strong> Construir uma vida com alguém com quem dividir valores</p>
+                    <p><strong>CPF:</strong> 000.000.000-00</p>
+                    <p><strong>WhatsApp:</strong> (81) 9 00000-0000</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ASSINATURAS -->
+        <div class="assinatura">
+
+            <div class="campo-assinatura">
+                <div class="linha-nome"></div>
+                <p class="role">CONTRATANTE</p>
+                <p>Rubens Pereira Fernandes</p>
+                <div class="linha-cpf"></div>
+                <p>CPF</p>
+                <div class="linha-data"></div>
+                <p>Data da assinatura</p>
+            </div>
+
+            <div class="campo-assinatura">
+                <div class="linha-nome"></div>
+                <p class="role">CONTRATADA</p>
+                <p>Nome completo da contratada</p>
+                <div class="linha-cpf"></div>
+                <p>CPF</p>
+                <div class="linha-data"></div>
+                <p>Data da assinatura</p>
+            </div>
+
+            <!-- TESTEMUNHAS -->
+            <div class="testemunha">
+                <div class="campo">
+                    <div class="linha"></div>
+                    <p class="role">Testemunha 1</p>
+                </div>
+                <div class="campo">
+                    <div class="linha"></div>
+                    <p class="role">Testemunha 2</p>
+                </div>
+            </div>
+
+            <div class="data-local">
+                Recife, <span id="dataAtual"></span>
+            </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="actions-bottom">
+            <a href="index.html" class="btn btn-ghost">← Voltar ao perfil</a>
+            <button class="btn btn-primary" onclick="window.print()">Imprimir contrato</button>
+        </div>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <a href="https://github.com/Rubensdj/curriculo-premium" target="_blank">curriculo-premium</a>
+        <span>&copy; 2026 Rubens Pereira Fernandes · Recife, PE</span>
+    </footer>
+
+    <script>
+        // Loader
+        const loaderEl = document.getElementById('loader');
+        setTimeout(() => { loaderEl.style.display = 'none'; }, 400);
+
+        // Password Gate
+        const CORRECT_PASSWORD = '481445';
+        const passwordGate = document.getElementById('passwordGate');
+        const passwordInput = document.getElementById('passwordInput');
+        const passwordSubmit = document.getElementById('passwordSubmit');
+        const passwordError = document.getElementById('passwordError');
+
+        if (sessionStorage.getItem('contractAccess') === 'granted') {
+            passwordGate.classList.add('hidden');
+        }
+
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        passwordSubmit.addEventListener('click', checkPassword);
+
+        function checkPassword() {
+            const entered = passwordInput.value.trim();
+            if (entered === CORRECT_PASSWORD) {
+                sessionStorage.setItem('contractAccess', 'granted');
+                passwordGate.classList.add('hidden');
+                setTimeout(() => {
+                    passwordGate.style.display = 'none';
+                }, 500);
+            } else {
+                passwordError.classList.add('show');
+                passwordInput.value = '';
+                passwordInput.focus();
+                setTimeout(() => {
+                    passwordError.classList.remove('show');
+                }, 2000);
+            }
+        }
+
+        // Date
+        document.getElementById('dataAtual').textContent =
+            new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+
+        // GSAP
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.fromTo('.doc-header', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.3 });
+        gsap.fromTo('.preambulo', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.5 });
+        gsap.fromTo('.termos-block', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.6, scrollTrigger: { trigger: '.termos-block', start: 'top 90%' } });
+        gsap.utils.toArray('.clausula').forEach((cl, i) => {
+            gsap.fromTo(cl, { opacity: 0, x: -15 }, {
+                opacity: 1, x: 0, duration: 0.5, ease: 'power3.out',
+                scrollTrigger: { trigger: cl, start: 'top 90%', delay: i * 0.08 }
+            });
+        });
+        gsap.fromTo('.anexo', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', scrollTrigger: { trigger: '.anexo', start: 'top 90%' } });
+        gsap.fromTo('.assinatura', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', scrollTrigger: { trigger: '.assinatura', start: 'top 90%' } });
+        feather.replace({ 'aria-hidden': 'true' });
+    </script>
+</body>
+</html>
