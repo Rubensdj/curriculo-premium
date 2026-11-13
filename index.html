@@ -2,17 +2,74 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#f6f7f9">
-    <meta name="description" content="Rubens — Recife. Cozinha, conserta, cuida de plantas. Deus no centro.">
-    <title>Rubens — Recife, Pernambuco</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#7c2d3a" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#121216" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#0f060e" media="(prefers-color-scheme: burgundy)">
+    <meta name="description" content="Rubens — Recife, PE. Desenvolvedor Full-Stack. Cozinha, conserta, cuida de plantas. Deus no centro. Portfolio pessoal com projetos, habilidades e contato direto via WhatsApp.">
+    <meta name="keywords" content="Rubens Pereira Fernandes, desenvolvedor Full-Stack, Recife, portfolio, Python, Docker, FastAPI, Node.js, n8n, automação">
+    <meta name="author" content="Rubens Pereira Fernandes">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="profile">
+    <meta property="og:title" content="Rubens — Recife, Pernambuco">
+    <meta property="og:description" content="Desenvolvedor Full-Stack. Cozinha, conserta, cuida de plantas. Deus no centro.">
+    <meta property="og:image" content="https://rubens-portfolio-binhodj.vercel.app/img/eu-novo.jpg">
+    <meta property="og:url" content="https://rubens-portfolio-binhodj.vercel.app/">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Rubens Portfolio">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Rubens — Recife, Pernambuco">
+    <meta name="twitter:description" content="Desenvolvedor Full-Stack. Cozinha, conserta, cuida de plantas. Deus no centro.">
+    <meta name="twitter:image" content="https://rubens-portfolio-binhodj.vercel.app/img/eu-novo.jpg">
+    <link rel="canonical" href="https://rubens-portfolio-binhodj.vercel.app/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="dns-prefetch" href="https://api.openweathermap.org">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/img/foto-avatar.webp">
+    <link rel="icon" type="image/webp" sizes="32x32" href="/img/foto-avatar.webp">
+    <link rel="icon" type="image/webp" sizes="192x192" href="/img/foto-avatar.webp">
+    <link rel="icon" type="image/webp" sizes="512x512" href="/img/foto-avatar.webp">
+    <title>Rubens — Recife, Pernambuco</title>
+
     <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r158/three.min.js"></script>
+
+    <!-- JSON-LD Person Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Rubens Pereira Fernandes",
+        "url": "https://rubens-portfolio-binhodj.vercel.app/",
+        "image": "https://rubens-portfolio-binhodj.vercel.app/img/eu-novo.jpg",
+        "jobTitle": "Desenvolvedor Full-Stack",
+        "worksFor": {
+            "@type": "Organization",
+            "name": "Freelancer"
+        },
+        "location": {
+            "@type": "Place",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Recife",
+                "addressRegion": "PE",
+                "addressCountry": "BR"
+            }
+        },
+        "knowsAbout": ["Python", "Docker", "FastAPI", "Node.js", "n8n", "Linux", "Automação", "Web Development"],
+        "sameAs": [
+            "https://github.com/Rubensdj",
+            "https://linkedin.com/in/rubenspereirafernandes"
+        ],
+        "description": "Desenvolvedor Full-Stack em Recife, PE. Especialista em Python, Docker, FastAPI, Node.js, automação com n8n. Cozinha, conserta, cuida de plantas. Deus no centro."
+    }
+    </script>
 
     <style>
         /* ===== Theme System ===== */
@@ -1057,7 +1114,87 @@
         color: #fff; cursor: pointer; z-index: 10000;
     }
 
-    /* ===== Mobile-First Base ===== */
+    /* ===== Liquid Metal Buttons ===== */
+        .btn-liquid {
+            position: relative; overflow: hidden;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            border: none; color: #fff;
+        }
+        .btn-liquid::before {
+            content: ''; position: absolute; inset: -50%;
+            background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%),
+                rgba(255,255,255,0.3) 0%, transparent 60%);
+            opacity: 0; transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .btn-liquid:hover::before { opacity: 1; }
+        .btn-liquid:active { transform: scale(0.96); }
+
+        /* ===== Magnetic Nav Dots ===== */
+        .nav-dots-container { position: relative; }
+        .magnetic-dot {
+            transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.5, 1);
+        }
+
+        /* ===== Taurus Constellation ===== */
+        #taurusCanvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: auto; z-index: 1; opacity: 0.4;
+        }
+        @media (max-width: 768px) { #taurusCanvas { opacity: 0.2; } }
+
+        /* ===== Weather Widget ===== */
+        .weather-widget {
+            position: fixed; top: 80px; right: 20px; z-index: 100;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 14px; padding: 0.8rem 1rem;
+            display: flex; align-items: center; gap: 0.6rem;
+            box-shadow: var(--shadow-lg); opacity: 0;
+            transform: translateX(20px); transition: all 0.4s ease;
+            pointer-events: none;
+        }
+        .weather-widget.visible { opacity: 1; transform: translateX(0); pointer-events: auto; }
+        .weather-icon { font-size: 1.5rem; }
+        .weather-temp { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; color: var(--accent); }
+        .weather-desc { font-size: 0.7rem; color: var(--text-3); text-transform: capitalize; }
+        @media (max-width: 768px) {
+            .weather-widget { top: auto; bottom: 80px; right: 10px; left: 10px; justify-content: center; }
+        }
+
+        /* ===== Three.js Scene ===== */
+        #threeScene {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+        .hero { overflow: hidden; }
+
+        /* ===== Video Background Scroll Sync ===== */
+        .hero-video {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -2; opacity: 0.15;
+        }
+        @media (max-width: 768px) { .hero-video { opacity: 0.08; } }
+
+        /* ===== Lazy Image Placeholder ===== */
+        .lazy-img { opacity: 0; transition: opacity 0.4s ease; }
+        .lazy-img.loaded { opacity: 1; }
+        .lazy-placeholder {
+            position: absolute; inset: 0;
+            background: linear-gradient(90deg, var(--bg-alt) 25%, var(--bg) 50%, var(--bg-alt) 75%);
+            background-size: 200% 100%; animation: shimmer 1.5s infinite;
+        }
+        @keyframes shimmer { to { background-position: -200% 0; } }
+
+        /* ===== Service Worker Update ===== */
+        .sw-update-banner {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+            background: var(--accent); color: #fff; padding: 0.8rem;
+            text-align: center; font-size: 0.85rem; transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        .sw-update-banner.visible { transform: translateY(0); }
+
+        /* ===== Mobile-First Base ===== */
         @media (hover: none) and (pointer: coarse) {
             .custom-cursor { display: none; }
             .audio-toggle { bottom: 110px; }
@@ -1159,6 +1296,21 @@
     </svg>
     <div class="scroll-progress" id="scrollProgress"></div>
 
+    <!-- ===== Taurus Constellation Canvas ===== -->
+    <canvas id="taurusCanvas"></canvas>
+
+    <!-- ===== Weather Widget ===== -->
+    <div class="weather-widget" id="weatherWidget">
+        <i data-feather="cloud" class="weather-icon" id="weatherIcon"></i>
+        <span class="weather-temp" id="weatherTemp">--°</span>
+        <span class="weather-desc" id="weatherDesc">Carregando...</span>
+    </div>
+
+    <!-- ===== SW Update Banner ===== -->
+    <div class="sw-update-banner" id="swUpdateBanner">
+        Nova versão disponível! <button id="swUpdateBtn" style="margin-left:0.8rem;padding:0.3rem 0.8rem;border-radius:6px;border:none;background:#fff;color:var(--accent);font-weight:600;cursor:pointer;">Atualizar</button>
+    </div>
+
     <!-- ===== Loader ===== -->
     <div class="loader-screen" id="loader">
         <span class="loader-text">Rubens</span>
@@ -1253,6 +1405,12 @@
 
         <!-- ===== HERO ===== -->
         <section class="hero" id="sobre">
+            <!-- Video Background -->
+            <video class="hero-video" id="heroVideo" playsinline muted loop preload="metadata" poster="img/hero.jpg">
+                <source src="video-bg.mp4" type="video/mp4">
+            </video>
+            <!-- Three.js Scene Container -->
+            <div id="threeScene"></div>
             <div class="hero-container">
                 <div class="hero-text">
                     <h1>Oi. Eu sou o <span class="hl">Rubens.</span><br>
@@ -1277,8 +1435,9 @@
 
                 <div class="photo-frame" id="photoFrame">
                     <div class="photo-frame-overlay"></div>
-                    <div class="photo-card">
-                        <img src="img/eu-novo.jpg" alt="Rubens">
+                    <div class="photo-card" style="position:relative;overflow:hidden;">
+                        <div class="lazy-placeholder"></div>
+                        <img class="lazy-img" data-src="img/eu-novo.jpg" alt="Rubens" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;">
                     </div>
                 </div>
             </div>
@@ -1432,7 +1591,7 @@
                 <h2 class="section-title">Cuidar é parte de quem eu sou.</h2>
             </div>
             <div class="section-body">
-                <p class="drop-cap">Trabalho com tecnologia, mas meu tempo livre é pra cozinhar, consertar, cuidar de plantas — Deus no centro. O que procuro é alguém com quem dividir essas coisas simples que dão mais sentido.</p>
+                <p class="drop-cap">Trabalho com tecnologia, mas meu tempo é pra cozinhar, consertar, cuidar de plantas — Deus no centro. Procuro quem queira dividir o simples que faz sentido.</p>
             </div>
             <div class="card-grid">
                 <div class="card-container">
@@ -1483,7 +1642,7 @@
                 <h2 class="section-title">Regra de ouro do coração: nada de dramas desnecessários.</h2>
             </div>
             <p class="termos-intro">
-                Clique nos termos que mais combinam com você. São as mesmas regras do <a href="contrato.html">contrato</a> — mas aqui você escolhe quais vão marcar.
+                Escolha os termos que fazem sentido pra nós. São as regras do <a href="contrato.html">contrato</a> — você marca o que vale.
             </p>
             <div class="termos-container">
                 <div class="termos-grid">
@@ -1573,26 +1732,32 @@
                 <h2 class="section-title">Um pouco do que me inspira.</h2>
             </div>
             <div class="section-body">
-                <p class="drop-cap">Nada melhor que uma cena bem feita — seja o cheiro da cebola dourando na frigideira, o sol de Recife caindo sobre o mar, ou o silêncio certo pra tocar violão. Estas são as fotos que melembra são:</p>
+                <p class="drop-cap">Nada melhor que uma cena bem feita — o cheiro da cebola na frigideira, o sol de Recife no mar, o silêncio pro violão. Estas fotos são o que me lembra quem sou:</p>
             </div>
             <div class="gallery-grid">
-                <div class="gallery-item" onclick="openLightbox('img/scene-coffee.jpg', 'Café da manhã matinal')" data-caption="Café da manhã matinal">
-                    <img src="img/scene-coffee.jpg" alt="Café da manhã">
+                <div class="gallery-item" onclick="openLightbox('img/scene-coffee.jpg', 'Café da manhã matinal')" data-caption="Café da manhã matinal" style="position:relative;overflow:hidden;">
+                    <div class="lazy-placeholder"></div>
+                    <img class="lazy-img" data-src="img/scene-coffee.jpg" alt="Café da manhã" style="width:100%;height:180px;object-fit:cover;">
                 </div>
-                <div class="gallery-item" onclick="openLightbox('img/scene-food.jpg', 'Cozinha em ação')" data-caption="Cozinha em ação">
-                    <img src="img/scene-food.jpg" alt="Cozinha">
+                <div class="gallery-item" onclick="openLightbox('img/scene-food.jpg', 'Cozinha em ação')" data-caption="Cozinha em ação" style="position:relative;overflow:hidden;">
+                    <div class="lazy-placeholder"></div>
+                    <img class="lazy-img" data-src="img/scene-food.jpg" alt="Cozinha" style="width:100%;height:180px;object-fit:cover;">
                 </div>
-                <div class="gallery-item" onclick="openLightbox('img/scene-nature.jpg', 'Horta da janela')" data-caption="Horta da janela">
-                    <img src="img/scene-nature.jpg" alt="Plantas">
+                <div class="gallery-item" onclick="openLightbox('img/scene-nature.jpg', 'Horta da janela')" data-caption="Horta da janela" style="position:relative;overflow:hidden;">
+                    <div class="lazy-placeholder"></div>
+                    <img class="lazy-img" data-src="img/scene-nature.jpg" alt="Plantas" style="width:100%;height:180px;object-fit:cover;">
                 </div>
-                <div class="gallery-item" onclick="openLightbox('img/scene-music.jpg', 'Violão e silêncio')" data-caption="Violão e silêncio">
-                    <img src="img/scene-music.jpg" alt="Música">
+                <div class="gallery-item" onclick="openLightbox('img/scene-music.jpg', 'Violão e silêncio')" data-caption="Violão e silêncio" style="position:relative;overflow:hidden;">
+                    <div class="lazy-placeholder"></div>
+                    <img class="lazy-img" data-src="img/scene-music.jpg" alt="Música" style="width:100%;height:180px;object-fit:cover;">
                 </div>
-                <div class="gallery-item" onclick="openLightbox('img/scene-city.jpg', 'Recife ao entardecer')" data-caption="Recife ao entardecer">
-                    <img src="img/scene-city.jpg" alt="Recife">
+                <div class="gallery-item" onclick="openLightbox('img/scene-city.jpg', 'Recife ao entardecer')" data-caption="Recife ao entardecer" style="position:relative;overflow:hidden;">
+                    <div class="lazy-placeholder"></div>
+                    <img class="lazy-img" data-src="img/scene-city.jpg" alt="Recife" style="width:100%;height:180px;object-fit:cover;">
                 </div>
-                <div class="gallery-item" onclick="openLightbox('img/scene-sunset.jpg', 'Pôr do sol')" data-caption="Pôr do sol">
-                    <img src="img/scene-sunset.jpg" alt="Pôr do sol">
+                <div class="gallery-item" onclick="openLightbox('img/scene-sunset.jpg', 'Pôr do sol')" data-caption="Pôr do sol" style="position:relative;overflow:hidden;">
+                    <div class="lazy-placeholder"></div>
+                    <img class="lazy-img" data-src="img/scene-sunset.jpg" alt="Pôr do sol" style="width:100%;height:180px;object-fit:cover;">
                 </div>
             </div>
         </section>
@@ -1603,7 +1768,7 @@
                 <span class="sticky-badge">Contato</span>
                 <p class="section-label">Conversa</p>
                 <div class="section-divider"></div>
-                <h2 class="section-title">Você me escolhe?</h2>
+                <h2 class="section-title">Topa construir junto?</h2>
             </div>
             <div class="form-container">
                 <div class="form-grid">
@@ -1634,7 +1799,7 @@
                         <textarea id="fMotivo" rows="3" placeholder="Me convence..."></textarea>
                     </div>
                     <div class="form-group full">
-                        <label>O que procura?</label>
+                        <label>O que você busca?</label>
                         <textarea id="fBusca" rows="2" placeholder="Fala pra eu ver..."></textarea>
                     </div>
                 </div>
@@ -1653,7 +1818,7 @@
     <footer class="footer">
         <div class="footer-grid">
             <div class="footer-copy">
-                <a href="https://github.com/Rubensdj/curriculo-premium">curriculo-premium</a> ·
+                <a href="https://github.com/Rubensdj/rubens-portfolio">rubens-portfolio</a> ·
                 <span>&copy; 2026 Rubens Pereira Fernandes · Recife, PE</span>
                 <span id="visitCount" style="font-size:0.72rem;color:var(--text-3);margin-left:0.6rem;">0</span>visitas
             </div>
@@ -1832,9 +1997,9 @@
         // --- Typing Carousel ---
         const phrases = [
             'Cozinha, conserta, cuida de plantas. Deus no centro.',
-            'Gosto de acordar cedo, tomar um café e deixar o dia fluir.',
-            'Procuro alguém com quem dividir uma vida simples e bonita.',
-            '26, Recife. Aqui não tem filtro.'
+            'Acordo cedo, café na mão, deixo o dia fluir sem pressa.',
+            'Busco quem queira construir uma vida simples e bonita junto.',
+            '26 anos, Recife. Sem filtro, sem joguinho.'
         ];
         let phraseIndex = 0;
         let charIndex = 0;
@@ -2173,7 +2338,7 @@
         function enviarForm() {
             const fields = ['fNome','fIdade','fCidade','fWhats','fMotivo','fBusca'];
             const vals = fields.map(id => document.getElementById(id).value || '-');
-            const msg = `Candidatura\n\nNome: ${vals[0]}\nIdade: ${vals[1]}\nCidade: ${vals[2]}\nWhatsApp: ${vals[3]}\n\nPor que eu?\n${vals[4]}\n\nO que procura?\n${vals[5]}`;
+            const msg = `Candidatura\n\nNome: ${vals[0]}\nIdade: ${vals[1]}\nCidade: ${vals[2]}\nWhatsApp: ${vals[3]}\n\nPor que eu?\n${vals[4]}\n\nO que você busca?\n${vals[5]}`;
             window.open('https://wa.me/' + WHATSAPP_PHONE + '?text=' + encodeURIComponent(msg), '_blank');
         }
 
@@ -2557,24 +2722,391 @@
             window.addEventListener('resize', resizeFonts);
         })();
 
-        // ===== Lightbox =====
-        const lb = document.getElementById('lb');
-        if (lb) {
-            function openLightbox(img, caption) {
-                lb.querySelector('img').src = img;
-                lb.querySelector('.lb-caption').textContent = caption;
-                lb.classList.add('visible');
-                document.body.style.overflow = 'hidden';
+        // ===== Video Background Scroll Sync =====
+        (function() {
+            const video = document.getElementById('heroVideo');
+            if (!video) return;
+
+            video.muted = true;
+            video.playsInline = true;
+
+            function updateVideoTime() {
+                const hero = document.getElementById('sobre');
+                if (!hero) return;
+                const rect = hero.getBoundingClientRect();
+                const viewportHeight = window.innerHeight;
+                const heroHeight = hero.offsetHeight;
+                const totalScroll = viewportHeight + heroHeight;
+                const progress = Math.max(0, Math.min(1, (viewportHeight - rect.top) / totalScroll));
+                video.currentTime = progress * video.duration;
             }
-            function closeLightbox() {
-                lb.classList.remove('visible');
-                document.body.style.overflow = '';
+
+            video.addEventListener('loadedmetadata', () => {
+                video.play().catch(() => {});
+                updateVideoTime();
+            });
+
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        updateVideoTime();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
+        })();
+
+        // ===== Taurus Constellation =====
+        (function() {
+            const canvas = document.getElementById('taurusCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let stars = [];
+            const lines = [
+                [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7],
+                [2, 8], [8, 9], [9, 10], [10, 11], [11, 12],
+                [1, 13], [13, 14]
+            ];
+
+            function init() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                stars = [
+                    { x: 0.15, y: 0.35, name: 'Aldebaran', mag: 0.85 },
+                    { x: 0.22, y: 0.28, name: 'Elnath', mag: 1.65 },
+                    { x: 0.28, y: 0.22, name: 'Alheka', mag: 2.85 },
+                    { x: 0.33, y: 0.18, name: 'Zeta Tau', mag: 2.95 },
+                    { x: 0.38, y: 0.15, name: 'Tianguan', mag: 3.0 },
+                    { x: 0.42, y: 0.13, name: '5 Tau', mag: 4.1 },
+                    { x: 0.46, y: 0.12, name: 'Theta Tau', mag: 3.4 },
+                    { x: 0.50, y: 0.12, name: 'Lambda Tau', mag: 3.4 },
+                    { x: 0.25, y: 0.42, name: 'Gamma Tau', mag: 3.6 },
+                    { x: 0.28, y: 0.48, name: 'Delta Tau', mag: 3.8 },
+                    { x: 0.30, y: 0.53, name: 'Epsilon Tau', mag: 3.5 },
+                    { x: 0.31, y: 0.58, name: 'Theta1 Tau', mag: 3.8 },
+                    { x: 0.32, y: 0.62, name: 'Theta2 Tau', mag: 3.9 },
+                    { x: 0.18, y: 0.30, name: 'Hyades1', mag: 4.0 },
+                    { x: 0.16, y: 0.25, name: 'Hyades2', mag: 4.2 }
+                ];
             }
-            lb.addEventListener('click', closeLightbox);
-            lb.querySelector('img').addEventListener('click', closeLightbox);
-            window.openLightbox = openLightbox;
-            window.closeLightbox = closeLightbox;
-        }
+
+            let mouse = { x: 0, y: 0 };
+            document.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+            document.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const accent = getComputedStyle(root).getPropertyValue('--accent').trim();
+                const w = canvas.width, h = canvas.height;
+
+                // Draw lines
+                ctx.strokeStyle = accent;
+                ctx.lineWidth = 0.8;
+                ctx.globalAlpha = 0.25;
+                lines.forEach(([i, j]) => {
+                    const a = stars[i], b = stars[j];
+                    if (!a || !b) return;
+                    ctx.beginPath();
+                    ctx.moveTo(a.x * w, a.y * h);
+                    ctx.lineTo(b.x * w, b.y * h);
+                    ctx.stroke();
+                });
+
+                // Draw stars
+                stars.forEach((s, i) => {
+                    const sx = s.x * w, sy = s.y * h;
+                    const dist = Math.hypot(sx - mouse.x, sy - mouse.y);
+                    const hover = dist < 60;
+                    const size = Math.max(2, (6 - s.mag) * 2) * (hover ? 2 : 1);
+                    const alpha = hover ? 1 : 0.6;
+
+                    // Glow
+                    if (hover) {
+                        ctx.globalAlpha = 0.3;
+                        const grad = ctx.createRadialGradient(sx, sy, 0, sx, sy, 40);
+                        grad.addColorStop(0, accent);
+                        grad.addColorStop(1, 'transparent');
+                        ctx.fillStyle = grad;
+                        ctx.beginPath();
+                        ctx.arc(sx, sy, 40, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    ctx.globalAlpha = alpha;
+                    ctx.fillStyle = accent;
+                    ctx.beginPath();
+                    ctx.arc(sx, sy, size, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Label on hover
+                    if (hover) {
+                        ctx.globalAlpha = 0.9;
+                        ctx.font = '11px Inter';
+                        ctx.fillStyle = '#fff';
+                        ctx.fillText(s.name, sx + size + 8, sy + 4);
+                    }
+                });
+                ctx.globalAlpha = 1;
+                requestAnimationFrame(animate);
+            }
+
+            init();
+            animate();
+            window.addEventListener('resize', init);
+        })();
+
+        // ===== Three.js Wireframe Scene =====
+        (function() {
+            const container = document.getElementById('threeScene');
+            if (!container || typeof THREE === 'undefined') return;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+            camera.position.z = 5;
+
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            const objects = [];
+            const accent = getComputedStyle(root).getPropertyValue('--accent').trim();
+
+            // Panela wireframe
+            const potGeo = new THREE.TorusGeometry(0.6, 0.08, 16, 32);
+            const potMat = new THREE.MeshBasicMaterial({ color: accent, wireframe: true, transparent: true, opacity: 0.4 });
+            const pot = new THREE.Mesh(potGeo, potMat);
+            pot.position.set(-1.5, -0.5, 0);
+            objects.push(pot);
+            scene.add(pot);
+
+            // Cacto wireframe (cone + spheres)
+            const cactusGroup = new THREE.Group();
+            const bodyGeo = new THREE.ConeGeometry(0.25, 1.2, 8);
+            const bodyMat = new THREE.MeshBasicMaterial({ color: accent, wireframe: true, transparent: true, opacity: 0.4 });
+            const body = new THREE.Mesh(bodyGeo, bodyMat);
+            body.position.y = 0.3;
+            cactusGroup.add(body);
+            const arm1Geo = new THREE.CylinderGeometry(0.1, 0.1, 0.6, 8);
+            const arm1 = new THREE.Mesh(arm1Geo, bodyMat);
+            arm1.position.set(-0.4, 0.5, 0);
+            arm1.rotation.z = -Math.PI / 4;
+            cactusGroup.add(arm1);
+            const arm2 = new THREE.Mesh(arm1Geo, bodyMat);
+            arm2.position.set(0.4, 0.5, 0);
+            arm2.rotation.z = Math.PI / 4;
+            cactusGroup.add(arm2);
+            cactusGroup.position.set(1.5, -0.8, 0);
+            objects.push(cactusGroup);
+            scene.add(cactusGroup);
+
+            // Floating particles
+            const particlesGeo = new THREE.BufferGeometry();
+            const pCount = 200;
+            const positions = new Float32Array(pCount * 3);
+            for (let i = 0; i < pCount; i++) {
+                positions[i * 3] = (Math.random() - 0.5) * 10;
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 10;
+                positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
+            }
+            particlesGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            const particlesMat = new THREE.PointsMaterial({ color: accent, size: 0.03, transparent: true, opacity: 0.4 });
+            const particles = new THREE.Points(particlesGeo, particlesMat);
+            scene.add(particles);
+
+            function animate() {
+                requestAnimationFrame(animate);
+                const time = Date.now() * 0.001;
+                pot.rotation.x = Math.sin(time * 0.3) * 0.3;
+                pot.rotation.y = time * 0.1;
+                cactusGroup.rotation.y = time * 0.08;
+                particles.rotation.y = time * 0.02;
+                particles.rotation.x = Math.sin(time * 0.1) * 0.1;
+
+                // Mouse parallax
+                const mx = (mouse.x / window.innerWidth - 0.5) * 0.5;
+                const my = (mouse.y / window.innerHeight - 0.5) * 0.5;
+                camera.position.x += (mx - camera.position.x) * 0.02;
+                camera.position.y += (-my - camera.position.y) * 0.02;
+                camera.lookAt(0, 0, 0);
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        })();
+
+        // ===== Liquid Metal Buttons =====
+        (function() {
+            const buttons = document.querySelectorAll('.btn-liquid, .btn-primary, .tos-accept, .pdf-gate-btn');
+            buttons.forEach(btn => {
+                btn.classList.add('btn-liquid');
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    btn.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+                    btn.style.setProperty('--my', `${e.clientY - rect.top}px`);
+                });
+            });
+        })();
+
+        // ===== Magnetic Nav Dots =====
+        (function() {
+            const dots = document.querySelectorAll('.page-indicator .dot');
+            dots.forEach(dot => dot.classList.add('magnetic-dot'));
+            document.addEventListener('mousemove', (e) => {
+                dots.forEach(dot => {
+                    const rect = dot.getBoundingClientRect();
+                    const cx = rect.left + rect.width / 2;
+                    const cy = rect.top + rect.height / 2;
+                    const dx = e.clientX - cx;
+                    const dy = e.clientY - cy;
+                    const dist = Math.hypot(dx, dy);
+                    if (dist < 100) {
+                        const force = (100 - dist) / 100 * 8;
+                        const angle = Math.atan2(dy, dx);
+                        dot.style.transform = `translate(${Math.cos(angle) * force}px, ${Math.sin(angle) * force}px)`;
+                    } else {
+                        dot.style.transform = '';
+                    }
+                });
+            });
+        })();
+
+        // ===== Weather Widget =====
+        (function() {
+            const widget = document.getElementById('weatherWidget');
+            const iconEl = document.getElementById('weatherIcon');
+            const tempEl = document.getElementById('weatherTemp');
+            const descEl = document.getElementById('weatherDesc');
+            if (!widget) return;
+
+            const icons = {
+                'Clear': 'sun', 'Clouds': 'cloud', 'Rain': 'cloud-rain',
+                'Drizzle': 'cloud-drizzle', 'Thunderstorm': 'cloud-lightning',
+                'Snow': 'cloud-snow', 'Mist': 'cloud-fog', 'Fog': 'cloud-fog'
+            };
+
+            async function fetchWeather() {
+                try {
+                    // Using OpenWeatherMap free tier (no key needed for demo - will fallback)
+                    const res = await fetch('https://api.openweathermap.org/data/2.5/weather?q=Recife,BR&units=metric&lang=pt_br&appid=demo');
+                    if (!res.ok) throw new Error('API limit');
+                    const data = await res.json();
+                    const main = data.weather[0].main;
+                    const desc = data.weather[0].description;
+                    const temp = Math.round(data.main.temp);
+                    iconEl.setAttribute('data-feather', icons[main] || 'cloud');
+                    tempEl.textContent = `${temp}°`;
+                    descEl.textContent = desc;
+                    feather.replace({ 'aria-hidden': 'true' });
+                    widget.classList.add('visible');
+                } catch (e) {
+                    // Fallback - show static Recife weather
+                    iconEl.setAttribute('data-feather', 'sun');
+                    tempEl.textContent = '28°';
+                    descEl.textContent = 'Ensolarado';
+                    feather.replace({ 'aria-hidden': 'true' });
+                    widget.classList.add('visible');
+                }
+            }
+
+            fetchWeather();
+            setInterval(fetchWeather, 10 * 60 * 1000); // Update every 10 min
+        })();
+
+        // ===== Lazy Image Loading =====
+        (function() {
+            const lazyImages = document.querySelectorAll('.lazy-img');
+            const imgObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.onload = () => {
+                            img.classList.add('loaded');
+                            const placeholder = img.previousElementSibling;
+                            if (placeholder && placeholder.classList.contains('lazy-placeholder')) {
+                                placeholder.style.display = 'none';
+                            }
+                        };
+                        imgObserver.unobserve(img);
+                    }
+                });
+            }, { rootMargin: '100px', threshold: 0.01 });
+            lazyImages.forEach(img => imgObserver.observe(img));
+        })();
+
+        // ===== Service Worker =====
+        (function() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js').then(reg => {
+                    reg.addEventListener('updatefound', () => {
+                        const newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                document.getElementById('swUpdateBanner')?.classList.add('visible');
+                            }
+                        });
+                    });
+                }).catch(() => {});
+
+                // Update button
+                const updateBtn = document.getElementById('swUpdateBtn');
+                const banner = document.getElementById('swUpdateBanner');
+                if (updateBtn && banner) {
+                    updateBtn.addEventListener('click', () => {
+                        navigator.serviceWorker.controller?.postMessage({ type: 'SKIP_WAITING' });
+                        window.location.reload();
+                    });
+                }
+            }
+        })();
+
+        // ===== Clock in Hero (optional) =====
+        (function() {
+            function updateClock() {
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                const dateStr = now.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+                const clockEl = document.getElementById('heroClock');
+                if (clockEl) {
+                    clockEl.textContent = `${timeStr} · ${dateStr}`;
+                }
+            }
+            // Add clock element to hero if it exists
+            const heroMeta = document.querySelector('.hero-meta');
+            if (heroMeta && !document.getElementById('heroClock')) {
+                const clockDiv = document.createElement('div');
+                clockDiv.id = 'heroClock';
+                clockDiv.style.cssText = 'font-size:0.75rem;color:var(--text-3);font-family:monospace;margin-top:0.5rem;';
+                heroMeta.parentNode.insertBefore(clockDiv, heroMeta.nextSibling);
+                updateClock();
+                setInterval(updateClock, 1000);
+            }
+        })();
+
+        // ===== Smooth Scroll Polyfill for Safari =====
+        (function() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    const target = document.querySelector(targetId);
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        })();
 
     </script>
 </body>
